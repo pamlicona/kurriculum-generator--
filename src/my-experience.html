@@ -1,0 +1,123 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
+
+<dom-module id="my-experience">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h1>Experiencia Profesional</h1>
+    <iron-form id="formExperience">
+      <form>
+        <div>
+          <paper-input type="text" name="empresa" required label="Empresa" value=""></paper-input>
+          <paper-input type="text" name="cargo" required label="Cargo" value=""></paper-input>
+          <paper-input type="text" name="ubicacion" required label="Ubicación" value=""></paper-input>
+          <paper-input type="text" name="descripcion" required label="Descripción" value=""></paper-input>
+        </div>
+        <div>
+          <div class="datepicker-dialog">
+            <span>Fecha inicio</span>
+            <paper-button disabled>[[initDate]]</paper-button>
+            <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
+            <app-datepicker-dialog id="dateInit"
+              format="dd/mm/yyyy"
+              date="{{initDate}}"
+              locale="es-ES">
+            </app-datepicker-dialog>
+          </div>
+          <div class="datepicker-dialog" id="finalDateContainer">
+            <span>Fecha final</span>
+            <paper-button disabled>[[finalDate]]</paper-button>
+            <paper-icon-button icon="icons:today" on-tap="_openDialogFinal"></paper-icon-button>
+            <app-datepicker-dialog id="dateFinal"
+              format="dd/mm/yyyy"
+              date="{{finalDate}}"
+              locale="es-ES">
+            </app-datepicker-dialog>
+          </div>
+          <paper-checkbox name="actual" on-click="_hideFinalDate">Trabajo actual</paper-checkbox>
+        </div>
+        <paper-button raised on-click="_saveData">Guardar</paper-button>
+        <paper-button raised on-click="_resetData">Limpiar</paper-button>
+      </form>
+    </iron-form>
+  </template>
+
+  <script>
+    /**
+     * `my-experience`
+     *
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class MyExperience extends Polymer.Element {
+      static get is() { return 'my-experience'; }
+      static get properties() {
+        return {
+          data: {
+            type: Object,
+            value: {
+              empresa: '',
+              cargo: '',
+              ubicacion: '',
+              descripcion: '',
+              actual: false,
+              fechaInicio: '',
+              fechaFinal: ''
+            }
+          }
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+      }
+
+      _openDialogInit(event) {
+        this.$.dateInit.open();
+      }
+
+      _openDialogFinal(event) {
+        this.$.dateFinal.open();
+      }
+
+      _hideFinalDate(event) {
+        const containerDateDisplay = this.$.finalDateContainer;
+        if (containerDateDisplay.style.display == 'none') {
+          containerDateDisplay.style.display = 'block';
+          this.data.actual = false;
+        } else {
+          containerDateDisplay.style.display = 'none';
+          this.data.actual = true;
+        }
+      }
+
+      _saveData(event) {
+        const form = this.$.formExperience.serializeForm();
+        form.actual = this.data.actual;
+        form.fechaInicio = this.initDate;
+        if (this.data.actual == false) {
+          form.fechaFinal = this.finalDate;
+        }
+      }
+
+      _resetData(event) {
+        this.$.finalDateContainer.style.display = 'block';
+        this.$.formExperience.reset();
+      }
+    }
+
+    window.customElements.define(MyExperience.is, MyExperience);
+  </script>
+</dom-module>
