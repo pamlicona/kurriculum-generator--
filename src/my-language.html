@@ -1,0 +1,72 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="my-language">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <h1>Idioma</h1>
+        <iron-form id="languageExperience">
+            <form>
+                <div>
+                    <paper-input type="text" name="idioma" label="Idioma" value=""></paper-input>
+                    <select name="competencia" id="competencia">
+                        <option value="1">Básico</option>
+                        <option value="2">Intermedio</option>
+                        <option value="3">Avanzado</option>
+                        <option value="3">Nativo</option>
+                    </select>
+                </div>
+
+                <paper-button raised on-click="_saveData">Guardar</paper-button>
+                <paper-button raised on-click="_resetData">Limpiar</paper-button>
+            </form>
+        </iron-form>
+    </template>
+
+    <script>
+        /**
+         * `my-language`
+         *
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class MyLanguage extends Polymer.Element {
+            static get is() { return 'my-language'; }
+            static get properties() {
+                return {
+                    data: {
+                        type: Object,
+                        value: {
+                            language: '',
+                            level: ''
+                        }
+                    }
+                };
+            }
+
+            connectedCallback() {
+                super.connectedCallback();
+            }
+
+            _saveData(event) {
+                const form = this.$.languageExperience.serializeForm();
+            }
+
+            _resetData(event) {
+                this.$.languageExperience.reset();
+            }
+        }
+
+        window.customElements.define(MyLanguage.is, MyLanguage);
+    </script>
+</dom-module>
