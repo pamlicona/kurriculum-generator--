@@ -4,6 +4,11 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 
 <dom-module id="my-language">
     <template>
@@ -14,19 +19,28 @@
         </style>
         <h1>Idioma</h1>
         <iron-form id="languageExperience">
+            <template is="dom-repeat" items="{{languages}}" as="language">
+                <p>{{language.name}} {{language.level}}</p>
+            </template>
             <form>
-                <div>
-                    <paper-input type="text" name="idioma" label="Idioma" value=""></paper-input>
-                    <select name="competencia" id="competencia">
-                        <option value="1">Básico</option>
-                        <option value="2">Intermedio</option>
-                        <option value="3">Avanzado</option>
-                        <option value="3">Nativo</option>
-                    </select>
-                </div>
+                <template is="dom-repeat" items="[[languages]]" as="language">
+                    <div class="language">
+                        <paper-input id="inputForValidation" type="text" name="idioma" label="Idioma" required error-message="Campo requerido" allowed-pattern="[a-zA-Z]"
+                            value="{{language.name}}"></paper-input>
+                        <paper-dropdown-menu-light label="Competencia">
+                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{language.level}} required>
+                                <template is="dom-repeat" items="[[levels]]" as="level">
+                                    <paper-item>{{level}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </paper-dropdown-menu-light>
+                        <paper-button raised on-click="_removeLanguage" id$="{{index}}">Eliminar</paper-button>
+                    </div>
+                </template>
 
+
+                <paper-button raised on-click="_addLanguage">Agregar</paper-button>
                 <paper-button raised on-click="_saveData">Guardar</paper-button>
-                <paper-button raised on-click="_resetData">Limpiar</paper-button>
             </form>
         </iron-form>
     </template>
@@ -38,18 +52,19 @@
          *
          * @customElement
          * @polymer
-         * @demo demo/index.html
+         * @demo demo/[[index]].html
          */
         class MyLanguage extends Polymer.Element {
             static get is() { return 'my-language'; }
             static get properties() {
                 return {
-                    data: {
-                        type: Object,
-                        value: {
-                            language: '',
-                            level: ''
-                        }
+                    levels: {
+                        type: Array,
+                        value: ['Principiante', 'Intermedio', 'Avanzado', 'Nativo']
+                    },
+                    languages: {
+                        type: Array,
+                        value: []
                     }
                 };
             }
@@ -59,11 +74,39 @@
             }
 
             _saveData(event) {
-                const form = this.$.languageExperience.serializeForm();
+                if (this._validateForm()) {
+                    localStorage.setItem('languages', JSON.stringify(this.languages));
+                    this._dispatchEvent('languages-saved', this.languages);
+                    alert('Data saved!');
+                }
             }
 
-            _resetData(event) {
-                this.$.languageExperience.reset();
+            _addLanguage(event) {
+                if (this._validateForm()) {
+                    const newLanguage = { name: null, level: null };
+                    this.push('languages', newLanguage);
+                }
+            }
+
+            _validateForm() {
+                const length = this.languages.length;
+                if (length > 0) {
+                    return this.$.languageExperience.validate() && this.languages[length - 1].level;
+                }
+                return this.$.languageExperience.validate();
+            }
+
+            _removeLanguage(e) {
+                const id = e.target.getAttribute('id');
+                this.splice('languages', id, 1);
+            }
+
+            _dispatchEvent(event, detail, bubbles = true) {
+                this.dispatchEvent(new CustomEvent(event, {
+                    bubbles: bubbles,
+                    composed: true,
+                    detail: detail
+                }));
             }
         }
 
