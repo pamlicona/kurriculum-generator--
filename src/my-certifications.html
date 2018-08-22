@@ -7,7 +7,7 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
 
-<dom-module id="my-formation">
+<dom-module id="my-certifications">
   <template>
     <style>
       #myProgress {
@@ -53,30 +53,34 @@
     </style>
 
     <div id="">
-     <iron-form id="formFormation">
+     <iron-form id="formCertifications">
       <form id="container-formacion">
         <div class="col">
           <div class="cont-input">
-            <paper-input type="text" name="institucion" required label="Institución" value=""></paper-input>
+            <paper-input type="text" name="name" required label="Nombre de la Certificación" value=""></paper-input>
           </div>
 
           <div class="cont-input">
-            <paper-input type="text" name="titulacion" required label="Titulación" value=""></paper-input>
+            <paper-input type="text" name="emisor" required label="Entidad Emisora" value=""></paper-input>
           </div>
 
           <div class="cont-input">
-            <paper-input type="text" name="disciplina" required label="Disciplina" value=""></paper-input>
+            <paper-input type="text" name="licency" required label="Nº de Licencia" value=""></paper-input>
+          </div>
+
+          <div class="cont-input">
+            <paper-input type="text" name="url" required label="URL" value=""></paper-input>
           </div>
         </div>
         <div class="col">
           <div class="cont-input">
             <div class="datepicker-dialog">
-                <span>Desde</span>
-                <paper-button disabled>[[desde]]</paper-button>
+                <span>Fecha Inicio</span>
+                <paper-button disabled>[[initDate]]</paper-button>
                 <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
                 <app-datepicker-dialog id="dateInit"
                   format="dd/mm/yyyy"
-                  date="{{desde}}"
+                  date="{{initDate}}"
                   locale="es-ES">
                 </app-datepicker-dialog>
               </div>
@@ -84,15 +88,19 @@
 
           <div class="cont-input">
             <div class="datepicker-dialog">
-                <span>Hasta</span>
-                <paper-button disabled>[[hasta]]</paper-button>
+                <span>Fecha Fin</span>
+                <paper-button disabled>[[endDate]]</paper-button>
                 <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
-                <app-datepicker-dialog id="dateEnd"
+                <app-datepicker-dialog id="dateInit"
                   format="dd/mm/yyyy"
-                  date="{{hasta}}"
+                  date="{{initDate}}"
                   locale="es-ES">
                 </app-datepicker-dialog>
               </div>
+          </div>
+
+          <div class="cont-input">
+            <paper-checkbox name="actual" on-click="_hideFinalDate">Certificación Permanente</paper-checkbox>
           </div>
 
           <div class="cont-input">
@@ -111,8 +119,8 @@
     (function appShell(customElements){
       'use strict';
 
-      class MyFormation extends Polymer.Element {
-        static get is() { return 'my-formation'; }
+      class MyCertifications extends Polymer.Element {
+        static get is() { return 'my-certifications'; }
         static get properties() {
           return {
             institucion: {
@@ -147,16 +155,16 @@
         }
 
         _openDialogFinal(event) {
-            this.$.dateEnd.open();
+            this.$.dateFinal.open();
         }
 
         _resetData(event) {
             this.$.finalDateContainer.style.display = 'block';
-            this.$.formFormation.reset();
+            this.$.formCertifications.reset();
         }
 
       }
-      customElements.define(MyFormation.is, MyFormation);
+      customElements.define(MyCertifications.is, MyCertifications);
     })(window.customElements);
   </script>
 </dom-module>
