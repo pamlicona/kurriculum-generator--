@@ -8,6 +8,7 @@
 <link rel="lazy-import" href="my-experience.html">
 <link rel="lazy-import" href="my-knowledge.html">
 <link rel="lazy-import" href="my-language.html">
+<link rel="lazy-import" href="my-formation.html">
 <link rel="lazy-import" href="my-view404.html">
 
 <dom-module id="app-shell">
@@ -41,6 +42,7 @@
             <a name="experience" href="[[rootPath]]#experience">Experiencia</a>
             <a name="knowledge" href="[[rootPath]]#knowledge">Conocimientos</a>
             <a name="language" href="[[rootPath]]#language">Idioma</a>
+            <a name="language" href="[[rootPath]]#formation">Formación</a>
         </iron-selector>
 
         <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
@@ -48,6 +50,7 @@
             <my-experience name="experience"></my-experience>
             <my-knowledge name="knowledge"></my-knowledge>
             <my-language name="language"></my-language>
+            <my-formation name="formation"></my-formation>
             <my-view404 name="view404"></my-view404>
         </iron-pages>
     </template>
