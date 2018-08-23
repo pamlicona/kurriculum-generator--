@@ -1,0 +1,170 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
+
+<dom-module id="my-certifications">
+  <template>
+    <style>
+      #myProgress {
+        width: 100%;
+        background-color: #ddd;
+      }
+
+      #myBar {
+        width: 1%;
+        height: 30px;
+        background-color: #4CAF50;
+      }
+      input{
+        padding: 7px;
+      }
+      label{
+        margin-right: 5px;
+      }
+      #container-formacion{
+        width: 99%;
+        height: 100%;
+        border-radius: 50px;
+        border: 10px solid lightgray;
+        display: flex;
+        justify-content: space-between;
+      }
+      .col{
+        width: 50%;
+        padding: 20px;
+        display: inline-block;
+      }
+      .cont-input{
+        padding: 15% 0 0 0;
+      }
+      .btn-send{
+        padding: 5px;
+        background-color: gray;
+        color: white;
+        width: 90px;
+        height: 25px;
+        margin-top: 15px;
+      }
+    </style>
+
+    <div id="">
+     <iron-form id="formCertifications">
+      <form id="container-formacion">
+        <div class="col">
+          <div class="cont-input">
+            <paper-input type="text" name="name" required label="Nombre de la Certificación" value=""></paper-input>
+          </div>
+
+          <div class="cont-input">
+            <paper-input type="text" name="emisor" required label="Entidad Emisora" value=""></paper-input>
+          </div>
+
+          <div class="cont-input">
+            <paper-input type="text" name="licency" required label="Nº de Licencia" value=""></paper-input>
+          </div>
+
+          <div class="cont-input">
+            <paper-input type="text" name="url" required label="URL" value=""></paper-input>
+          </div>
+        </div>
+        <div class="col">
+          <div class="cont-input">
+            <div class="datepicker-dialog">
+                <span>Fecha Inicio</span>
+                <paper-button disabled>[[initDate]]</paper-button>
+                <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
+                <app-datepicker-dialog id="dateInit"
+                  format="dd/mm/yyyy"
+                  date="{{initDate}}"
+                  locale="es-ES">
+                </app-datepicker-dialog>
+              </div>
+          </div>
+
+          <div class="cont-input">
+            <div class="datepicker-dialog">
+                <span>Fecha Fin</span>
+                <paper-button disabled>[[endDate]]</paper-button>
+                <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
+                <app-datepicker-dialog id="dateInit"
+                  format="dd/mm/yyyy"
+                  date="{{initDate}}"
+                  locale="es-ES">
+                </app-datepicker-dialog>
+              </div>
+          </div>
+
+          <div class="cont-input">
+            <paper-checkbox name="actual" on-click="_hideFinalDate">Certificación Permanente</paper-checkbox>
+          </div>
+
+          <div class="cont-input">
+            <paper-button raised on-click="_saveData">Guardar</paper-button>
+        </div>
+        </div>
+      </form>
+     </iron-form>
+    </div>
+
+      <br>
+
+  </template>
+
+  <script>
+    (function appShell(customElements){
+      'use strict';
+
+      class MyCertifications extends Polymer.Element {
+        static get is() { return 'my-certifications'; }
+        static get properties() {
+          return {
+            institucion: {
+              type : String,
+              value : ""
+            },
+            titulacion:{
+              type: String,
+              value: ""
+            },
+            disciplina:{
+              type: String,
+              value: ""
+            },
+            desde:{
+              type: String,
+              value: ""
+            },
+            hasta:{
+              type: String,
+              value: ""
+            }
+          }
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+        }
+
+        _openDialogInit(event) {
+            this.$.dateInit.open();
+        }
+
+        _openDialogFinal(event) {
+            this.$.dateFinal.open();
+        }
+
+        _resetData(event) {
+            this.$.finalDateContainer.style.display = 'block';
+            this.$.formCertifications.reset();
+        }
+
+      }
+      customElements.define(MyCertifications.is, MyCertifications);
+    })(window.customElements);
+  </script>
+</dom-module>
