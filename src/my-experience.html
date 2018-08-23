@@ -13,43 +13,100 @@
       :host {
         display: block;
       }
+
+      .hiddeClass {
+        display: none !important;
+      }
+
+      .showClass {
+        display: block;
+      }
     </style>
     <h1>Experiencia Profesional</h1>
     <iron-form id="formExperience">
-      <form>
+      <form action="/" method="get">
         <div>
-          <paper-input type="text" name="empresa" required label="Empresa" value=""></paper-input>
-          <paper-input type="text" name="cargo" required label="Cargo" value=""></paper-input>
-          <paper-input type="text" name="ubicacion" required label="Ubicación" value=""></paper-input>
-          <paper-input type="text" name="descripcion" required label="Descripción" value=""></paper-input>
+          <paper-input type="text" name="empresa" required label="Empresa"></paper-input>
+          <paper-input type="text" name="cargo" required label="Cargo"></paper-input>
+          <paper-input type="text" name="ubicacion" required label="Ubicación"></paper-input>
+          <paper-input type="text" name="descripcion" required label="Descripción"></paper-input>
         </div>
         <div>
           <div class="datepicker-dialog">
             <span>Fecha inicio</span>
-            <paper-button disabled>[[initDate]]</paper-button>
+            <paper-button disabled>[[fechaInicio]]</paper-button>
             <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
             <app-datepicker-dialog id="dateInit"
-              format="dd/mm/yyyy"
-              date="{{initDate}}"
+              date="{{fechaInicio}}"
               locale="es-ES">
             </app-datepicker-dialog>
           </div>
-          <div class="datepicker-dialog" id="finalDateContainer">
+          <div class="datepicker-dialog" id="finalDateContainer" class$="[[_displayClass(actual)]]">
             <span>Fecha final</span>
-            <paper-button disabled>[[finalDate]]</paper-button>
+            <paper-button disabled>[[fechaFinal]]</paper-button>
             <paper-icon-button icon="icons:today" on-tap="_openDialogFinal"></paper-icon-button>
             <app-datepicker-dialog id="dateFinal"
-              format="dd/mm/yyyy"
-              date="{{finalDate}}"
+              date="{{fechaFinal}}"
               locale="es-ES">
             </app-datepicker-dialog>
           </div>
-          <paper-checkbox name="actual" on-click="_hideFinalDate">Trabajo actual</paper-checkbox>
+          <paper-checkbox name="actual" checked="{{actual}}">Trabajo actual</paper-checkbox>
         </div>
-        <paper-button raised on-click="_saveData">Guardar</paper-button>
+        <paper-button raised on-click="_addData">Agregar</paper-button>
         <paper-button raised on-click="_resetData">Limpiar</paper-button>
+        <paper-button raised on-click="_saveData">Guardar</paper-button>
       </form>
     </iron-form>
+
+    <template is="dom-repeat" items="{{data}}">
+      {{item.edit}}
+      <!--template is="dom-if" if="{{!item.edit}}"-->
+        <div id="[[index]]" class="listExperience">
+          <div>Empresa: <span>{{item.empresa}}</span></div>
+          <div>Cargo: <span>{{item.cargo}}</span></div>
+          <div>Ubicación: <span>{{item.ubicacion}}</span></div>
+          <div>Descripción: <span>{{item.descripcion}}</span></div>
+          <div>Fecha inicio: <span>{{item.fechaInicio}}</span></div>
+          <div class$="[[_displayClass(item.actual)]]">Fecha final: <span>{{item.fechaFinal}}</span></div>
+          <div>Trabajo actual: <span>[[_isActual(item.actual)]]</span></div>
+          <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
+          <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
+        </div>
+      <!--/template-->
+      <!--template is="dom-if" if="{{item.edit}}">
+        <iron-form id="formExperience">
+          <form action="/" method="get">
+            <div>
+              <paper-input type="text" name="empresa" required label="Empresa" value="{{item.empresa}}"></paper-input>
+              <paper-input type="text" name="cargo" required label="Cargo" value="{{item.cargo}}"></paper-input>
+              <paper-input type="text" name="ubicacion" required label="Ubicación" value="{{item.ubicacion}}"></paper-input>
+              <paper-input type="text" name="descripcion" required label="Descripción" value="{{item.descripcion}}"></paper-input>
+            </div>
+            <div>
+              <div class="datepicker-dialog">
+                <span>Fecha inicio</span>
+                <paper-button disabled>[[data.fechaInicio]]</paper-button>
+                <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
+                <app-datepicker-dialog id="dateInit"
+                  date="{{data.fechaInicio}}"
+                  locale="es-ES">
+                </app-datepicker-dialog>
+              </div>
+              <div class="datepicker-dialog" id="finalDateContainer" class$="[[_displayClass(actual)]]">
+                <span>Fecha final</span>
+                <paper-button disabled>[[data.fechaFinal]]</paper-button>
+                <paper-icon-button icon="icons:today" on-tap="_openDialogFinal"></paper-icon-button>
+                <app-datepicker-dialog id="dateFinal"
+                  date="{{data.fechaFinal}}"
+                  locale="es-ES">
+                </app-datepicker-dialog>
+              </div>
+              <paper-checkbox name="actual" checked="{{data.actual}}">Trabajo actual</paper-checkbox>
+            </div>
+          </form>
+        </iron-form>
+      </template-->
+    </template>
   </template>
 
   <script>
@@ -66,16 +123,12 @@
       static get properties() {
         return {
           data: {
-            type: Object,
-            value: {
-              empresa: '',
-              cargo: '',
-              ubicacion: '',
-              descripcion: '',
-              actual: false,
-              fechaInicio: '',
-              fechaFinal: ''
-            }
+            type: Array,
+            value: []
+          },
+          actual: {
+            type: Boolean,
+            value: false
           }
         };
       }
@@ -92,28 +145,60 @@
         this.$.dateFinal.open();
       }
 
-      _hideFinalDate(event) {
-        const containerDateDisplay = this.$.finalDateContainer;
-        if (containerDateDisplay.style.display == 'none') {
-          containerDateDisplay.style.display = 'block';
-          this.data.actual = false;
-        } else {
-          containerDateDisplay.style.display = 'none';
-          this.data.actual = true;
+      _displayClass(actual) {
+        return actual ? 'hiddeClass' : 'showClass';
+      }
+
+      _isActual(actual) {
+        return actual ? 'Si' : 'No';
+      }
+
+      _editItem(event) {
+        this._removeItem(event);
+        /*const id = event.model.index;
+        let newObj = JSON.parse(JSON.stringify(this.data[id]));
+        newObj.edit = true;
+        this.set(`data.${id}`, newObj);*/
+      }
+
+      _formatDate() {
+        const date = new Date();
+        return date.toString();
+      }
+
+      _formatJson() {
+        const form = this.$.formExperience.serializeForm();
+        form.actual = this.actual;
+        form.fechaInicio = this.fechaInicio;
+        if (this.actual == false) {
+          form.fechaFinal = this.fechaFinal;
+        }
+        form.edit = false;
+        return form;
+      }
+
+      _addData(event) {
+        const validate = this.$.formExperience.validate();
+        if (validate) {
+          const form = this._formatJson();
+          this.push('data', form)
+          this._resetData();
         }
       }
 
-      _saveData(event) {
-        const form = this.$.formExperience.serializeForm();
-        form.actual = this.data.actual;
-        form.fechaInicio = this.initDate;
-        if (this.data.actual == false) {
-          form.fechaFinal = this.finalDate;
-        }
+      _saveData() {
+        console.log(this.data)
+        //localStorage.setItem('experience', JSON.stringify(this.data));
+      }
+
+      _removeItem(event) {
+        const index = event.model.index;
+        this.splice('data', index, 1);
       }
 
       _resetData(event) {
         this.$.finalDateContainer.style.display = 'block';
+        this.actual = false;
         this.$.formExperience.reset();
       }
     }
