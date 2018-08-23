@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/maps-icons.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
@@ -19,40 +20,34 @@
         </style>
         <h1>Idioma</h1>
         <iron-form id="languageExperience">
-            <template is="dom-repeat" items="{{languages}}" as="language">
-                <p>{{language.name}} {{language.level}}</p>
-            </template>
             <form>
-                <template is="dom-repeat" items="[[languages]]" as="language">
-                    <div class="language">
-                        <paper-input id="inputForValidation" type="text" name="idioma" label="Idioma" required error-message="Campo requerido" allowed-pattern="[a-zA-Z]"
-                            value="{{language.name}}"></paper-input>
-                        <paper-dropdown-menu-light label="Competencia">
-                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{language.level}} required>
-                                <template is="dom-repeat" items="[[levels]]" as="level">
-                                    <paper-item>{{level}}</paper-item>
-                                </template>
-                            </paper-listbox>
-                        </paper-dropdown-menu-light>
-                        <paper-button raised on-click="_removeLanguage" id$="{{index}}">Eliminar</paper-button>
-                    </div>
-                </template>
-
-
+                <paper-input id="language_name" type="text" name="idioma" label="Idioma" required error-message="Campo requerido" allowed-pattern="[a-zA-Z]"
+                    value="{{language.name}}"></paper-input>
+                <paper-dropdown-menu-light label="Competencia">
+                    <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{level}} attr-for-selected="myvalue" required>
+                        <template is="dom-repeat" items="[[levels]]" as="level">
+                            <paper-item myvalue="[[level]]">{{level}}</paper-item>
+                        </template>
+                    </paper-listbox>
+                </paper-dropdown-menu-light>
+                <input is="iron-input" name="title" type="hidden" value$="[[level]]">
                 <paper-button raised on-click="_addLanguage">Agregar</paper-button>
                 <paper-button raised on-click="_saveData">Guardar</paper-button>
             </form>
         </iron-form>
+        <template is="dom-repeat" items="[[languages]]" as="language">
+            <p>{{language.name}} {{language.level}}</p>
+            <iron-icon  data-id$="[[index]]" on-click="_removeLanguage" class="item__added" icon="icons:close"></iron-icon>
+            <iron-icon data-id$="[[index]]" class="item__added" on-click="_editLanguage" icon="icons:create"></iron-icon>
+        </template>
     </template>
 
     <script>
         /**
          * `my-language`
          *
-         *
          * @customElement
          * @polymer
-         * @demo demo/[[index]].html
          */
         class MyLanguage extends Polymer.Element {
             static get is() { return 'my-language'; }
@@ -65,6 +60,11 @@
                     languages: {
                         type: Array,
                         value: []
+                    },
+                    level: {
+                        type: Number,
+                        value: 0,
+                        notify: true
                     }
                 };
             }
@@ -83,21 +83,31 @@
 
             _addLanguage(event) {
                 if (this._validateForm()) {
-                    const newLanguage = { name: null, level: null };
+                    const newLanguage = { name: this.$.language_name.value, level: this.level };
+                    console.log(newLanguage);
                     this.push('languages', newLanguage);
+                    this.resetForm();
                 }
             }
 
+            resetForm() {
+                this.level = 'Principiante';
+                this.$.language_name.value = null;
+            }
+
             _validateForm() {
-                const length = this.languages.length;
-                if (length > 0) {
-                    return this.$.languageExperience.validate() && this.languages[length - 1].level;
-                }
                 return this.$.languageExperience.validate();
             }
 
             _removeLanguage(e) {
                 const id = e.target.getAttribute('id');
+                this.splice('languages', id, 1);
+            }
+
+            _editLanguage(e) {
+                const id = e.target.getAttribute('data-id');
+                this.level = this.languages[id].level;
+                this.$.language_name.value = this.languages[id].name;
                 this.splice('languages', id, 1);
             }
 
