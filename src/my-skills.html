@@ -13,44 +13,12 @@
       :host {
         display: block;
       }
-
-      .hiddeClass {
-        display: none !important;
-      }
-
-      .showClass {
-        display: block;
-      }
     </style>
-    <h1>Experiencia Profesional</h1>
-    <iron-form id="formExperience">
+    <h1>Aptitudes</h1>
+    <iron-form id="formSkills">
       <form action="/" method="get">
         <div>
           <paper-input type="text" name="company" required label="Empresa" value="{{currentItem.company}}"></paper-input>
-          <paper-input type="text" name="position" required label="Cargo" value="{{currentItem.position}}"></paper-input>
-          <paper-input type="text" name="location" required label="Ubicación" value="{{currentItem.location}}"></paper-input>
-          <paper-input type="text" name="description" required label="Descripción" value="{{currentItem.description}}"></paper-input>
-        </div>
-        <div>
-          <div class="datepicker-dialog">
-            <span>Fecha inicio</span>
-            <paper-button disabled>{{startDate}}</paper-button>
-            <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
-            <app-datepicker-dialog id="dateInit"
-              date="{{startDate}}"
-              locale="es-ES">
-            </app-datepicker-dialog>
-          </div>
-          <div class="datepicker-dialog" id="finalDateContainer" class$="[[_displayClass(actual)]]">
-            <span>Fecha final</span>
-            <paper-button disabled>{{finalDate}}</paper-button>
-            <paper-icon-button icon="icons:today" on-tap="_openDialogFinal"></paper-icon-button>
-            <app-datepicker-dialog id="dateFinal"
-              date="{{finalDate}}"
-              locale="es-ES">
-            </app-datepicker-dialog>
-          </div>
-          <paper-checkbox name="actual" checked="{{actual}}">Trabajo actual</paper-checkbox>
         </div>
         <paper-button raised on-click="_addData">Agregar</paper-button>
         <paper-button raised on-click="_resetData">Limpiar</paper-button>
@@ -59,14 +27,8 @@
     </iron-form>
 
     <template is="dom-repeat" items="{{data}}">
-      <div id="[[index]]" class="listExperience">
-        <div>Empresa: <span>{{item.company}}</span></div>
-        <div>Cargo: <span>{{item.position}}</span></div>
-        <div>Ubicación: <span>{{item.location}}</span></div>
-        <div>Descripción: <span>{{item.description}}</span></div>
-        <div>Fecha inicio: <span>{{item.startDate}}</span></div>
-        <div class$="[[_displayClass(item.actual)]]">Fecha final: <span>{{item.finalDate}}</span></div>
-        <div>Trabajo actual: <span>[[_isActual(item.actual)]]</span></div>
+      <div id="[[index]]" class="listSkills">
+        <div>Skill: <span>{{item}}</span></div>
         <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
         <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
       </div>
@@ -82,7 +44,7 @@
      * @polymer
      * @demo demo/index.html
      */
-    class MyExperience extends Polymer.Element {
+    class MySkills extends Polymer.Element {
       static get is() { return 'my-experience'; }
       static get properties() {
         return {
@@ -110,24 +72,8 @@
         super.connectedCallback();
       }
 
-      _openDialogInit(event) {
-        this.$.dateInit.open();
-      }
-
-      _openDialogFinal(event) {
-        this.$.dateFinal.open();
-      }
-
-      _displayClass(actual) {
-        return actual ? 'hiddeClass' : 'showClass';
-      }
-
-      _isActual(actual) {
-        return actual ? 'Si' : 'No';
-      }
-
       _formatJson() {
-        const form = this.$.formExperience.serializeForm();
+        const form = this.$.formSkills.serializeForm();
         form.actual = this.actual;
         form.startDate = this.startDate;
         if (this.actual == false) {
@@ -137,7 +83,7 @@
       }
 
       _addData(event) {
-        const validate = this.$.formExperience.validate();
+        const validate = this.$.formSkills.validate();
         if (validate) {
           const form = this._formatJson();
           this.push('data', form)
@@ -159,18 +105,13 @@
         this._removeItem(event);
         const item = event.model.item;
         this.set('currentItem', item);
-        this.set('finalDate', item.finalDate);
-        this.set('startDate', item.startDate);
-        this.set('actual', item.actual);
       }
 
       _resetData(event) {
-        this.$.finalDateContainer.style.display = 'block';
-        this.actual = false;
-        this.$.formExperience.reset();
+        this.$.formSkills.reset();
       }
     }
 
-    window.customElements.define(MyExperience.is, MyExperience);
+    window.customElements.define(MySkills.is, MySkills);
   </script>
 </dom-module>
