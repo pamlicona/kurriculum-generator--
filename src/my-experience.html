@@ -58,7 +58,7 @@
       </form>
     </iron-form>
 
-    <template is="dom-repeat" items="{{data}}">
+    <template is="dom-repeat" items="{{experience}}">
       <div id="[[index]]" class="listExperience">
         <div>Empresa: <span>{{item.company}}</span></div>
         <div>Cargo: <span>{{item.position}}</span></div>
@@ -86,7 +86,7 @@
       static get is() { return 'my-experience'; }
       static get properties() {
         return {
-          data: {
+          experience: {
             type: Array,
             value: []
           },
@@ -140,19 +140,19 @@
         const validate = this.$.formExperience.validate();
         if (validate) {
           const form = this._formatJson();
-          this.push('data', form)
+          this.push('experience', form)
           this._resetData();
         }
       }
 
       _saveData() {
-        console.log(this.data)
-        //localStorage.setItem('experience', JSON.stringify(this.data));
+        console.log(this.experience)
+        //localStorage.setItem('experience', JSON.stringify(this.experience));
       }
 
       _removeItem(event) {
         const index = event.model.index;
-        this.splice('data', index, 1);
+        this.splice('experience', index, 1);
       }
 
       _editItem(event) {

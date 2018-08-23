@@ -1,13 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
 
-<dom-module id="my-experience">
+<dom-module id="my-skills">
   <template>
     <style>
       :host {
@@ -18,7 +16,7 @@
     <iron-form id="formSkills">
       <form action="/" method="get">
         <div>
-          <paper-input type="text" name="company" required label="Empresa" value="{{currentItem.company}}"></paper-input>
+          <paper-input type="text" name="skill" required label="Aptitud" value="{{skill}}"></paper-input>
         </div>
         <paper-button raised on-click="_addData">Agregar</paper-button>
         <paper-button raised on-click="_resetData">Limpiar</paper-button>
@@ -26,7 +24,7 @@
       </form>
     </iron-form>
 
-    <template is="dom-repeat" items="{{data}}">
+    <template is="dom-repeat" items="{{skills}}">
       <div id="[[index]]" class="listSkills">
         <div>Skill: <span>{{item}}</span></div>
         <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
@@ -37,7 +35,7 @@
 
   <script>
     /**
-     * `my-experience`
+     * `my-skills`
      *
      *
      * @customElement
@@ -45,25 +43,12 @@
      * @demo demo/index.html
      */
     class MySkills extends Polymer.Element {
-      static get is() { return 'my-experience'; }
+      static get is() { return 'my-skills'; }
       static get properties() {
         return {
-          data: {
+          skills: {
             type: Array,
             value: []
-          },
-          actual: {
-            type: Boolean,
-            value: false
-          },
-          currentItem: {
-            type: Object,
-            value: {
-              company: '',
-              position: '',
-              location: '',
-              description: ''
-            }
           }
         };
       }
@@ -72,39 +57,28 @@
         super.connectedCallback();
       }
 
-      _formatJson() {
-        const form = this.$.formSkills.serializeForm();
-        form.actual = this.actual;
-        form.startDate = this.startDate;
-        if (this.actual == false) {
-          form.finalDate = this.finalDate;
-        }
-        return form;
-      }
-
       _addData(event) {
         const validate = this.$.formSkills.validate();
         if (validate) {
-          const form = this._formatJson();
-          this.push('data', form)
+          const form = this.$.formSkills.serializeForm();
+          this.push('skills', form.skill)
           this._resetData();
         }
       }
 
       _saveData() {
-        console.log(this.data)
-        //localStorage.setItem('experience', JSON.stringify(this.data));
+        console.log(this.skills)
+        //localStorage.setItem('skills', JSON.stringify(this.skills));
       }
 
       _removeItem(event) {
         const index = event.model.index;
-        this.splice('data', index, 1);
+        this.splice('skills', index, 1);
       }
 
       _editItem(event) {
         this._removeItem(event);
-        const item = event.model.item;
-        this.set('currentItem', item);
+        this.set('skill', event.model.item);
       }
 
       _resetData(event) {
