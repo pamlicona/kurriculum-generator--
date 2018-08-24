@@ -45,15 +45,17 @@
             <a name="language" href="[[rootPath]]#language">Idioma</a>
             <a name="formation" href="[[rootPath]]#formation">Formación</a>
             <a name="certifications" href="[[rootPath]]#certifications">Certificaciones</a>
+            <a name="summary" href="[[rootPath]]#summary">Resumen</a>
         </iron-selector>
 
         <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-            <my-personal-data name="personal-data"></my-personal-data>
-            <my-experience name="experience"></my-experience>
-            <my-knowledge name="knowledge"></my-knowledge>
-            <my-language name="language"></my-language>
-            <my-formation name="formation"></my-formation>
-            <my-certifications name="certifications"></my-certifications>
+            <my-personal-data on-save-info="_saveInfoEvent" name="personal-data"></my-personal-data>
+            <my-experience on-save-info="_saveInfoEvent" name="experience"></my-experience>
+            <my-knowledge on-save-info="_saveInfoEvent" name="knowledge"></my-knowledge>
+            <my-language on-save-info="_saveInfoEvent" name="language"></my-language>
+            <my-formation on-save-info="_saveInfoEvent" name="formation"></my-formation>
+            <my-certifications on-save-info="_saveInfoEvent" name="certifications"></my-certifications>
+            <my-summary user="[[user]]" name="summary"></my-summary>
             <my-view404 name="view404"></my-view404>
         </iron-pages>
     </template>
@@ -71,7 +73,8 @@
                     },
                     routeData: Object,
                     subroute: Object,
-                    rootPath: String
+                    rootPath: String,
+                    user: Object
                 };
             }
 
@@ -81,7 +84,15 @@
                 ];
             }
 
+            connectedCallback() {
+                super.connectedCallback();
+                this._saveInfo('user',{user:{}});
+            }
+
             _routePageChanged(page) {
+                if(page == 'summary'){
+                    this.user = this._getInfo();
+                }
                 // If not page was found go to 'personal-data' in that case.
                 this.page = page || 'personal-data';
             }
@@ -98,6 +109,17 @@
 
             _showPage404() {
                 this.page = 'view404';
+            }
+            _saveInfoEvent(event){
+                let user = this._getInfo();
+                user.user[event.detail.key] = event.detail.data;
+                this._saveInfo('user',user);
+            }
+            _saveInfo(key,data){
+                localStorage.setItem(key,JSON.stringify(data));
+            }
+            _getInfo(){
+                return JSON.parse(localStorage.getItem('user'));
             }
         }
 
