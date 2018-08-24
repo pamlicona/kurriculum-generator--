@@ -1,0 +1,91 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="my-skills">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h1>Aptitudes</h1>
+    <iron-form id="formSkills">
+      <form action="/" method="get">
+        <div>
+          <paper-input type="text" name="skill" required label="Aptitud" value="{{skill}}"></paper-input>
+        </div>
+        <paper-button raised on-click="_addData">Agregar</paper-button>
+        <paper-button raised on-click="_resetData">Limpiar</paper-button>
+        <paper-button raised on-click="_saveData">Guardar</paper-button>
+      </form>
+    </iron-form>
+
+    <template is="dom-repeat" items="{{skills}}">
+      <div id="[[index]]" class="listSkills">
+        <div>Skill: <span>{{item}}</span></div>
+        <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
+        <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
+      </div>
+    </template>
+  </template>
+
+  <script>
+    /**
+     * `my-skills`
+     *
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class MySkills extends Polymer.Element {
+      static get is() { return 'my-skills'; }
+      static get properties() {
+        return {
+          skills: {
+            type: Array,
+            value: []
+          }
+        };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+      }
+
+      _addData(event) {
+        const validate = this.$.formSkills.validate();
+        if (validate) {
+          const form = this.$.formSkills.serializeForm();
+          this.push('skills', form.skill)
+          this._resetData();
+        }
+      }
+
+      _saveData() {
+        console.log(this.skills)
+        //localStorage.setItem('skills', JSON.stringify(this.skills));
+      }
+
+      _removeItem(event) {
+        const index = event.model.index;
+        this.splice('skills', index, 1);
+      }
+
+      _editItem(event) {
+        this._removeItem(event);
+        this.set('skill', event.model.item);
+      }
+
+      _resetData(event) {
+        this.$.formSkills.reset();
+      }
+    }
+
+    window.customElements.define(MySkills.is, MySkills);
+  </script>
+</dom-module>
