@@ -110,7 +110,17 @@
         }
       }
 			_saveData(){
-				console.log(this.knowledges)
+        this.knowledges.forEach(element => {
+          delete element.edit;
+        });
+
+        this.dispatchEvent(new CustomEvent('save-info',{
+          bubbles: true,
+          detail:{
+            key: 'knowledges',
+            data: this.knowledges
+          }
+        }));
       }
       
       _deleteItem(event){
