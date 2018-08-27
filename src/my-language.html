@@ -77,7 +77,7 @@
                 if (this._validateForm()) {
                     localStorage.setItem('languages', JSON.stringify(this.languages));
                     this._dispatchEvent('languages-saved', this.languages);
-                    alert('Data saved!');
+                    console.info('Data saved!');
                 }
             }
 
@@ -113,9 +113,12 @@
 
             _dispatchEvent(event, detail, bubbles = true) {
                 this.dispatchEvent(new CustomEvent(event, {
-                    bubbles: bubbles,
-                    composed: true,
-                    detail: detail
+                bubbles: bubbles,
+                composed: true,
+                detail: {
+                    key: 'languages',
+                    data: detail
+                }
                 }));
             }
         }
