@@ -30,7 +30,7 @@
         width: 99%;
         height: 100%;
         border-radius: 50px;
-        border: 10px solid lightgray;
+        border: 0px solid lightgray;
         display: flex;
         justify-content: space-between;
       }
@@ -171,9 +171,18 @@
           return form;
         }
       
-        _saveData() {
-          console.log(this.experience)
-          //localStorage.setItem('experience', JSON.stringify(this.experience));
+        _saveData(){
+          this.formation.forEach(element => {
+            delete element.edit;
+          });
+
+          this.dispatchEvent(new CustomEvent('save-info',{
+            bubbles: true,
+            detail:{
+              key: 'formation',
+              data: this.formation
+            }
+          }));
         }
 
         _removeItem(event) {
