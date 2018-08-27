@@ -53,49 +53,64 @@
     </style>
 
     <div id="">
+    <h1>Formación</h1>
      <iron-form id="formFormation">
       <form id="container-formacion">
         <div class="col">
           <div class="cont-input">
-            <paper-input type="text" name="institucion" required label="Institución" value=""></paper-input>
+            <paper-input type="text" name="institucion" required label="Institución" value="{{currentItem.institucion}}"></paper-input>
           </div>
 
           <div class="cont-input">
-            <paper-input type="text" name="titulacion" required label="Titulación" value=""></paper-input>
+            <paper-input type="text" name="titulacion" required label="Titulación" value="{{currentItem.titulacion}}"></paper-input>
           </div>
 
           <div class="cont-input">
-            <paper-input type="text" name="disciplina" required label="Disciplina" value=""></paper-input>
+            <paper-input type="text" name="disciplina" required label="Disciplina" value="{{currentItem.disciplina}}"></paper-input>
           </div>
         </div>
         <div class="col">
-          <div class="cont-input">
-            <div class="datepicker-dialog">
-                <span>Desde</span>
-                <paper-button disabled>[[desde]]</paper-button>
-                <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
-                <app-datepicker-dialog id="dateInit"
-                  format="dd/mm/yyyy"
-                  date="{{desde}}"
-                  locale="es-ES">
-                </app-datepicker-dialog>
-              </div>
-          </div>
+
+            <div class="cont-input">
+                <div class="datepicker-dialog" id="desdeDate">
+                    <span>Fecha Inicio</span>
+                    <paper-button disabled>[[desde]]</paper-button>
+                    <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
+                    <app-datepicker-dialog id="desde"
+                      format="dd/mm/yyyy"
+                      date="{{desde}}"
+                      locale="es-ES">
+                    </app-datepicker-dialog>
+                  </div>
+            </div>
+    
+            <div class="cont-input">
+              <div class="datepicker-dialog" id="hastaDate">
+                  <span>Fecha Fin</span>
+                  <paper-button disabled>[[hasta]]</paper-button>
+                  <paper-icon-button icon="icons:today" on-tap="_openDialogFinal"></paper-icon-button>
+                  <app-datepicker-dialog id="hasta"
+                    format="dd/mm/yyyy"
+                    date="{{hasta}}"
+                    locale="es-ES">
+                  </app-datepicker-dialog>
+                </div>
+            </div>
+          
+            <template is="dom-repeat" items="{{formation}}">
+                <div id="[[index]]" class="listData">
+                  <div>Institución: <span>{{item.institucion}}</span></div>
+                  <div>Titulo: <span>{{item.titulacion}}</span></div>
+                  <div>Disciplina: <span>{{item.disciplina}}</span></div>
+                  <div>Desde: <span>{{item.desde}}</span></div>
+                  <div>Hasta: <span>{{item.hasta}}</span></div>
+                  <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
+                  <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
+                </div>
+            </template>
 
           <div class="cont-input">
-            <div class="datepicker-dialog">
-                <span>Hasta</span>
-                <paper-button disabled>[[hasta]]</paper-button>
-                <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
-                <app-datepicker-dialog id="dateEnd"
-                  format="dd/mm/yyyy"
-                  date="{{hasta}}"
-                  locale="es-ES">
-                </app-datepicker-dialog>
-              </div>
-          </div>
-
-          <div class="cont-input">
+            <paper-button raised on-click="_addData">Añadir</paper-button>
             <paper-button raised on-click="_saveData">Guardar</paper-button>
         </div>
         </div>
@@ -115,25 +130,19 @@
         static get is() { return 'my-formation'; }
         static get properties() {
           return {
-            institucion: {
-              type : String,
-              value : ""
+            formation: {
+              type: Array,
+              value: []
             },
-            titulacion:{
-              type: String,
-              value: ""
-            },
-            disciplina:{
-              type: String,
-              value: ""
-            },
-            desde:{
-              type: String,
-              value: ""
-            },
-            hasta:{
-              type: String,
-              value: ""
+            currentItem: {
+              type: Object,
+              value: {
+                institucion: '',
+                titulacion: '',
+                disciplina: '',
+                desde: '',
+                hasta: ''
+              }
             }
           }
         }
@@ -143,16 +152,50 @@
         }
 
         _openDialogInit(event) {
-            this.$.dateInit.open();
+            this.$.desde.open();
         }
 
         _openDialogFinal(event) {
-            this.$.dateEnd.open();
+            this.$.hasta.open();
         }
 
         _resetData(event) {
-            this.$.finalDateContainer.style.display = 'block';
+            this.$.hastaDate.style.display = 'block';
             this.$.formFormation.reset();
+        }
+        
+        _formatJson() {
+          const form = this.$.formFormation.serializeForm();
+          form.desde = this.desde;
+          form.hasta = this.hasta;
+          return form;
+        }
+      
+        _saveData() {
+          console.log(this.experience)
+          //localStorage.setItem('experience', JSON.stringify(this.experience));
+        }
+
+        _removeItem(event) {
+          const index = event.model.index;
+          this.splice('formation', index, 1);
+        }
+
+        _editItem(event) {
+          this._removeItem(event);
+          const item = event.model.item;
+          console.log(item);
+          this.set('currentItem', item);
+
+        }
+
+        _addData(event) {
+          const validate = this.$.formFormation.validate();
+          if (validate) {
+            const form = this._formatJson();
+            this.push('formation', form)
+            this._resetData();
+          }
         }
 
       }
