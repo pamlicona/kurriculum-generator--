@@ -68,6 +68,13 @@
 
       _saveData() {
         console.log(this.skills)
+        this.dispatchEvent(new CustomEvent('save-info',{
+          bubbles: true,
+          detail:{
+            key: 'skills',
+            data: this.skills
+          }
+        }));
         //localStorage.setItem('skills', JSON.stringify(this.skills));
       }
 
