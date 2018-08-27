@@ -147,6 +147,13 @@
 
       _saveData() {
         console.log(this.experience)
+        this.dispatchEvent(new CustomEvent('save-info',{
+          bubbles: true,
+          detail:{
+            key: 'experience',
+            data: this.experience
+          }
+        }));
         //localStorage.setItem('experience', JSON.stringify(this.experience));
       }
 
