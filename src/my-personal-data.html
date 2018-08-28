@@ -1,23 +1,360 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="list-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 
 <dom-module id="my-personal-data">
-  <template>
-    <style>
-      :host {
-        display: block;
-        padding: 10px;
-        height: 100%;
-      }
-    </style>
+    <template>
+        <style>
+            .button {
+                background-color: black;
+                width: 30%;
+                padding: 9px;
+                border-radius: 6px;
+                cursor: pointer;
+                color: white;
+                text-align: center;
+            }
+            
+            .form-input {
+                font-size: 18px;
+                width: 96%;
+                margin: 0 auto;
+                border-radius: 3px;
+                text-align: center;
+            }
+            
+            .form-textarea {
+                font-size: 18px;
+                width: 99%;
+                margin: 0 auto;
+                border-radius: 3px;
+                text-align: center;
+            }
+            
+            .hidden {
+                display : none;
+            }
+            
+            .showing {
+                display : block;
+            }
+            
+            .flex-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+            }
+            
+            .row {
+                display:flex;
+                margin-bottom:12px;
+            }
+            
+            .l1 {
+                width: 33%;
+                padding-right:3px;
+                padding-left:3px;
+            }
+            
+            .l2 {
+                width: 66%;
+                padding-right:3px;
+                padding-left:3px;
+            }
+            
+            .l3 {
+                width: 99%;
+                padding-right:3px;
+                padding-left:3px;
+            }
+            
+            .l15 {
+                width: 45%;
+                padding-right:3px;
+                padding-left:3px;
+            }
+        </style>
+        <section class="container">
+            <h1>Datos Personales</h1>
+            <div class="image-container">
+                <img src="[[userImage]]" class="user-image"/>
+            </div>
+            <div class="row">
+                <div class="l2">
+                    <div class="form-label">LinkedIn</div>
+                    <input type="text" class="form-input" placeholder="URL de LinkedIn" value="{{userLinkedIn::change}}"/>
+                </div>
+                <div class="l1">
+                    <div class="form-label">Sexo</div>
+                    <div class="row">
+                        <div class="l15"><input type="radio" name="sexo" checked="{{userSexWoman::change}}"/> Mujer</div>
+                        <div class="l15"><input type="radio" name="sexo" checked="{{userSexMan::change}}"/> Hombre</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="l1">
+                    <div class="form-label">Nombre(s)</div>
+                    <input type="text" class="form-input" placeholder="Tu nombre" value="{{userName::change}}"/>
+                </div>
+                <div class="l1">
+                    <div class="form-label">Apellido Paterno</div>
+                    <input type="text" class="form-input" placeholder="Tu apellido paterno" value="{{userSurname::change}}"/>
+                </div>
+                <div class="l1">
+                    <div class="form-label">Apellido Materno</div>
+                    <input type="text" class="form-input" placeholder="Tu apellido paterno" value="{{userLastname::change}}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="l1">
+                    <div class="form-label">CURP</div>
+                    <input type="text" class="form-input" placeholder="CURP" value="{{userCurp::change}}"/>
+                </div>
+                <div class="l1">
+                    <div class="form-label">R.F.C.</div>
+                    <input type="text" class="form-input" placeholder="R.F.C." value="{{userRFC::change}}"/>
+                </div>
+                <div class="l1">
+                    <div class="form-label">No. Seguro Social</div>
+                    <input type="text" class="form-input" placeholder="Número IMSS" value="{{userEnsurance::change}}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="l1">
+                    <div class="form-label">Estado Civil</div>
+                    <select>
+                        <option value="0">Selecciona estado civil</option>
+                        <option value="1">Soltero</option>
+                        <option value="2">Casado</option>
+                        <option value="3">Divorciado</option>
+                    </select>
+                </div>
+                <div class="l1">
+                    <div class="form-label">Fecha de Nacimiento</div>
+                    <input type="date" class="form-input" placeholder="Tu cumpleaños" value="{{userBirthday::change}}"/>
+                </div>
+                <div class="l1">
+                    <div class="flex-container">
+                        <div class="form-label"><b>[[userAge]]</b></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="l3">
+                    <div class="form-label">Objetivo Profesional</div>
+                    <textarea class="form-textarea" rows="5" value="{{professionalGoal::change}}"></textarea>
+                </div>
+            </div>
+            <h1>Dirección Actual</h1>
+            <div class="row">
+                <div class="l1">
+                    <div class="form-label">Calle</div>
+                    <input type="text" class="form-input" placeholder="Calle" value="{{userAddressStreet::change}}"/>
+                </div>
+                <div class="l1">
+                    <div class="row">
+                        <div class="l15">
+                            <div class="form-label">No. Ext.</div>
+                            <input type="text" class="form-input" placeholder="Exterior" value="{{userAddressOutsideNumber::change}}"/>
+                        </div>
+                        <div class="l15">
+                            <div class="form-label">No. Int.</div>
+                            <input type="text" class="form-input" placeholder="Interior" value="{{userAddressInsideNumber::change}}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="l1">
+                   <div class="form-label">Colonia</div>
+                   <input type="text" class="form-input" placeholder="Colonia" value="{{userAddressNeighborhood::change}}"/>
+                </div>
+            </div>
+            <div class="row">
+               <div class="l1">
+                   <div class="form-label">C.P.</div>
+                   <input type="text" class="form-input" placeholder="Código Postal" value="{{userAddressCP::change}}"/>
+               </div>
+               <div class="l1">
+                   <div class="form-label">Estado / Provincia</div>
+                   <input type="text" class="form-input" placeholder="Estado ó Provincia" value="{{userAddressState::change}}"/>
+               </div>
+               <div class="l1">
+                   <div class="form-label">Ciudad</div>
+                   <input type="text" class="form-input" placeholder="Ciudad" value="{{userAddressCity::change}}"/>
+               </div>
+            </div>
+            <div class="row">
+               <div class="l15">
+                   <list-element title="Teléfonos" items="{{phones}}" placeholder="10 dígitos"></list-element>
+               </div>
+               <div class="l15">
+                   <list-element title="Correos" items="{{emails}}" placeholder="ejemplo@company.com"></list-element>
+               </div>
+            </div>
+        </section>
+        <paper-button raised on-click="_saveData">Guardar</paper-button>
+    </template>
+    <script>
+        (function myPersonalData(customElements){
+            'use strict';
 
-    <h1>Datos personales</h1>
-  </template>
-
-  <script>
-    class MyPersonalData extends Polymer.Element {
-      static get is() { return 'my-personal-data'; }
-    }
-
-    window.customElements.define(MyPersonalData.is, MyPersonalData);
+            class MyPersonalData extends Polymer.Element {
+                static get is() { return 'my-personal-data'; }
+                
+                static get properties() {
+                    return {
+                        userImage : {
+                            type : String,
+                            value : ""
+                        },
+                        userLinkedIn : {
+                            type : String,
+                            value : ""
+                        },
+                        userSexWoman : {
+                            type : Boolean,
+                            value : false
+                        },
+                        userSexMan : {
+                            type : Boolean,
+                            value : false
+                        },
+                        userSex : {
+                            type : String,
+                            computed : "_sexChanged(userSexWoman, userSexMan)"
+                        },
+                        userName : {
+                            type : String,
+                            value : ""
+                        },
+                        userSurname : {
+                            type : String,
+                            value : ""
+                        },
+                        userLastname : {
+                            type : String,
+                            value : ""
+                        },
+                        userCurp : {
+                            type : String,
+                            value : ""
+                        },
+                        userRFC : {
+                            type : String,
+                            value : ""
+                        },
+                        userEnsurance : {
+                            type : String,
+                            value : ""
+                        },
+                        userBirthday : {
+                            type : String,
+                            value : ""
+                        },
+                        userAge : {
+                            type : String,
+                            computed : "_timeAgo(userBirthday)"
+                        },
+                        professionalGoal  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressStreet  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressOutsideNumber  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressInsideNumber  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressNeighborhood  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressCP  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressCity  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressState  : {
+                            type : String,
+                            value : ""
+                        },
+                        phones : {
+                            type : Array,
+                            value : []
+                        },
+                        emails : {
+                            type : Array,
+                            value : []
+                        }
+                    }
+                }
+                
+                connectedCallback() {
+                    super.connectedCallback();  
+                }
+            
+                _timeAgo() {
+                    if(!this.userBirthday || this.userBirthday == "" || this.userBirthday == " ") return "";
+                    
+                    const birthday = new Date(this.userBirthday); 
+                    const ageDifMs = Date.now() - birthday.getTime();
+                    const ageDate = new Date(ageDifMs);
+                    return "Edad: " + Math.abs(ageDate.getUTCFullYear() - 1970) + " años cumplidos";
+                }
+                
+                _sexChanged() {
+                    if(this.userSexWoman) return "W";
+                    return "M";
+                }
+                
+                _saveData() {
+                    const data = {
+                        userImage : this.userImage,
+                        userLinkedIn : this.userLinkedIn,
+                        userSex : this.userSex,                        
+                        userName : this.userName,
+                        userSurname : this.userSurname,
+                        userLastname : this.userLastname,
+                        userCurp : this.userCurp,
+                        userRFC : this.userRFC,
+                        userEnsurance : this.userEnsurance,
+                        userBirthday : this.userBirthday,
+                        userAge : this.userAge,
+                        professionalGoal : this.professionalGoal,
+                        userAddressStreet : this.userAddressStreet,
+                        userAddressOutsideNumber : this.userAddressOutsideNumber,
+                        userAddressInsideNumber : this.userAddressInsideNumber,
+                        userAddressNeighborhood : this.userAddressNeighborhood,
+                        userAddressCP : this.userAddressCP,
+                        userAddressCity : this.userAddressCity,
+                        userAddressState : this.userAddressState,
+                        phones : this.phones,
+                        emails : this.emails
+                    }
+                    
+                    console.log("Datos");
+                    console.log(data);
+                    
+                    this.dispatchEvent(new CustomEvent('save-info',{
+                        bubbles: true,
+                        detail:{
+                            key: 'personalInfo',
+                            data: data
+                        }
+                    }));
+                }
+            }
+        customElements.define(MyPersonalData.is, MyPersonalData);
+        })(window.customElements);
   </script>
 </dom-module>
