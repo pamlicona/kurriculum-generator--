@@ -1,0 +1,128 @@
+<!--por defecto-->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
+
+<dom-module id="list-element">
+    <template>
+        <style>
+            .list-head-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: row;
+            }
+            
+            .form-input {
+                font-size: 18px;
+                width: 81%;
+                margin: 0 auto;
+                border-radius: 3px;
+                text-align: center;
+            }
+            
+            .item-action {
+                background-color: dimgrey;
+                color: white;
+                width: 25px;
+                height: 25px;
+                border-radius: 12px;
+                text-align: center;
+                margin: 12px;
+                display: flex;
+                justify-items: center;
+                align-items: center;
+                flex-direction: row;
+            }
+            
+            .action-label {
+                text-align: center;
+                margin: 0 auto;
+                cursor: pointer;
+            }
+            
+            .item-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: row;
+            }
+        </style>
+        <section class="container">
+            <div class="list-head-container">
+                <h1>[[title]]</h1>
+                <div class="item-action" on-click="addNewItem"><label class="action-label">+</label></div>
+            </div>
+            <div class="list-body-container" id="listBodyContainer">
+                <template is="dom-if" if="[[hasItems]]">
+                    <template is="dom-repeat" items="[[items]]" as="item">
+                        <div class="item-container" id$="item_container_[[index]]">
+                            <input type="text" value="{{item::change}}" id$="item_field_[[index]]" class="form-input" placeholder="[[placeholder]]"/>
+                            <div class="item-action" index="[[index]]" on-click="deleteItem"><label class="action-label">-</label></div>
+                        </div>
+                    </template>
+                </template>
+                <!--<template is="dom-if" if="[[!hasItems]]">
+                    <div class="item-container" id="item_container_0">
+                        <input type="text" value="" id$="item_field_0" class="form-input" placeholder="[[placeholder]]"/>
+                        <div class="item-action" index="0"  on-click="deleteItem"><label class="action-label">-</label></div>
+                    </div>
+                </template>-->
+            </div>
+        </section>
+    </template>
+    <script>
+        (function listElement(customElements){
+            'use strict';
+
+            class ListElement extends Polymer.Element {
+                static get is() { return 'list-element'; }
+                
+                static get properties() {
+                    return {
+                        title : {
+                            type : String,
+                            value : "Lista Genérica"
+                        },
+                        items : {
+                            type : Array,
+                            value : []
+                        },
+                        hasItems: {
+                            type: Boolean,
+                            computed: 'numberOfItems(items.length)'
+                        },
+                        placeholder : {
+                            type : String,
+                            value : "Escribe un valor"
+                        }
+                    }
+                }
+                
+                connectedCallback() {
+                    super.connectedCallback();  
+                }
+                
+                addNewItem() {
+                    console.log("agregando nuevo item");
+                    this.push('items', '');
+                }
+                
+                numberOfItems() {
+                    if(this.items.length > 0) return true;
+                    return false;
+                }
+                
+                deleteItem(event) {
+                    if(this.items.length == 1) {
+                        alert("No se puede eliminar el único elemento");
+                        return;
+                    }
+                    
+                    this.splice("items", event.path[1].index, 1);
+                }
+            }
+        customElements.define(ListElement.is, ListElement);
+        })(window.customElements);
+  </script>
+</dom-module>
