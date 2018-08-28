@@ -1,6 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="list-element.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
 
 <dom-module id="my-personal-data">
     <template>
@@ -74,6 +76,12 @@
                 padding-right:3px;
                 padding-left:3px;
             }
+            
+            .l50 {
+                width: 50%;
+                padding-right:3px;
+                padding-left:3px;
+            }
         </style>
         <section class="container">
             <h1>Datos Personales</h1>
@@ -82,8 +90,7 @@
             </div>
             <div class="row">
                 <div class="l2">
-                    <div class="form-label">LinkedIn</div>
-                    <input type="text" class="form-input" placeholder="URL de LinkedIn" value="{{userLinkedIn::change}}"/>
+                    <paper-input type="text" name="linkedin" required label="URL de LinkedIn" value="{{userLinkedIn}}"></paper-input>
                 </div>
                 <div class="l1">
                     <div class="form-label">Sexo</div>
@@ -95,30 +102,24 @@
             </div>
             <div class="row">
                 <div class="l1">
-                    <div class="form-label">Nombre(s)</div>
-                    <input type="text" class="form-input" placeholder="Tu nombre" value="{{userName::change}}"/>
+                    <paper-input type="text" name="username" required label="Nombre(s)" value="{{userName}}"></paper-input>
                 </div>
                 <div class="l1">
-                    <div class="form-label">Apellido Paterno</div>
-                    <input type="text" class="form-input" placeholder="Tu apellido paterno" value="{{userSurname::change}}"/>
+                    <paper-input type="text" name="surname" required label="Apellido Paterno" value="{{userSurname}}"></paper-input>
                 </div>
                 <div class="l1">
-                    <div class="form-label">Apellido Materno</div>
-                    <input type="text" class="form-input" placeholder="Tu apellido paterno" value="{{userLastname::change}}"/>
+                    <paper-input type="text" name="lastname" required label="Apellido Materno" value="{{userLastname}}"></paper-input>
                 </div>
             </div>
             <div class="row">
                 <div class="l1">
-                    <div class="form-label">CURP</div>
-                    <input type="text" class="form-input" placeholder="CURP" value="{{userCurp::change}}"/>
+                    <paper-input type="text" name="curp" required label="CURP" value="{{userCurp}}"></paper-input>
                 </div>
                 <div class="l1">
-                    <div class="form-label">R.F.C.</div>
-                    <input type="text" class="form-input" placeholder="R.F.C." value="{{userRFC::change}}"/>
+                    <paper-input type="text" name="rfc" required label="R.F.C." value="{{userRFC}}"></paper-input>
                 </div>
                 <div class="l1">
-                    <div class="form-label">No. Seguro Social</div>
-                    <input type="text" class="form-input" placeholder="Número IMSS" value="{{userEnsurance::change}}"/>
+                    <paper-input type="text" name="ensurance" required label="No. Seguro Social" value="{{userEnsurance}}"></paper-input>
                 </div>
             </div>
             <div class="row">
@@ -132,8 +133,18 @@
                     </select>
                 </div>
                 <div class="l1">
+                    <!--
                     <div class="form-label">Fecha de Nacimiento</div>
-                    <input type="date" class="form-input" placeholder="Tu cumpleaños" value="{{userBirthday::change}}"/>
+                    <input type="date" class="form-input" placeholder="Tu cumpleaños" value="{{userBirthday::change}}"/>-->
+                    <div class="datepicker-dialog">
+                        <span>Fecha de Nacimiento</span>
+                        <paper-button disabled>{{userBirthday}}</paper-button>
+                        <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
+                        <app-datepicker-dialog id="birthDay"
+                            date="{{userBirthday}}"
+                            locale="es-ES">
+                        </app-datepicker-dialog>
+                    </div>
                 </div>
                 <div class="l1">
                     <div class="flex-container">
@@ -143,52 +154,44 @@
             </div>
             <div class="row">
                 <div class="l3">
-                    <div class="form-label">Objetivo Profesional</div>
-                    <textarea class="form-textarea" rows="5" value="{{professionalGoal::change}}"></textarea>
+                    <paper-input type="text" name="goal" required label="Objetivo Profesional" value="{{professionalGoal}}"></paper-input>
                 </div>
             </div>
             <h1>Dirección Actual</h1>
             <div class="row">
                 <div class="l1">
-                    <div class="form-label">Calle</div>
-                    <input type="text" class="form-input" placeholder="Calle" value="{{userAddressStreet::change}}"/>
+                    <paper-input type="text" name="street" required label="Calle" value="{{userAddressStreet}}"></paper-input>
                 </div>
                 <div class="l1">
                     <div class="row">
                         <div class="l15">
-                            <div class="form-label">No. Ext.</div>
-                            <input type="text" class="form-input" placeholder="Exterior" value="{{userAddressOutsideNumber::change}}"/>
+                            <paper-input type="text" name="outside" required label="No. Ext." value="{{userAddressOutsideNumber}}"></paper-input>
                         </div>
                         <div class="l15">
-                            <div class="form-label">No. Int.</div>
-                            <input type="text" class="form-input" placeholder="Interior" value="{{userAddressInsideNumber::change}}"/>
+                            <paper-input type="text" name="inside" required label="No. Int." value="{{userAddressInsideNumber}}"></paper-input>
                         </div>
                     </div>
                 </div>
                 <div class="l1">
-                   <div class="form-label">Colonia</div>
-                   <input type="text" class="form-input" placeholder="Colonia" value="{{userAddressNeighborhood::change}}"/>
+                    <paper-input type="text" name="neighborhood" required label="Colonia" value="{{userAddressNeighborhood}}"></paper-input>
                 </div>
             </div>
             <div class="row">
                <div class="l1">
-                   <div class="form-label">C.P.</div>
-                   <input type="text" class="form-input" placeholder="Código Postal" value="{{userAddressCP::change}}"/>
+                   <paper-input type="text" name="zipcode" required label="C.P." value="{{userAddressCP}}"></paper-input>
                </div>
                <div class="l1">
-                   <div class="form-label">Estado / Provincia</div>
-                   <input type="text" class="form-input" placeholder="Estado ó Provincia" value="{{userAddressState::change}}"/>
+                   <paper-input type="text" name="state" required label="Estado / Provincia" value="{{userAddressState}}"></paper-input>
                </div>
                <div class="l1">
-                   <div class="form-label">Ciudad</div>
-                   <input type="text" class="form-input" placeholder="Ciudad" value="{{userAddressCity::change}}"/>
+                   <paper-input type="text" name="city" required label="Ciudad" value="{{userAddressCity}}"></paper-input>
                </div>
             </div>
             <div class="row">
-               <div class="l15">
+               <div class="l50">
                    <list-element title="Teléfonos" items="{{phones}}" placeholder="10 dígitos"></list-element>
                </div>
-               <div class="l15">
+               <div class="l50">
                    <list-element title="Correos" items="{{emails}}" placeholder="ejemplo@company.com"></list-element>
                </div>
             </div>
@@ -352,6 +355,10 @@
                             data: data
                         }
                     }));
+                }
+                
+                _openDialogInit(event) {
+                    this.$.birthDay.open();
                 }
             }
         customElements.define(MyPersonalData.is, MyPersonalData);

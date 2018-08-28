@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
 
 <dom-module id="list-element">
     <template>
@@ -46,6 +47,7 @@
                 align-items: center;
                 justify-content: center;
                 flex-direction: row;
+                width: 100%;
             }
         </style>
         <section class="container">
@@ -57,7 +59,7 @@
                 <template is="dom-if" if="[[hasItems]]">
                     <template is="dom-repeat" items="[[items]]" as="item">
                         <div class="item-container" id$="item_container_[[index]]">
-                            <input type="text" value="{{item::change}}" id$="item_field_[[index]]" class="form-input" placeholder="[[placeholder]]"/>
+                            <paper-input type="text" name="item" required label="[[placeholder]]" value="{{item}}"></paper-input>
                             <div class="item-action" index="[[index]]" on-click="deleteItem"><label class="action-label">-</label></div>
                         </div>
                     </template>
