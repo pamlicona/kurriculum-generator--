@@ -64,12 +64,6 @@
                         </div>
                     </template>
                 </template>
-                <!--<template is="dom-if" if="[[!hasItems]]">
-                    <div class="item-container" id="item_container_0">
-                        <input type="text" value="" id$="item_field_0" class="form-input" placeholder="[[placeholder]]"/>
-                        <div class="item-action" index="0"  on-click="deleteItem"><label class="action-label">-</label></div>
-                    </div>
-                </template>-->
             </div>
         </section>
     </template>
@@ -106,7 +100,6 @@
                 }
                 
                 addNewItem() {
-                    console.log("agregando nuevo item");
                     this.push('items', '');
                 }
                 
@@ -116,12 +109,9 @@
                 }
                 
                 deleteItem(event) {
-                    if(this.items.length == 1) {
-                        alert("No se puede eliminar el único elemento");
-                        return;
-                    }
+                    if(!confirm("¿Deseas eliminar este elemento?")) return;
                     
-                    this.splice("items", event.path[1].index, 1);
+                    this.splice("items", event.composedPath()[0].index, 1);
                 }
             }
         customElements.define(ListElement.is, ListElement);
