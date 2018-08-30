@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 
 <dom-module id="my-experience">
   <template>
@@ -36,7 +37,7 @@
             <span>Fecha inicio</span>
             <paper-button disabled>{{startDate}}</paper-button>
             <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
-            <app-datepicker-dialog id="dateInit"
+            <app-datepicker-dialog modal id="dateInit"
               date="{{startDate}}"
               locale="es-ES">
             </app-datepicker-dialog>
@@ -45,18 +46,26 @@
             <span>Fecha final</span>
             <paper-button disabled>{{finalDate}}</paper-button>
             <paper-icon-button icon="icons:today" on-tap="_openDialogFinal"></paper-icon-button>
-            <app-datepicker-dialog id="dateFinal"
+            <app-datepicker-dialog modal id="dateFinal"
               date="{{finalDate}}"
               locale="es-ES">
             </app-datepicker-dialog>
           </div>
           <paper-checkbox name="actual" checked="{{actual}}">Trabajo actual</paper-checkbox>
         </div>
-        <paper-button raised on-click="_addData">Agregar</paper-button>
+        <paper-button raised on-click="_validCurrentJob">Agregar</paper-button>
         <paper-button raised on-click="_resetData">Limpiar</paper-button>
         <paper-button raised on-click="_saveData">Guardar</paper-button>
       </form>
     </iron-form>
+
+    <paper-dialog id="modal" modal>
+      <p>Se agregará un trabajo actual más ya que agregaste uno anteriormente.</p>
+      <div>
+        <paper-button raised dialog-confirm>Revisar</paper-button>
+        <paper-button raised on-tap="_moreCurrentJob">Aceptar</paper-button>
+      </div>
+    </paper-dialog>
 
     <template is="dom-repeat" items="{{experience}}">
       <div id="[[index]]" class="listExperience">
@@ -136,7 +145,22 @@
         return form;
       }
 
-      _addData(event) {
+      _validCurrentJob() {
+        if (this.actual) {
+          const existCurrent = this.experience.find(item => item.actual);
+          if (existCurrent !== undefined) {
+            this.$.modal.open();
+          } else this._addData();
+        } else this._addData();
+      }
+
+      _moreCurrentJob() {
+        this.set('moreCurrentJob', false);
+        this.$.modal.close();
+        this._addData();
+      }
+
+      _addData() {
         const validate = this.$.formExperience.validate();
         if (validate) {
           const form = this._formatJson();
@@ -146,7 +170,6 @@
       }
 
       _saveData() {
-        console.log(this.experience)
         this.dispatchEvent(new CustomEvent('save-info',{
           bubbles: true,
           detail:{
@@ -154,7 +177,6 @@
             data: this.experience
           }
         }));
-        //localStorage.setItem('experience', JSON.stringify(this.experience));
       }
 
       _removeItem(event) {
