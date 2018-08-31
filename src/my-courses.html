@@ -4,12 +4,8 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/iron-icons/maps-icons.html">
-<link rel="import" href="../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
 
 <dom-module id="my-courses">
     <template>
@@ -21,24 +17,25 @@
         <h1>Cursos y diplomados</h1>
         <iron-form id="coursesForm">
             <form>
-                <paper-input id="language_name" type="text" name="idioma" label="Idioma" required error-message="Campo requerido" allowed-pattern="[a-zA-Z]"
-                    value="{{language.name}}"></paper-input>
-                <paper-dropdown-menu-light label="Competencia">
-                    <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{level}} attr-for-selected="myvalue" required>
-                        <template is="dom-repeat" items="[[levels]]" as="level">
-                            <paper-item myvalue="[[level]]">{{level}}</paper-item>
-                        </template>
-                    </paper-listbox>
-                </paper-dropdown-menu-light>
-                <input is="iron-input" name="title" type="hidden" value$="[[level]]">
-                <paper-button raised on-click="_addLanguage">Agregar</paper-button>
+                <paper-input id="course_name" type="text" name="course" label="Curso" required error-message="Campo requerido" value="{{name}}"></paper-input>
+                <div class="datepicker-dialog">
+                    <span>Fecha</span>
+                    <paper-button disabled>{{date}}</paper-button>
+                    <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
+                    <app-datepicker-dialog id="dateInit" date="{{date}}" locale="es-ES">
+                    </app-datepicker-dialog>
+                </div>
+                <paper-input id="course_institution" type="text" name="institution" label="Institución" required error-message="Campo requerido" value="{{institution}}"></paper-input>
+                <paper-button raised on-click="_addCourse">Agregar</paper-button>
                 <paper-button raised on-click="_saveData">Guardar</paper-button>
             </form>
         </iron-form>
-        <template is="dom-repeat" items="[[languages]]" as="language">
-            <p>{{language.name}} {{language.level}}</p>
-            <iron-icon  data-id$="[[index]]" on-click="_removeLanguage" class="item__added" icon="icons:close"></iron-icon>
-            <iron-icon data-id$="[[index]]" class="item__added" on-click="_editLanguage" icon="icons:create"></iron-icon>
+        <template is="dom-repeat" items="[[courses]]" as="curso">
+            <p>
+                {{curso.name}} - {{curso.institution}} - {{curso.date}} | 
+                <iron-icon  data-id$="[[index]]" on-click="_removeCourse" class="item__added" icon="icons:close"></iron-icon>
+                <iron-icon data-id$="[[index]]" class="item__added" on-click="_editCourse" icon="icons:create"></iron-icon>
+            </p>
         </template>
     </template>
 
@@ -53,18 +50,13 @@
             static get is() { return 'my-courses'; }
             static get properties() {
                 return {
-                    levels: {
-                        type: Array,
-                        value: ['Principiante', 'Intermedio', 'Avanzado', 'Nativo']
-                    },
-                    languages: {
+                    courses: {
                         type: Array,
                         value: []
-                    },
-                    level: {
-                        type: Number,
-                        value: 0,
-                        notify: true
+                    }, 
+                    course: {
+                        type: Object,
+                        value: {}
                     }
                 };
             }
@@ -73,42 +65,45 @@
                 super.connectedCallback();
             }
 
+            _openDialogInit(event) {
+                this.$.dateInit.open();
+            }
+
             _saveData(event) {
-                if (this.languages.length > 0) {
-                    localStorage.setItem('languages', JSON.stringify(this.languages));
-                    this._dispatchEvent('languages-saved', this.languages);
+                if (this.courses.length > 0) {
+                    this._dispatchEvent('save-info', this.courses);
                     console.info('Data saved!');
                 }
             }
 
-            _addLanguage(event) {
+            _addCourse(event) {
                 if (this._validateForm()) {
-                    const newLanguage = { name: this.$.language_name.value, level: this.level };
-                    console.log(newLanguage);
-                    this.push('languages', newLanguage);
-                    this.resetForm();
+                    const COURSE = { name: this.name, date: this.date, institution: this.institution};
+                    console.log(COURSE);
+                    this.push('courses', COURSE);
+                        this.resetForm();
                 }
             }
 
             resetForm() {
-                this.level = 'Principiante';
-                this.$.language_name.value = null;
+                this.$.coursesForm.reset();
             }
 
             _validateForm() {
-                return this.$.languageExperience.validate();
+                return this.$.coursesForm.validate();
             }
 
-            _removeLanguage(e) {
+            _removeCourse(e) {
                 const id = e.target.getAttribute('id');
-                this.splice('languages', id, 1);
+                this.splice('courses', id, 1);
             }
 
-            _editLanguage(e) {
+            _editCourse(e) {
                 const id = e.target.getAttribute('data-id');
-                this.level = this.languages[id].level;
-                this.$.language_name.value = this.languages[id].name;
-                this.splice('languages', id, 1);
+                this.set('date', this.courses[id].date);
+                this.set('name', this.courses[id].name);
+                this.set('institution', this.courses[id].institution);
+                this.splice('courses', id, 1);
             }
 
             _dispatchEvent(event, detail, bubbles = true) {
@@ -116,7 +111,7 @@
                 bubbles: bubbles,
                 composed: true,
                 detail: {
-                    key: 'languages',
+                    key: 'courses',
                     data: detail
                 }
                 }));

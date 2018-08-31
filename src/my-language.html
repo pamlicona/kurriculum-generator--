@@ -76,7 +76,7 @@
             _saveData(event) {
                 if (this.languages.length > 0) {
                     localStorage.setItem('languages', JSON.stringify(this.languages));
-                    this._dispatchEvent('languages-saved', this.languages);
+                    this._dispatchEvent('save-info', this.languages);
                     console.info('Data saved!');
                 }
             }
