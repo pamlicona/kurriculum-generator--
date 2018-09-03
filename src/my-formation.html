@@ -6,6 +6,9 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
 
 <dom-module id="my-formation">
   <template>
@@ -30,7 +33,7 @@
         width: 99%;
         height: 100%;
         border-radius: 50px;
-        border: 10px solid lightgray;
+        border: 0px solid lightgray;
         display: flex;
         justify-content: space-between;
       }
@@ -40,7 +43,7 @@
         display: inline-block;
       }
       .cont-input{
-        padding: 15% 0 0 0;
+        padding: 5% 0 0 0;
       }
       .btn-send{
         padding: 5px;
@@ -50,52 +53,82 @@
         height: 25px;
         margin-top: 15px;
       }
+      .cont-input.radio {
+        margin-bottom: 10px;
+      }
     </style>
 
     <div id="">
+    <h1>Formación Académica</h1>
      <iron-form id="formFormation">
       <form id="container-formacion">
         <div class="col">
           <div class="cont-input">
-            <paper-input type="text" name="institucion" required label="Institución" value=""></paper-input>
+            <paper-input type="text" name="institucion" required label="Institución" value="{{currentItem.institucion}}"></paper-input>
           </div>
 
           <div class="cont-input">
-            <paper-input type="text" name="titulacion" required label="Titulación" value=""></paper-input>
+            <paper-input type="text" name="titulacion" required label="Titulación" value="{{currentItem.titulacion}}"></paper-input>
           </div>
 
           <div class="cont-input">
-            <paper-input type="text" name="disciplina" required label="Disciplina" value=""></paper-input>
+            <paper-dropdown-menu-light label="Estatus">
+              <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{level}} attr-for-selected="myvalue" required>
+                  <template is="dom-repeat" items="[[levels]]" as="level">
+                      <paper-item myvalue="[[level]]">{{level}}</paper-item>
+                  </template>
+              </paper-listbox>
+          </paper-dropdown-menu-light>
+          <input is="iron-input" name="level" type="hidden" value$="[[level]]" required>
           </div>
         </div>
         <div class="col">
-          <div class="cont-input">
-            <div class="datepicker-dialog">
-                <span>Desde</span>
-                <paper-button disabled>[[desde]]</paper-button>
-                <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
-                <app-datepicker-dialog id="dateInit"
-                  format="dd/mm/yyyy"
-                  date="{{desde}}"
-                  locale="es-ES">
-                </app-datepicker-dialog>
-              </div>
-          </div>
+
+            <div class="cont-input">
+                <div class="datepicker-dialog" id="desdeDate">
+                    <span>Fecha Inicio</span>
+                    <paper-button disabled>[[desde]]</paper-button>
+                    <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
+                    <app-datepicker-dialog id="desde"
+                      format="dd/mm/yyyy"
+                      date="{{desde}}"
+                      locale="es-ES">
+                    </app-datepicker-dialog>
+                </div>
+            </div>
+    
+            <div class="cont-input">
+              <div class="datepicker-dialog" id="hastaDate">
+                  <span>Fecha Fin</span>
+                  <paper-button disabled>[[hasta]]</paper-button>
+                  <paper-icon-button icon="icons:today" on-tap="_openDialogFinal"></paper-icon-button>
+                  <app-datepicker-dialog id="hasta"
+                    format="dd/mm/yyyy"
+                    date="{{hasta}}"
+                    locale="es-ES">
+                  </app-datepicker-dialog>
+                </div>
+            </div>
+            
+            <div class="cont-input radio">
+              <paper-checkbox name="actual" checked="{{actual}}">En curso</paper-checkbox>
+            </div>
+
+            <template is="dom-repeat" items="{{formation}}">
+                <div id="[[index]]" class="listData">
+                  <div>Institución: <span>{{item.institucion}}</span></div>
+                  <div>Titulo: <span>{{item.titulacion}}</span></div>
+                  <div>Estatus: <span>{{item.level}}</span></div>
+                  <div>En curso: <span>{{item.actual}}</span></div>
+                  <div>Desde: <span>{{item.desde}}</span></div>
+                  <div>Hasta: <span>{{item.hasta}}</span></div>
+                  <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
+                  <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
+                </div>
+            </template>
 
           <div class="cont-input">
-            <div class="datepicker-dialog">
-                <span>Hasta</span>
-                <paper-button disabled>[[hasta]]</paper-button>
-                <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
-                <app-datepicker-dialog id="dateEnd"
-                  format="dd/mm/yyyy"
-                  date="{{hasta}}"
-                  locale="es-ES">
-                </app-datepicker-dialog>
-              </div>
-          </div>
-
-          <div class="cont-input">
+            <paper-button raised on-click="_addData">Añadir</paper-button>
             <paper-button raised on-click="_saveData">Guardar</paper-button>
         </div>
         </div>
@@ -115,25 +148,33 @@
         static get is() { return 'my-formation'; }
         static get properties() {
           return {
-            institucion: {
-              type : String,
-              value : ""
+            formation: {
+              type: Array,
+              value: []
             },
-            titulacion:{
-              type: String,
-              value: ""
+            levels: {
+              type: Array,
+              value: ['Pasante', 'Titulado', 'Trunco']
             },
-            disciplina:{
-              type: String,
-              value: ""
+            level: {
+              type: Number,
+              value: 0,
+              notify: true
             },
-            desde:{
-              type: String,
-              value: ""
+            actual: {
+              type: Boolean,
+              value: false
             },
-            hasta:{
-              type: String,
-              value: ""
+            currentItem: {
+              type: Object,
+              value: {
+                institucion: '',
+                titulacion: '',
+                level : '',
+                actual: '',
+                desde: '',
+                hasta: ''
+              }
             }
           }
         }
@@ -143,16 +184,78 @@
         }
 
         _openDialogInit(event) {
-            this.$.dateInit.open();
+            this.$.desde.open();
         }
 
         _openDialogFinal(event) {
-            this.$.dateEnd.open();
+            this.$.hasta.open();
         }
 
         _resetData(event) {
-            this.$.finalDateContainer.style.display = 'block';
+            this.$.hastaDate.style.display = 'block';
             this.$.formFormation.reset();
+        }
+        
+        _orderData(){
+          let newOrder = [];
+          this.formation.forEach(element => {
+            
+          });
+        }
+
+        _formatJson() {
+          const form = this.$.formFormation.serializeForm();
+          console.log(form);
+          form.desde = this.desde;
+          form.hasta = this.hasta;
+          form.level = this.level;
+          if(this.level == '0'){
+            form.level = 'Titulado';
+          }
+          if(form.actual == 'on'){
+            form.actual = 'si';
+            form.hasta = '';
+          }else{
+            form.actual = 'no';
+          }
+          return form;
+        }
+      
+        _saveData(){
+          this.formation.forEach(element => {
+            delete element.edit;
+          });
+
+          this.dispatchEvent(new CustomEvent('save-info',{
+            bubbles: true,
+            detail:{
+              key: 'formation',
+              data: this.formation
+            }
+          }));
+        }
+
+        _removeItem(event) {
+          const index = event.model.index;
+          this.splice('formation', index, 1);
+        }
+
+        _editItem(event) {
+          this._removeItem(event);
+          const item = event.model.item;
+          this.level = item.level;
+          console.log(item);
+          this.set('currentItem', item);
+
+        }
+
+        _addData(event) {
+          const validate = this.$.formFormation.validate();
+          if (validate) {
+            const form = this._formatJson();
+            this.push('formation', form)
+            this._resetData();
+          }
         }
 
       }
