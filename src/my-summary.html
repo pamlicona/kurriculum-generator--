@@ -41,7 +41,7 @@
       }
     </style>
     <h1>Resumen</h1>
-    
+
     <div class="container">
       <h2 class="title_info">Información Personal</h2>
       <div class="container__personal">
@@ -155,23 +155,23 @@
         <h2 class="title_info">Aptitudes</h2>
         <dl>
           <dt>Aptitud</dt>
-          <template class="hidden" is="dom-repeat" items="{{data.user.skills}}" as="item"> 
+          <template class="hidden" is="dom-repeat" items="{{data.user.skills}}" as="item">
             <dd>[[item]]</dd>
           </template>
         </dl>
-      </div>   
+      </div>
 
       <div class="container">
         <h2 class="title_info">Idiomas</h2>
         <dl>
           <dt>Idioma - Nivel</dt>
-          <template class="hidden" is="dom-repeat" items="{{data.user.languages}}" as="item"> 
+          <template class="hidden" is="dom-repeat" items="{{data.user.languages}}" as="item">
             <dd>[[item.name]] - [[item.level]]</dd>
           </template>
         </dl>
       </div>
 
-    
+
     <div class="container">
       <h2 class="title_info">Certificaciones</h2>
       <dl>
@@ -195,8 +195,8 @@
           </template>
         </template>
       </dl>
-    </div> 
-    <paper-button raised on-click="_print">Imprimir</paper-button>  
+    </div>
+    <paper-button raised on-click="_print">Imprimir</paper-button>
   </template>
 
   <script>
@@ -212,15 +212,16 @@
       static get is() { return 'my-summary'; }
       static get properties() {
         return {
-          data: { 
-            type: Object, 
-            value: { 
-              "user":{ 
+          data: {
+            type: Object,
+            value: {
+              "user":{
                 "languages":[ { "name" : "ingles", "level": "Principiante" } ],
 
                 "knowledges": [{
                   "knowledge": "JavaScript",
-                  "percent": "50%"
+                  "percent": "50%",
+                  "description": "Angular 2, Polymer 2, React"
                   }],
 
                 "skills":["Teamwork", "Responsibility"],
@@ -282,8 +283,8 @@
                     "emails" : ["ralpuchev@gmail.com", "rafael.alpuche@kairosds.com"]
                 }
 
-              } 
-            } 
+              }
+            }
           }
         }
       };

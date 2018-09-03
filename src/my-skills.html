@@ -26,7 +26,7 @@
 
     <template is="dom-repeat" items="{{skills}}">
       <div id="[[index]]" class="listSkills">
-        <div>Skill: <span>{{item}}</span></div>
+        <span>{{item}}</span>
         <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
         <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
       </div>
