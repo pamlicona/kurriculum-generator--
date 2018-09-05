@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 
 <link rel="lazy-import" href="my-personal-data.html">
 <link rel="lazy-import" href="my-experience.html">
@@ -77,6 +78,21 @@
             <my-summary user="[[user]]" name="summary"></my-summary>
             <my-view404 name="view404"></my-view404>
         </iron-pages>
+
+        <firebase-auth
+            id="auth"
+            app-name="kurriculum"
+            provider="google"
+            signed-in="{{signedIn}}"
+            user="{{user}}">
+        </firebase-auth>
+
+        <firebase-document
+            id="document"
+            app-name="kurriculum"
+            path="/users/{{user.uid}}"
+            data="{{data}}">
+        </firebase-document>
     </template>
 
     <script>
@@ -93,7 +109,8 @@
                     routeData: Object,
                     subroute: Object,
                     rootPath: String,
-                    user: Object
+                    user: Object, 
+                    data: Object
                 };
             }
 
@@ -105,7 +122,8 @@
 
             connectedCallback() {
                 super.connectedCallback();
-                this._saveInfo('user',{user:{}});
+                this._saveInfo('user',{});
+                this.signIn();
             }
 
             _routePageChanged(page) {
@@ -129,16 +147,29 @@
             _showPage404() {
                 this.page = 'view404';
             }
+
             _saveInfoEvent(event){
                 let user = this._getInfo();
-                user.user[event.detail.key] = event.detail.data;
+                user[event.detail.key] = event.detail.data;
                 this._saveInfo('user',user);
             }
+
             _saveInfo(key,data){
-                localStorage.setItem(key,JSON.stringify(data));
+                localStorage.setItem(key, JSON.stringify(data));
+                // Firebase
+                this.data = data;
+                console.log("Firebase data: ", this.data);
+                
             }
+
             _getInfo(){
                 return JSON.parse(localStorage.getItem('user'));
+            }
+
+            signIn() {
+                this.$.auth.signInWithPopup()
+                    .then((response) => console.log(response, this.user))
+                    .catch((error) => console.log(error));
             }
         }
 
