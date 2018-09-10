@@ -1,23 +1,388 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="list-element.html">
+<link rel="import" href="profile-picture.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
 
 <dom-module id="my-personal-data">
-  <template>
-    <style>
-      :host {
-        display: block;
-        padding: 10px;
-        height: 100%;
-      }
-    </style>
+    <template>
+        <style>
+            .button {
+                background-color: black;
+                width: 30%;
+                padding: 9px;
+                border-radius: 6px;
+                cursor: pointer;
+                color: white;
+                text-align: center;
+            }
+            
+            .form-input {
+                font-size: 18px;
+                width: 96%;
+                margin: 0 auto;
+                border-radius: 3px;
+                text-align: center;
+            }
+            
+            .form-textarea {
+                font-size: 18px;
+                width: 99%;
+                margin: 0 auto;
+                border-radius: 3px;
+                text-align: center;
+            }
+            
+            .hidden {
+                display : none;
+            }
+            
+            .showing {
+                display : block;
+            }
+            
+            .flex-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+            }
+            
+            .row {
+                display:flex;
+                margin-bottom:12px;
+            }
+            
+            .l1 {
+                width: 33%;
+                padding-right:3px;
+                padding-left:3px;
+            }
+            
+            .l2 {
+                width: 66%;
+                padding-right:3px;
+                padding-left:3px;
+            }
+            
+            .l3 {
+                width: 99%;
+                padding-right:3px;
+                padding-left:3px;
+            }
+            
+            .l15 {
+                width: 45%;
+                padding-right:3px;
+                padding-left:3px;
+            }
+            
+            .l50 {
+                width: 50%;
+                padding-right:3px;
+                padding-left:3px;
+            }
+        </style>
+        <section class="container">
+            <iron-form id="formPersonalData">
+                <form action="/" method="get">
+                    <h1>Datos Personales</h1>
+                    <div class="image-container">
+                        <profile-picture></profile-picture>
+                    </div>
+                    <div class="row">
+                        <div class="l2">
+                            <paper-input type="text" name="linkedin" required label="URL de LinkedIn" value="{{userLinkedIn}}"></paper-input>
+                        </div>
+                        <div class="l1">
+                            <div class="form-label">Sexo</div>
+                            <paper-radio-group selected="{{userSex}}">
+                                <paper-radio-button name="W">Mujer</paper-radio-button>
+                                <paper-radio-button name="M">Hombre</paper-radio-button>
+                            </paper-radio-group>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="l1">
+                            <paper-input type="text" name="username" required label="Nombre(s)" value="{{userName}}"></paper-input>
+                        </div>
+                        <div class="l1">
+                            <paper-input type="text" name="surname" required label="Apellido Paterno" value="{{userSurname}}"></paper-input>
+                        </div>
+                        <div class="l1">
+                            <paper-input type="text" name="lastname" required label="Apellido Materno" value="{{userLastname}}"></paper-input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="l1">
+                            <paper-input type="text" name="curp" required label="CURP" value="{{userCurp}}"></paper-input>
+                            <div>Consulta tu CURP <a href="https://consultas.curp.gob.mx/CurpSP/inicio2_2.jsp" target="_blank">aquí</a></div>
+                        </div>
+                        <div class="l1">
+                            <paper-input type="text" name="rfc" required label="R.F.C." value="{{userRFC}}"></paper-input>
+                            <div>Consulta tu RFC <a href="https://www.mi-rfc.com.mx/consulta-rfc-homoclave" target="_blank">aquí</a></div>
+                        </div>
+                        <div class="l1">
+                            <paper-input type="text" name="ensurance" required label="No. Seguro Social" value="{{userEnsurance}}"></paper-input>
+                            <div>Consulta tu NSS <a href="http://www.imss.gob.mx/faq/no-recuerdo-mi-nss" target="_blank">aquí</a></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="l1">
+                            <paper-dropdown-menu-light label="Estado Civil">
+                                <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{maritalStatus}} required>
+                                    <paper-item>Selecciona estado civil</paper-item>
+                                    <paper-item>Soltero</paper-item>
+                                    <paper-item>Casado</paper-item>
+                                    <paper-item>Divorciado</paper-item>
+                                </paper-listbox>
+                            </paper-dropdown-menu-light>
+                        </div>
+                        <div class="l1">
+                            <div class="datepicker-dialog">
+                                <div>Fecha de Nacimiento</div>
+                                <paper-button disabled>{{userBirthday}}</paper-button>
+                                <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
+                                <app-datepicker-dialog id="birthDay"
+                                    date="{{userBirthday}}"
+                                    locale="es-ES">
+                                </app-datepicker-dialog>
+                            </div>
+                        </div>
+                        <div class="l1">
+                            <div class="flex-container">
+                                <div class="form-label"><b>[[userAge]]</b></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="l3">
+                            <paper-input type="text" name="goal" required label="Objetivo Profesional" value="{{professionalGoal}}"></paper-input>
+                        </div>
+                    </div>
+                    <h1>Dirección Actual</h1>
+                    <div class="row">
+                        <div class="l1">
+                            <paper-input type="text" name="street" required label="Calle" value="{{userAddressStreet}}"></paper-input>
+                        </div>
+                        <div class="l1">
+                            <div class="row">
+                                <div class="l15">
+                                    <paper-input type="text" name="outside" required label="No. Ext." value="{{userAddressOutsideNumber}}"></paper-input>
+                                </div>
+                                <div class="l15">
+                                    <paper-input type="text" name="inside" required label="No. Int." value="{{userAddressInsideNumber}}"></paper-input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="l1">
+                            <paper-input type="text" name="neighborhood" required label="Colonia" value="{{userAddressNeighborhood}}"></paper-input>
+                        </div>
+                    </div>
+                    <div class="row">
+                       <div class="l1">
+                           <paper-input type="text" name="zipcode" required label="C.P." value="{{userAddressCP}}"></paper-input>
+                       </div>
+                       <div class="l1">
+                           <paper-input type="text" name="state" required label="Estado / Provincia" value="{{userAddressState}}"></paper-input>
+                       </div>
+                       <div class="l1">
+                           <paper-input type="text" name="city" required label="Ciudad" value="{{userAddressCity}}"></paper-input>
+                       </div>
+                    </div>
+                    <div class="row">
+                       <div class="l50">
+                           <list-element title="Teléfonos" items="{{phones}}" placeholder="10 dígitos"></list-element>
+                       </div>
+                       <div class="l50">
+                           <list-element title="Correos" items="{{emails}}" placeholder="ejemplo@company.com"></list-element>
+                       </div>
+                    </div>
+                    <paper-button raised on-click="_saveData">Guardar</paper-button>
+                </form>
+            </iron-form>
+        </section>
+    </template>
+    <script>
+        (function myPersonalData(customElements){
+            'use strict';
 
-    <h1>Datos personales</h1>
-  </template>
-
-  <script>
-    class MyPersonalData extends Polymer.Element {
-      static get is() { return 'my-personal-data'; }
-    }
-
-    window.customElements.define(MyPersonalData.is, MyPersonalData);
+            class MyPersonalData extends Polymer.Element {
+                static get is() { return 'my-personal-data'; }
+                
+                static get properties() {
+                    return {
+                        userImage : {
+                            type : String,
+                            value : ""
+                        },
+                        userLinkedIn : {
+                            type : String,
+                            value : ""
+                        },
+                        userSexWoman : {
+                            type : Boolean,
+                            value : false
+                        },
+                        userSexMan : {
+                            type : Boolean,
+                            value : false
+                        },
+                        userSex : {
+                            type : String,
+                            value : "W"
+                        },
+                        userName : {
+                            type : String,
+                            value : ""
+                        },
+                        userSurname : {
+                            type : String,
+                            value : ""
+                        },
+                        userLastname : {
+                            type : String,
+                            value : ""
+                        },
+                        userCurp : {
+                            type : String,
+                            value : ""
+                        },
+                        userRFC : {
+                            type : String,
+                            value : ""
+                        },
+                        userEnsurance : {
+                            type : String,
+                            value : ""
+                        },
+                        maritalStatus : {
+                            type : Number,
+                            value : 0
+                        },
+                        userBirthday : {
+                            type : String,
+                            value : ""
+                        },
+                        userAge : {
+                            type : String,
+                            computed : "_timeAgo(userBirthday)"
+                        },
+                        professionalGoal  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressStreet  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressOutsideNumber  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressInsideNumber  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressNeighborhood  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressCP  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressCity  : {
+                            type : String,
+                            value : ""
+                        },
+                        userAddressState  : {
+                            type : String,
+                            value : ""
+                        },
+                        phones : {
+                            type : Array,
+                            value : []
+                        },
+                        emails : {
+                            type : Array,
+                            value : []
+                        }
+                    }
+                }
+                
+                connectedCallback() {
+                    super.connectedCallback();  
+                }
+            
+                _timeAgo() {
+                    if(!this.userBirthday || this.userBirthday == "" || this.userBirthday == " ") return "";
+                    
+                    const birthday = new Date(this.userBirthday); 
+                    const ageDifMs = Date.now() - birthday.getTime();
+                    const ageDate = new Date(ageDifMs);
+                    return "Edad: " + Math.abs(ageDate.getUTCFullYear() - 1970) + " años cumplidos";
+                }
+                
+                _sexChanged() {
+                    if(this.userSexWoman) return "W";
+                    return "M";
+                }
+                
+                _saveData() {
+                    if(!this.$.formPersonalData.validate()) return; //no pasó la validacion de iron-form
+                    
+                    const data = {
+                        userImage : this.userImage,
+                        userLinkedIn : this.userLinkedIn,
+                        userSex : this.userSex,                        
+                        userName : this.userName,
+                        userSurname : this.userSurname,
+                        userLastname : this.userLastname,
+                        userCurp : this.userCurp,
+                        userRFC : this.userRFC,
+                        userEnsurance : this.userEnsurance,
+                        maritalStatus : this.maritalStatus,
+                        userBirthday : this.userBirthday,
+                        userAge : this.userAge,
+                        professionalGoal : this.professionalGoal,
+                        userAddressStreet : this.userAddressStreet,
+                        userAddressOutsideNumber : this.userAddressOutsideNumber,
+                        userAddressInsideNumber : this.userAddressInsideNumber,
+                        userAddressNeighborhood : this.userAddressNeighborhood,
+                        userAddressCP : this.userAddressCP,
+                        userAddressCity : this.userAddressCity,
+                        userAddressState : this.userAddressState,
+                        phones : this.phones,
+                        emails : this.emails
+                    }
+                    
+                    console.log("Datos");
+                    console.log(data);
+                    
+                    this.dispatchEvent(new CustomEvent('save-info',{
+                        bubbles: true,
+                        detail:{
+                            key: 'personalInfo',
+                            data: data
+                        }
+                    }));
+                }
+                
+                _openDialogInit(event) {
+                    this.$.birthDay.open();
+                }
+            }
+        customElements.define(MyPersonalData.is, MyPersonalData);
+        })(window.customElements);
   </script>
 </dom-module>

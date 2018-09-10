@@ -24,7 +24,7 @@
 			}
       .content__items{
 				display: grid;
-        grid-template-columns: 200px 80px 30px 30px;
+        grid-template-columns: 1fr 1fr 1fr 0.5fr 0.5fr;
 			}
       .content__items__edit{
         display: grid;
@@ -38,14 +38,15 @@
         display: none;
       }
     </style>
-    <h1>Conocimientos</h1>
+    <h1>Herramientas</h1>
     <iron-form id="form">
       <form>
         <div>
-          <paper-input type="text" name="knowledge" required label="Conocimiento (p. ej. Análisis de datos)" value=""></paper-input>
+          <paper-input type="text" name="knowledge" required label="Herramienta (p. ej. Análisis de datos)" value="{{currentKnowledge.knowledge}}"></paper-input>
+          <paper-input type="text" name="description" label="Descripción (Versiones)" value="{{currentKnowledge.description}}"></paper-input>
         </div>
         <div class="content__slider">
-					<p>0%</p><paper-slider on-change="_change" pin="true" value="{{valueSlider}}"></paper-slider><p>100%</p>
+					<p>0%</p><paper-slider on-change="_change" pin value="{{valueSlider}}"></paper-slider><p>100%</p>
         </div>
         <paper-button class="paper-button-k" raised on-click="_addKnowledge">Agregar</paper-button>
       </form>
@@ -70,6 +71,7 @@
         </template>
 			</template>
 		<paper-button class="paper-button-k" raised on-click="_saveData">Guardar</paper-button>
+
   </template>
 
   <script>
@@ -89,10 +91,14 @@
             type: Array,
             value: []
           },
-					valueSlider:{
+					valueSlider: {
 						type:Number,
 						value:10
-					}
+					},
+          currentKnowledge: {
+            type: Object,
+            value: {}
+          }
         };
       }
 
@@ -107,15 +113,15 @@
       _addKnowledge(event) {
         if(this.$.form.validate()){
           const form = this.$.form.serializeForm();
-          this.push('knowledges', { knowledge:form.knowledge, percent: this.valueSlider, edit:false});
+          this.push('knowledges', {
+            knowledge:form.knowledge,
+            percent: this.valueSlider,
+            description: form.description
+          });
           this.$.form.reset();
         }
       }
 			_saveData(){
-        this.knowledges.forEach(element => {
-          delete element.edit;
-        });
-
         this.dispatchEvent(new CustomEvent('save-info',{
           bubbles: true,
           detail:{
@@ -124,16 +130,16 @@
           }
         }));
       }
-      
+
       _deleteItem(event){
         let id = JSON.parse(event.target.dataset.id);
         this.splice("knowledges", id, 1);
       }
       _editItem(event){
-        let id = JSON.parse(event.target.dataset.id);
-        let newObj = JSON.parse(JSON.stringify(this.knowledges[id]));
-        newObj.edit = true;
-        this.set("knowledges."+id, newObj);
+        this._deleteItem(event);
+        const item = event.model.item;
+        this.set('currentKnowledge', item);
+        this.set('valueSlider', item.percent);
       }
     }
 
