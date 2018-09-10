@@ -5,6 +5,9 @@
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 
+<link rel="import" href="app-styles.html">
+<link rel="import" href="my-photo.html">
+
 <link rel="lazy-import" href="my-personal-data.html">
 <link rel="lazy-import" href="my-experience.html">
 <link rel="lazy-import" href="my-knowledge.html">
@@ -17,82 +20,80 @@
 
 <dom-module id="app-shell">
     <template>
-        <style>
-            :host {
-                --primary-color: #ffffff;
-            }
-            header {
-                align-items: center;
-                color: #ffffff;
-                display: flex;
-                padding: 8px 0;
-                justify-content: center;
-                background: #000000;
-            }
-            .drawer-list {
-                display: flex;
-                justify-content: center;
-                padding-top: 1rem;
-            }
-            .drawer-list a{
-                color: blue;
-                margin: 0 1rem;
-                text-decoration: none;
-            }
-            .drawer-list a:hover{
-                color: orange;
-            }
-        </style>
+        <style include="app-styles"></style>
+        <app-location route="{{route}}" use-hash-as-path></app-location>
+        <app-route route="{{route}}" pattern=":page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
-        <app-location route="{{route}}" use-hash-as-path>
-        </app-location>
-
-        <app-route route="{{route}}" pattern=":page" data="{{routeData}}" tail="{{subroute}}">
-        </app-route>
 
         <header class="header">
-            CV
+            <img class="logoK" src="../assets/img/logo.jpg" alt="kairos">
+            <p><strong>Mi</strong>KURRICULUM</p>
+            
         </header>
+        <div class="line line-progress line-orange"></div>
+        <div class="line line-progress"></div>
+        <div class="contls">
 
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-            <a name="personal-data" href="[[rootPath]]#personal-data">Datos personales</a>
-            <a name="experience" href="[[rootPath]]#experience">Experiencia</a>
-            <a name="knowledge" href="[[rootPath]]#knowledge">Conocimientos</a>
-            <a name="skills" href="[[rootPath]]#skills">Aptitudes</a>
-            <a name="language" href="[[rootPath]]#language">Idioma</a>
-            <a name="formation" href="[[rootPath]]#formation">Formación</a>
-            <a name="certifications" href="[[rootPath]]#certifications">Certificaciones</a>
-            <a name="courses" href="[[rootPath]]#courses">Cursos y diplomados</a>
-            <a name="summary" href="[[rootPath]]#summary">Resumen</a>
-        </iron-selector>
+            <!-- cambiar por componente de myphoto -->
+            <div>
+                <div class="cont-comp-photo">
+                    <div class="photo">
+                            <img class="person-img" src="../assets/img/person.png" alt="person">
+                    </div>
+                    <div class="data-photo">
+                        <p><strong>Annuar</strong></p>
+                        <p><strong>Harb </strong></p> <br>
+                        <p><strong>Polymer Expert</strong></p>
+                        <p>annuarh@kairosds.com</p>
+                        <p>+52 5542 159 282</p>
+                    </div>
+                </div>
+            </div>
 
-        <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-            <my-personal-data on-save-info="_saveInfoEvent" name="personal-data"></my-personal-data>
-            <my-experience on-save-info="_saveInfoEvent" name="experience"></my-experience>
-            <my-knowledge on-save-info="_saveInfoEvent" name="knowledge"></my-knowledge>
-            <my-skills on-save-info="_saveInfoEvent" name="skills"></my-skills>
-            <my-language on-save-info="_saveInfoEvent" name="language"></my-language>
-            <my-formation on-save-info="_saveInfoEvent" name="formation"></my-formation>
-            <my-certifications on-save-info="_saveInfoEvent" name="certifications"></my-certifications>
-            <my-courses on-save-info="_saveInfoEvent" name="courses"></my-courses>
-            <my-summary user="[[user]]" name="summary"></my-summary>
-            <my-view404 name="view404"></my-view404>
-        </iron-pages>
+            <p>Introduce tus Datos</p>
+            <div class="line"></div>
 
-        <firebase-auth
-            id="auth"
-            app-name="kurriculum"
-            provider="google"
-            signed-in="{{signedIn}}"
-            user="{{user}}">
-        </firebase-auth>
+            <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list list-nums" role="navigation">
+                <a name="personal-data"  class="numbutton" href="[[rootPath]]#personal-data">1</a>
+                <a name="experience" class="numbutton numbutton-unselected" href="[[rootPath]]#experience">2</a>
+                <a name="knowledge" class="numbutton numbutton-unselected" href="[[rootPath]]#knowledge">3</a>
+                <a name="skills" class="numbutton numbutton-unselected" href="[[rootPath]]#skills">4</a>
+                <a name="language" class="numbutton numbutton-unselected" href="[[rootPath]]#language">5</a>
+                <a name="formation" class="numbutton numbutton-unselected" href="[[rootPath]]#formation">6</a>
+                <a name="certifications" class="numbutton numbutton-unselected" href="[[rootPath]]#certifications">7</a>
+                <a name="summary" class="numbutton numbutton-unselected" href="[[rootPath]]#summary">8</a>
+            </iron-selector> <br><br>
 
-        <firebase-document
-            id="document"
-            app-name="kurriculum"
-            path="/users/{{user.uid}}"
-            data="{{data}}">
-        </firebase-document>
+        
+
+            <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
+                <my-personal-data on-save-info="_saveInfoEvent" name="personal-data"></my-personal-data>
+                <my-experience on-save-info="_saveInfoEvent" name="experience"></my-experience>
+                <my-knowledge on-save-info="_saveInfoEvent" name="knowledge"></my-knowledge>
+                <my-skills on-save-info="_saveInfoEvent" name="skills"></my-skills>
+                <my-language on-save-info="_saveInfoEvent" name="language"></my-language>
+                <my-formation on-save-info="_saveInfoEvent" name="formation"></my-formation>
+                <my-certifications on-save-info="_saveInfoEvent" name="certifications"></my-certifications>
+                <my-courses on-save-info="_saveInfoEvent" name="courses"></my-courses>
+                <my-summary user="[[user]]" name="summary"></my-summary>
+                <my-view404 name="view404"></my-view404>
+            </iron-pages>
+
+            <firebase-auth
+                id="auth"
+                app-name="kurriculum"
+                provider="google"
+                signed-in="{{signedIn}}"
+                user="{{user}}">
+            </firebase-auth>
+
+            <firebase-document
+                id="document"
+                app-name="kurriculum"
+                path="/users/{{user.uid}}"
+                data="{{data}}">
+            </firebase-document>
+      </div>
     </template>
 
     <script>

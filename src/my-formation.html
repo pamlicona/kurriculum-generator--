@@ -9,10 +9,12 @@
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="app-styles.html">
+
 
 <dom-module id="my-formation">
   <template>
-    <style>
+    <style include="app-styles">
       #myProgress {
         width: 100%;
         background-color: #ddd;
@@ -128,8 +130,8 @@
             </template>
 
           <div class="cont-input">
-            <paper-button raised on-click="_addData">Añadir</paper-button>
-            <paper-button raised on-click="_saveData">Guardar</paper-button>
+            <paper-button class="paper-button-k" raised on-click="_addData">Añadir</paper-button>
+            <paper-button class="paper-button-k" raised on-click="_saveData">Guardar</paper-button>
         </div>
         </div>
       </form>
