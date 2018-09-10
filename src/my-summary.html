@@ -129,8 +129,15 @@
           <dd>[[item.institucion]]</dd>
           <dt>Titulación</dt>
           <dd>[[item.titulacion]]</dd>
-          <dt>Disciplina</dt>
-          <dd>[[item.disciplina]]</dd>
+          <dt>Estatus</dt>
+          <dd>[[item.level]]</dd>
+          <dt>En curso</dt>
+          <template class="hidden" is="dom-if" if="[[item.actual]]">
+            <dd>Si</dd>
+          </template>
+          <template class="hidden" is="dom-if" if="[[!item.actual]]">
+            <dd>No</dd>
+          </template>
           <dt>Inicio</dt>
           <dd>[[item.desde]]</dd>
           <dt>Fin</dt>
@@ -297,7 +304,8 @@
                       "id" : "1",
                       "institucion" : "Politecnico Nacional",
                       "titulacion"  : "Lic. en Informatica",
-                      "disciplina"  : "Ciencias Matematicas",
+                      "estatus"     : "Titulado",
+                      "encurso"     : "No",
                       "desde"       : "2017/06/09",
                       "hasta"       : "2018/07/10"
                     }

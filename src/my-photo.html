@@ -1,0 +1,54 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
+
+
+<dom-module id="my-photo">
+    <template>
+        <style>
+            .cont-comp-photo{
+                padding: 10px;
+                display: flex;
+                align-items: flex-start;
+            }
+        </style>
+
+        <div class="cont-comp-photo">
+            <div class="photo">
+                <img src="[[photo]]" alt="">
+            </div>
+            <div class="data-photo">
+                <p><strong>David</strong></p>
+                <p><strong>Durán Rodríguez</strong></p> <br>
+                <p><strong>Sr. Frontend Developer</strong></p>
+                <p>david.duran@kairosds.com</p>
+                <p>+52 5542 159 282</p>
+            </div>
+        </div>
+
+    </template>
+
+
+    <script>
+        class MyPhoto extends Polymer.Element {
+            static get is() { return 'my-photo'; }
+            static get properties(){
+                return {
+                    photo:{
+                        type: string,
+                        value: ""
+                    }
+                };
+            }
+
+           
+        }
+
+        window.customElements.define(MyPhoto.is, MyPhoto);
+    </script>
+</dom-module>

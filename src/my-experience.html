@@ -6,11 +6,13 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
+<link rel="import" href="app-styles.html">
+
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 
 <dom-module id="my-experience">
   <template>
-    <style>
+    <style include="app-styles">
       :host {
         display: block;
       }
@@ -53,6 +55,7 @@
           </div>
           <paper-checkbox name="actual" checked="{{actual}}">Trabajo actual</paper-checkbox>
         </div>
+
         <paper-button raised on-click="_validCurrentJob">Agregar</paper-button>
         <paper-button raised on-click="_resetData">Limpiar</paper-button>
         <paper-button raised on-click="_saveData">Guardar</paper-button>

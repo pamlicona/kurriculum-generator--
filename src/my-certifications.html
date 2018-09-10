@@ -6,17 +6,19 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
+<link rel="import" href="app-styles.html">
+
 
 <dom-module id="my-certifications">
   <template>
-    <style>
+    <style include="app-styles">
       #myProgress {
         width: 100%;
         background-color: #ddd;
       }
 
       #myBar {
-        width: 1%;
+        width: 1%;  
         height: 30px;
         background-color: #4CAF50;
       }
@@ -27,10 +29,10 @@
         margin-right: 5px;
       }
       #container-formacion{
-        width: 99%;
+        width: 95%;
         height: 100%;
         border-radius: 50px;
-        border: 10px solid lightgray;
+        border: 0px solid lightgray;
         display: flex;
         justify-content: space-between;
       }
@@ -50,62 +52,82 @@
         height: 25px;
         margin-top: 15px;
       }
+      .listData{
+        margin-top: 7px;
+      }
     </style>
 
     <div id="">
+    <h1>Certificaciones</h1>
      <iron-form id="formCertifications">
       <form id="container-formacion">
         <div class="col">
           <div class="cont-input">
-            <paper-input type="text" name="name" required label="Nombre de la Certificación" value=""></paper-input>
+            <paper-input type="text" name="certificacion" required label="Nombre de la Certificación" value="{{currentItem.certificacion}}"></paper-input>
           </div>
 
           <div class="cont-input">
-            <paper-input type="text" name="emisor" required label="Entidad Emisora" value=""></paper-input>
+            <paper-input type="text" name="entidad" required label="Entidad Emisora" value="{{currentItem.entidad}}"></paper-input>
           </div>
 
           <div class="cont-input">
-            <paper-input type="text" name="licency" required label="Nº de Licencia" value=""></paper-input>
+            <paper-input type="text" name="licencia" required label="Nº de Licencia" value="{{currentItem.licencia}}"></paper-input>
           </div>
 
           <div class="cont-input">
-            <paper-input type="text" name="url" required label="URL" value=""></paper-input>
+            <paper-input type="text" name="url" required label="URL" value="{{currentItem.url}}"></paper-input>
           </div>
         </div>
         <div class="col">
           <div class="cont-input">
-            <div class="datepicker-dialog">
+            <div class="datepicker-dialog" id="desdeDate">
                 <span>Fecha Inicio</span>
-                <paper-button disabled>[[initDate]]</paper-button>
+                <paper-button disabled>[[desde]]</paper-button>
                 <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
-                <app-datepicker-dialog id="dateInit"
+                <app-datepicker-dialog id="desde"
                   format="dd/mm/yyyy"
-                  date="{{initDate}}"
+                  date="{{desde}}"
                   locale="es-ES">
                 </app-datepicker-dialog>
               </div>
           </div>
 
           <div class="cont-input">
-            <div class="datepicker-dialog">
+            <div class="datepicker-dialog" id="hastaDate">
                 <span>Fecha Fin</span>
-                <paper-button disabled>[[endDate]]</paper-button>
-                <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
-                <app-datepicker-dialog id="dateInit"
+                <paper-button disabled>[[hasta]]</paper-button>
+                <paper-icon-button icon="icons:today" on-tap="_openDialogFinal"></paper-icon-button>
+                <app-datepicker-dialog id="hasta"
                   format="dd/mm/yyyy"
-                  date="{{initDate}}"
+                  date="{{hasta}}"
                   locale="es-ES">
                 </app-datepicker-dialog>
               </div>
           </div>
 
           <div class="cont-input">
-            <paper-checkbox name="actual" on-click="_hideFinalDate">Certificación Permanente</paper-checkbox>
+            <paper-checkbox name="permanente" checked="{{permanente}}">Certificación Permanente</paper-checkbox>
           </div>
 
+          <template is="dom-repeat" items="{{certification}}">
+              <div id="[[index]]" class="listData">
+                <div>Certificación: <span>{{item.certificacion}}</span></div>
+                <div>Entidad: <span>{{item.entidad}}</span></div>
+                <div>Licencia: <span>{{item.licencia}}</span></div>
+                <div>URL: <span>{{item.url}}</span></div>
+                <div>Desde: <span>{{item.desde}}</span></div>
+                <div>Hasta: <span>{{item.hasta}}</span></div>
+                <div>Permanente: <span>{{item.permanente}}</span></div>
+                <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
+                <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
+              </div>
+          </template>
+
+
           <div class="cont-input">
-            <paper-button raised on-click="_saveData">Guardar</paper-button>
-        </div>
+            <paper-button class="paper-button-k" raised on-click="_addData">Añadir</paper-button>
+            <paper-button class="paper-button-k" raised on-click="_saveData">Guardar</paper-button>
+          </div>
         </div>
       </form>
      </iron-form>
@@ -123,25 +145,24 @@
         static get is() { return 'my-certifications'; }
         static get properties() {
           return {
-            institucion: {
-              type : String,
-              value : ""
+            certification: {
+              type: Array,
+              value: []
             },
-            titulacion:{
-              type: String,
-              value: ""
+            permanente: {
+              type: Boolean,
+              value: false
             },
-            disciplina:{
-              type: String,
-              value: ""
-            },
-            desde:{
-              type: String,
-              value: ""
-            },
-            hasta:{
-              type: String,
-              value: ""
+            currentItem: {
+              type: Object,
+              value: {
+                certificacion: '',
+                entidad: '',
+                licencia: '',
+                url: '',
+                desde:'',
+                hasta:''
+              }
             }
           }
         }
@@ -151,17 +172,67 @@
         }
 
         _openDialogInit(event) {
-            this.$.dateInit.open();
+            this.$.desde.open();
         }
 
         _openDialogFinal(event) {
-            this.$.dateFinal.open();
+            this.$.hasta.open();
         }
 
-        _resetData(event) {
-            this.$.finalDateContainer.style.display = 'block';
-            this.$.formCertifications.reset();
+         _resetData(event) {
+          this.$.hastaDate.style.display = 'block';
+          this.permanente = false;
+          this.$.formCertifications.reset();
         }
+
+        _formatJson() {
+          const form = this.$.formCertifications.serializeForm();
+          form.permanente = this.permanente;
+          form.desde = this.desde;
+          if (this.permanente == false) {
+            form.hasta = this.hasta;
+          }
+          return form;
+        }
+      
+      _saveData(){
+        this.certification.forEach(element => {
+          delete element.edit;
+        });
+
+        this.dispatchEvent(new CustomEvent('save-info',{
+          bubbles: true,
+          detail:{
+            key: 'certifications',
+            data: this.certification
+          }
+        }));
+      }
+
+      _removeItem(event) {
+        const index = event.model.index;
+        this.splice('certification', index, 1);
+      }
+
+      _editItem(event) {
+        this._removeItem(event);
+        const item = event.model.item;
+        console.log(item);
+        this.set('currentItem', item);
+        //this.set('desde', item.desde);
+        //this.set('hasta', item.hasta);
+        this.set('permanente', item.permanente);
+      }
+
+
+      _addData(event) {
+        const validate = this.$.formCertifications.validate();
+        if (validate) {
+          const form = this._formatJson();
+          this.push('certification', form)
+          this._resetData();
+        }
+      }
 
       }
       customElements.define(MyCertifications.is, MyCertifications);

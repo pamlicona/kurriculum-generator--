@@ -12,7 +12,9 @@
     <link rel="icon" href="images/favicon.ico">
 
     <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
-    <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="bower_components/web-animations-js/web-animations.min.js"></script>
+    <link rel="import" href="bower_components/polymerfire/firebase-app.html">
 
     <!-- Load your application shell -->
     <link rel="import" href="src/app-shell.html">
@@ -25,11 +27,11 @@
         
         html,
         body {
-            font-family: 'Roboto', 'Noto', sans-serif;
+            font-family: 'Montserrat', 'Noto', sans-serif;
         }
 
         body {
-            background-color: #eeeeee;
+            background-color: white !important;
             font-size: 16px;
             line-height: 1.5;
             margin: 0;
@@ -38,6 +40,12 @@
 </head>
 
 <body>
+    <firebase-app
+        name="kurriculum"
+        api-key="AIzaSyBg7dtHTM72q3Qp9cnCUCHN2Li5lUM-K54"
+        auth-domain="kurriculum-6cc64.firebaseapp.com"
+        database-url="https://kurriculum-6cc64.firebaseio.com">
+    </firebase-app>
     <app-shell></app-shell>
     <noscript>
         Please enable JavaScript to view this website.
