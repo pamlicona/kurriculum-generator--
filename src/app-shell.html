@@ -28,7 +28,7 @@
         <header class="header">
             <img class="logoK" src="../assets/img/logo.jpg" alt="kairos">
             <p><strong>Mi</strong>KURRICULUM</p>
-            
+
         </header>
         <div class="line line-progress line-orange"></div>
         <div class="line line-progress"></div>
@@ -64,7 +64,7 @@
                 <a name="summary" class="numbutton numbutton-unselected" href="[[rootPath]]#summary">8</a>
             </iron-selector> <br><br>
 
-        
+
 
             <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
                 <my-personal-data on-save-info="_saveInfoEvent" name="personal-data"></my-personal-data>
@@ -94,6 +94,9 @@
                 data="{{data}}">
             </firebase-document>
       </div>
+      <footer>
+        <h3>© Kairós DS • Todos los derechos reservados</h3>
+      </footer>
     </template>
 
     <script>
@@ -110,7 +113,7 @@
                     routeData: Object,
                     subroute: Object,
                     rootPath: String,
-                    user: Object, 
+                    user: Object,
                     data: Object
                 };
             }
@@ -160,7 +163,7 @@
                 // Firebase
                 this.data = data;
                 console.log("Firebase data: ", this.data);
-                
+
             }
 
             _getInfo(){

@@ -8,8 +8,9 @@
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-icons/maps-icons.html">
-<link rel="import" href="/bower_components/polymer/lib/elements/dom-repeat.html">
-<link rel="import" href="/bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="app-styles.html">
 
 
@@ -48,30 +49,21 @@
         <div class="content__slider">
 					<p>0%</p><paper-slider on-change="_change" pin value="{{valueSlider}}"></paper-slider><p>100%</p>
         </div>
-        <paper-button class="paper-button-k" raised on-click="_addKnowledge">Agregar</paper-button>
+        <div class="save-buttons">
+          <paper-button class="paper-button-k" raised on-click="_addKnowledge">Agregar</paper-button>
+          <paper-button class="paper-button-k" raised on-click="_saveData">Guardar</paper-button>
+        </div>
       </form>
 		</iron-form>
-			<template  is="dom-repeat" items="{{knowledges}}" as="item">
-        <template class="hidden" is="dom-if" if="{{!item.edit}}">
-          <div class="content__items">
-            <p class="item__added">{{item.knowledge}}:</p>
-            <p class="item__added">{{item.percent}}%</p>
-            <iron-icon  data-id$="[[index]]" on-click="_deleteItem" class="item__added" icon="icons:close"></iron-icon>
-            <iron-icon data-id$="[[index]]" class="item__added" on-click="_editItem" icon="icons:create"></iron-icon>
-          </div>
-      </template>
-        <template class="hidden" is="dom-if" if="{{item.edit}}">
-          <div class="content__items__edit">
-          <p class="item__added">{{item.knowledge}}:</p>
-          <div class="content__slider">
-            <p>0%</p><paper-slider pin="true" value="{{item.percent}}"></paper-slider><p>100%</p>
-          </div>
-          <iron-icon  data-id$="[[index]]" on-click="_deleteItem" class="item__added" icon="icons:close"></iron-icon>
-        </div>
-        </template>
-			</template>
-		<paper-button class="paper-button-k" raised on-click="_saveData">Guardar</paper-button>
-
+		<template  is="dom-repeat" items="{{knowledges}}" as="item">
+      <div class="content__items">
+        <p class="item__added">{{item.knowledge}}</p>
+        <p class="item__added">{{item.description}}</p>
+        <p class="item__added">{{item.percent}}%</p>
+        <iron-icon  data-id$="[[index]]" on-click="_deleteItem" class="item__added" icon="icons:close"></iron-icon>
+        <iron-icon data-id$="[[index]]" class="item__added" on-click="_editItem" icon="icons:create"></iron-icon>
+      </div>
+		</template>
   </template>
 
   <script>

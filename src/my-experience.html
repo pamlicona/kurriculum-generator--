@@ -1,8 +1,10 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
@@ -17,72 +19,127 @@
         display: block;
       }
 
-      .hiddeClass {
+      .hidde-class {
         display: none !important;
       }
 
-      .showClass {
+      .show-class {
         display: block;
       }
+
+      .experience-title {
+        width: 288px;
+        height: 32px;
+        font-size: 24px;
+        font-weight: 500;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.33;
+        letter-spacing: normal;
+        color: #575756;
+      }
+
+      .column-two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 40px;
+      }
+
+      .experience-dates {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        align-items: center;
+        margin-bottom: 30px;
+        margin-top: 20px;
+      }
+
+      paper-card {
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      .header {
+        background-color: #dbdbdb;
+        padding: 5px 18px;
+      }
+
+      .title-text {
+        font-size: 20pt;
+      }
+
+      .card-actions {
+        text-align: right;
+        color: rgb(255, 121, 0);
+      }
     </style>
-    <h1>Experiencia Profesional</h1>
-    <iron-form id="formExperience">
-      <form action="/" method="get">
-        <div>
-          <paper-input type="text" name="company" required label="Empresa" value="{{currentItem.company}}"></paper-input>
-          <paper-input type="text" name="position" required label="Cargo" value="{{currentItem.position}}"></paper-input>
-          <paper-input type="text" name="location" required label="Ubicación" value="{{currentItem.location}}"></paper-input>
-          <paper-input type="text" name="description" required label="Descripción" value="{{currentItem.description}}"></paper-input>
-        </div>
-        <div>
-          <div class="datepicker-dialog">
-            <span>Fecha inicio</span>
-            <paper-button disabled>{{startDate}}</paper-button>
-            <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
-            <app-datepicker-dialog modal id="dateInit"
-              date="{{startDate}}"
-              locale="es-ES">
-            </app-datepicker-dialog>
+    <div class="container">
+      <h1 class="experience-title">Experiencia Laboral</h1>
+      <iron-form id="formExperience">
+        <form action="/" method="get">
+          <div class="column-two">
+            <paper-input type="text" name="company" required label="Nombre de la empresa" value="{{currentItem.company}}"></paper-input>
+            <paper-input type="text" name="position" required label="Rol desempeñado" value="{{currentItem.position}}"></paper-input>
           </div>
-          <div class="datepicker-dialog" id="finalDateContainer" class$="[[_displayClass(actual)]]">
-            <span>Fecha final</span>
-            <paper-button disabled>{{finalDate}}</paper-button>
-            <paper-icon-button icon="icons:today" on-tap="_openDialogFinal"></paper-icon-button>
-            <app-datepicker-dialog modal id="dateFinal"
-              date="{{finalDate}}"
-              locale="es-ES">
-            </app-datepicker-dialog>
+          <div>
+            <paper-input type="text" name="location" required label="Ubicación" value="{{currentItem.location}}"></paper-input>
+            <paper-textarea rows=3 type="text" name="description" required label="Tareas realizadas" value="{{currentItem.description}}"></paper-textarea>
           </div>
-          <paper-checkbox name="actual" checked="{{actual}}">Trabajo actual</paper-checkbox>
+          <div class="experience-dates">
+            <paper-checkbox name="actual" checked="{{actual}}">Trabajo actual</paper-checkbox>
+            <div class="datepicker-dialog">
+              <span>Fecha de inicio</span>
+              <paper-button disabled>{{startDate}}</paper-button>
+              <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
+              <app-datepicker-dialog modal id="dateInit"
+                date="{{startDate}}"
+                locale="es-ES">
+              </app-datepicker-dialog>
+            </div>
+            <div class="datepicker-dialog" id="finalDateContainer" class$="[[_displayClass(actual)]]">
+              <span>Fecha de final</span>
+              <paper-button disabled>{{finalDate}}</paper-button>
+              <paper-icon-button icon="icons:today" on-tap="_openDialogFinal"></paper-icon-button>
+              <app-datepicker-dialog modal id="dateFinal"
+                date="{{finalDate}}"
+                locale="es-ES">
+              </app-datepicker-dialog>
+            </div>
+          </div>
+          <div class="save-buttons">
+            <paper-button raised on-click="_validCurrentJob" class="paper-button-k">Agregar</paper-button>
+            <paper-button raised on-click="_saveData" class="paper-button-k">Guardar</paper-button>
+          </div>
+        </form>
+      </iron-form>
+
+      <paper-dialog id="modal" modal>
+        <p>Se agregará un trabajo actual más ya que agregaste uno anteriormente.</p>
+        <div>
+          <paper-button raised dialog-confirm>Revisar</paper-button>
+          <paper-button raised on-tap="_moreCurrentJob">Aceptar</paper-button>
         </div>
+      </paper-dialog>
 
-        <paper-button raised on-click="_validCurrentJob">Agregar</paper-button>
-        <paper-button raised on-click="_resetData">Limpiar</paper-button>
-        <paper-button raised on-click="_saveData">Guardar</paper-button>
-      </form>
-    </iron-form>
-
-    <paper-dialog id="modal" modal>
-      <p>Se agregará un trabajo actual más ya que agregaste uno anteriormente.</p>
-      <div>
-        <paper-button raised dialog-confirm>Revisar</paper-button>
-        <paper-button raised on-tap="_moreCurrentJob">Aceptar</paper-button>
-      </div>
-    </paper-dialog>
-
-    <template is="dom-repeat" items="{{experience}}">
-      <div id="[[index]]" class="listExperience">
-        <div>Empresa: <span>{{item.company}}</span></div>
-        <div>Cargo: <span>{{item.position}}</span></div>
-        <div>Ubicación: <span>{{item.location}}</span></div>
-        <div>Descripción: <span>{{item.description}}</span></div>
-        <div>Fecha inicio: <span>{{item.startDate}}</span></div>
-        <div class$="[[_displayClass(item.actual)]]">Fecha final: <span>{{item.finalDate}}</span></div>
-        <div>Trabajo actual: <span>[[_isActual(item.actual)]]</span></div>
-        <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
-        <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
-      </div>
-    </template>
+      <template is="dom-repeat" items="{{experience}}">
+        <paper-card>
+          <div class="header">
+            <div class="title-text">{{item.company}}</div>
+            <div class="subtitle-text">{{item.position}}</div>
+          </div>
+          <div class="card-content list-experience" id="[[index]]">
+            <div>Ubicación: <span>{{item.location}}</span></div>
+            <div>Descripción: <span>{{item.description}}</span></div>
+            <div>Fecha inicio: <span>{{item.startDate}}</span></div>
+            <div class$="[[_displayClass(item.actual)]]">Fecha final: <span>{{item.finalDate}}</span></div>
+            <div>Trabajo actual: <span>[[_isActual(item.actual)]]</span></div>
+          </div>
+          <div class="card-actions">
+            <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
+            <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
+          </div>
+        </paper-card>
+      </template>
+    </div>
   </template>
 
   <script>
@@ -131,7 +188,7 @@
       }
 
       _displayClass(actual) {
-        return actual ? 'hiddeClass' : 'showClass';
+        return actual ? 'hidde-class' : 'show-class';
       }
 
       _isActual(actual) {

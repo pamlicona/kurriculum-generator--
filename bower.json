@@ -24,7 +24,8 @@
     "paper-dialog": "PolymerElements/paper-dialog#^2.1.1",
     "paper-radio-group": "PolymerElements/paper-radio-group#^2.2.0",
     "paper-radio-button": "PolymerElements/paper-radio-button#^2.1.0",
-    "polymerfire": "FirebaseExtended/polymerfire#^2.2.1"
+    "polymerfire": "FirebaseExtended/polymerfire#^2.2.1",
+    "paper-card": "PolymerElements/paper-card#^2.1.0"
   },
   "resolutions": {
     "polymer": "^2.0.0"
