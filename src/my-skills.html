@@ -11,26 +11,53 @@
       :host {
         display: block;
       }
+      .input-skill {
+        margin-bottom: 20px;
+      }
+
+      .container-skills {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 10px;
+        margin-top: 5%;
+      }
+
+      .list-skills {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-gap: 10px;
+        align-items: center;
+        border: 1px solid #dbdbdb;
+        padding-left: 10px;
+      }
+
+      .card-actions {
+        text-align: left;
+      }
     </style>
     <h1>Aptitudes</h1>
     <iron-form id="formSkills">
       <form action="/" method="get">
-        <div>
+        <div class="input-skill">
           <paper-input type="text" name="skill" required label="Aptitud" value="{{skill}}"></paper-input>
         </div>
-        <paper-button raised on-click="_addData">Agregar</paper-button>
-        <paper-button raised on-click="_resetData">Limpiar</paper-button>
-        <paper-button raised on-click="_saveData">Guardar</paper-button>
+        <div class="save-buttons">
+          <paper-button class="paper-button-k" raised on-click="_addData">Agregar</paper-button>
+          <paper-button class="paper-button-k" raised on-click="_saveData">Guardar</paper-button>
+        </div>
       </form>
     </iron-form>
-
-    <template is="dom-repeat" items="{{skills}}">
-      <div id="[[index]]" class="listSkills">
-        <span>{{item}}</span>
-        <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
-        <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
-      </div>
-    </template>
+    <div class="container-skills">
+      <template is="dom-repeat" items="{{skills}}">
+        <div id="[[index]]" class="list-skills">
+          <span>{{item}}</span>
+          <div class="card-actions">
+            <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
+            <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
+          </div>
+        </div>
+      </template>
+    </div>
   </template>
 
   <script>
@@ -75,7 +102,6 @@
             data: this.skills
           }
         }));
-        //localStorage.setItem('skills', JSON.stringify(this.skills));
       }
 
       _removeItem(event) {

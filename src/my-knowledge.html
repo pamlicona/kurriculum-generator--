@@ -11,6 +11,7 @@
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="app-styles.html">
 
 
@@ -22,6 +23,7 @@
       }
 			.content__slider{
 				display: flex;
+        margin: 15px 0;
 			}
       .content__items{
 				display: grid;
@@ -38,13 +40,19 @@
       .hidden{
         display: none;
       }
+      .container-knowledge {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 15px;
+        margin-top: 5%;
+      }
     </style>
     <h1>Herramientas</h1>
     <iron-form id="form">
       <form>
         <div>
           <paper-input type="text" name="knowledge" required label="Herramienta (p. ej. Análisis de datos)" value="{{currentKnowledge.knowledge}}"></paper-input>
-          <paper-input type="text" name="description" label="Descripción (Versiones)" value="{{currentKnowledge.description}}"></paper-input>
+          <paper-textarea type="text" name="description" rows=2 label="Descripción (Versiones)" value="{{currentKnowledge.description}}"></paper-textarea>
         </div>
         <div class="content__slider">
 					<p>0%</p><paper-slider on-change="_change" pin value="{{valueSlider}}"></paper-slider><p>100%</p>
@@ -55,15 +63,21 @@
         </div>
       </form>
 		</iron-form>
-		<template  is="dom-repeat" items="{{knowledges}}" as="item">
-      <div class="content__items">
-        <p class="item__added">{{item.knowledge}}</p>
-        <p class="item__added">{{item.description}}</p>
-        <p class="item__added">{{item.percent}}%</p>
-        <iron-icon  data-id$="[[index]]" on-click="_deleteItem" class="item__added" icon="icons:close"></iron-icon>
-        <iron-icon data-id$="[[index]]" class="item__added" on-click="_editItem" icon="icons:create"></iron-icon>
-      </div>
-		</template>
+    <div class="container-knowledge">
+  		<template  is="dom-repeat" items="{{knowledges}}" as="item">
+        <paper-card>
+          <div class="header">
+            <div class="title-text item__added">{{item.knowledge}}</div>
+            <div class="subtitle-text item__added">{{item.percent}}%</div>
+          </div>
+          <div class="card-content" id="[[index]]">{{item.description}}</div>
+          <div class="card-actions">
+            <iron-icon  data-id$="[[index]]" on-click="_deleteItem" class="item__added" icon="icons:close"></iron-icon>
+            <iron-icon data-id$="[[index]]" class="item__added" on-click="_editItem" icon="icons:create"></iron-icon>
+          </div>
+        </paper-card>
+  		</template>
+    </div>
   </template>
 
   <script>
