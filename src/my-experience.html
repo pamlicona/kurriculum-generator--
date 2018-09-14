@@ -183,12 +183,18 @@
 
       _formatJson() {
         const form = this.$.formExperience.serializeForm();
-        form.actual = this.actual;
-        form.startDate = this.startDate;
         if (this.actual == false) {
           form.finalDate = this.finalDate;
         }
-        return form;
+        this.push('experience', {
+          actual: this.actual,
+          company: form.company,
+          description: form.description,
+          location: form.location,
+          position: form.position,
+          startDate: this.startDate,
+          finalDate: !this.actual ? this.finalDate : ''
+        });
       }
 
       _validCurrentJob() {
@@ -209,13 +215,13 @@
       _addData() {
         const validate = this.$.formExperience.validate();
         if (validate) {
-          const form = this._formatJson();
-          this.push('experience', form)
+          this._formatJson();
           this._resetData();
         }
       }
 
       _saveData() {
+        console.log(this.experience)
         this.dispatchEvent(new CustomEvent('save-info',{
           bubbles: true,
           detail:{
