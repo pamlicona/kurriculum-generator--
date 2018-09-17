@@ -12,7 +12,6 @@
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
-<link rel="import" href="app-styles.html">
 
 
 <dom-module id="my-knowledge">
@@ -20,6 +19,7 @@
     <style include="app-styles">
       :host {
         display: block;
+        margin-top: 10%;
       }
 			.content__slider{
 				display: flex;
@@ -103,7 +103,9 @@
 					},
           currentKnowledge: {
             type: Object,
-            value: {}
+            value: {
+              description: ''
+            }
           }
         };
       }

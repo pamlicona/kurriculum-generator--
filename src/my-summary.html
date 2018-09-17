@@ -3,8 +3,8 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icons/maps-icons.html">
-<link rel="import" href="/bower_components/polymer/lib/elements/dom-repeat.html">
-<link rel="import" href="/bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
@@ -17,7 +17,11 @@
 
 <dom-module id="my-summary">
   <template>
-    <style include="app-styles">
+    <style>
+      :host {
+          margin-top: 10%;
+      }
+
       .container{
         border: 1px solid #ccc!important;
         border-radius: 16px;
@@ -52,18 +56,11 @@
         border-bottom: 1px solid;
         margin-bottom: 40px;
       }
-      .buttons {
-        display: flex;
-        justify-content: center;
-        margin-top: 30px;
-        margin-bottom: 40px;
-        color: black;
-      }
       form {
         display: grid;
         justify-content: center;
       }
-      .containerModal {
+      .container-modal {
         text-align: center;
       }
     </style>
@@ -236,7 +233,7 @@
       <div class="title">
         <h2>Mi Kurriculum</h2>
       </div>
-      <div class="containerModal">
+      <div class="container-modal">
         <h3>Selecciona una plantilla y tipo de formato.</h3>
         <iron-form id="formPrint">
           <form action="/" method="get">

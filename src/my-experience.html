@@ -8,8 +8,6 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
-<link rel="import" href="app-styles.html">
-
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 
 <dom-module id="my-experience">
@@ -17,6 +15,10 @@
     <style include="app-styles">
       :host {
         display: block;
+      }
+
+      .container {
+        margin-top: 10%;
       }
 
       .hidde-class {
@@ -57,9 +59,22 @@
         width: 100%;
         margin-top: 20px;
       }
+
+      .title {
+        border-bottom: 1px solid;
+        margin-bottom: 40px;
+      }
+
+      .modal-text {
+        font-weight: 100;
+        text-align: center;
+        line-height: 26px;
+      }
     </style>
     <div class="container">
+
       <h1 class="experience-title data-header-name">Experiencia Laboral</h1>
+
       <iron-form id="formExperience">
         <form action="/" method="get">
           <div class="column-two">
@@ -99,10 +114,13 @@
       </iron-form>
 
       <paper-dialog id="modal" modal>
-        <p>Se agregará un trabajo actual más ya que agregaste uno anteriormente.</p>
-        <div>
-          <paper-button raised dialog-confirm>Revisar</paper-button>
-          <paper-button raised on-tap="_moreCurrentJob">Aceptar</paper-button>
+        <div class="title">
+          <h2>Mi Kurriculum</h2>
+        </div>
+        <h3 class="modal-text">Se agregará un trabajo actual más<br>ya que agregaste uno anteriormente.</h3>
+        <div class="save-buttons">
+          <paper-button class="paper-button-k" raised dialog-confirm>Revisar</paper-button>
+          <paper-button class="paper-button-k" raised on-tap="_moreCurrentJob">Aceptar</paper-button>
         </div>
       </paper-dialog>
 
@@ -183,12 +201,18 @@
 
       _formatJson() {
         const form = this.$.formExperience.serializeForm();
-        form.actual = this.actual;
-        form.startDate = this.startDate;
         if (this.actual == false) {
           form.finalDate = this.finalDate;
         }
-        return form;
+        this.push('experience', {
+          actual: this.actual,
+          company: form.company,
+          description: form.description,
+          location: form.location,
+          position: form.position,
+          startDate: this.startDate,
+          finalDate: !this.actual ? this.finalDate : ''
+        });
       }
 
       _validCurrentJob() {
@@ -209,13 +233,13 @@
       _addData() {
         const validate = this.$.formExperience.validate();
         if (validate) {
-          const form = this._formatJson();
-          this.push('experience', form)
+          this._formatJson();
           this._resetData();
         }
       }
 
       _saveData() {
+        console.log(this.experience)
         this.dispatchEvent(new CustomEvent('save-info',{
           bubbles: true,
           detail:{
