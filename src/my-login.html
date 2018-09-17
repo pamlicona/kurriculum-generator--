@@ -1,0 +1,78 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/maps-icons.html">
+
+<dom-module id="my-login">
+    <template>
+        <style>
+            :host {
+                position: fixed;
+                top: 101px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgb(255, 121, 0);
+                transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1;
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            /* :host([signed-in]) {
+                opacity: 0;
+                pointer-events: none;
+            } */
+            paper-button > * {
+                vertical-align: middle;
+                text-transform: none;
+            }
+        </style>
+        
+        <paper-button on-click="signIn">
+            <iron-icon icon="account-circle"></iron-icon>
+            <span> Ingresar con correo de Kairós</span>
+        </paper-button>
+
+    </template>
+
+    <script>
+        /**
+         * `my-login`
+         *
+         * @customElement
+         * @polymer
+         */
+        class MyLogin extends Polymer.Element {
+            static get is() { return 'my-login'; }
+            static get properties() {
+                return {
+                    signedIn: {
+                        type: Boolean,
+                        reflectToAttribute: true,
+                        value: false
+                    }
+                };
+            }
+
+            connectedCallback() {
+                super.connectedCallback();
+            }
+
+            signIn() {
+                this._dispatchEvent('sign-in', null);
+            }
+
+            _dispatchEvent(event, detail, bubbles = true) {
+                this.dispatchEvent(new CustomEvent(event, {
+                    bubbles: bubbles,
+                    composed: true,
+                    detail: detail
+                }));
+            }
+        }
+
+        window.customElements.define(MyLogin.is, MyLogin);
+    </script>
+</dom-module>
