@@ -57,6 +57,17 @@
         width: 100%;
         margin-top: 20px;
       }
+
+      .title {
+        border-bottom: 1px solid;
+        margin-bottom: 40px;
+      }
+
+      .modal-text {
+        font-weight: 100;
+        text-align: center;
+        line-height: 26px;
+      }
     </style>
     <div class="container">
       <h1 class="experience-title">Experiencia Laboral</h1>
@@ -99,10 +110,13 @@
       </iron-form>
 
       <paper-dialog id="modal" modal>
-        <p>Se agregará un trabajo actual más ya que agregaste uno anteriormente.</p>
-        <div>
-          <paper-button raised dialog-confirm>Revisar</paper-button>
-          <paper-button raised on-tap="_moreCurrentJob">Aceptar</paper-button>
+        <div class="title">
+          <h2>Mi Kurriculum</h2>
+        </div>
+        <h3 class="modal-text">Se agregará un trabajo actual más<br>ya que agregaste uno anteriormente.</h3>
+        <div class="save-buttons">
+          <paper-button class="paper-button-k" raised dialog-confirm>Revisar</paper-button>
+          <paper-button class="paper-button-k" raised on-tap="_moreCurrentJob">Aceptar</paper-button>
         </div>
       </paper-dialog>
 
