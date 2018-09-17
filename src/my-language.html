@@ -10,29 +10,40 @@
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="app-styles.html">
+
 
 <dom-module id="my-language">
     <template>
-        <style>
+        <style include="app-styles">
             :host {
                 display: block;
             }
+            #language_name{
+                width: 50%;
+            }
+            #level_name{
+                width: 50%;
+                margin-top: 1px;
+            }
         </style>
-        <h1>Idioma</h1>
+        <h1 class="data-header-name">Idioma</h1>
         <iron-form id="languageExperience">
             <form>
-                <paper-input id="language_name" type="text" name="idioma" label="Idioma" required error-message="Campo requerido" allowed-pattern="[a-zA-Z]"
-                    value="{{language.name}}"></paper-input>
-                <paper-dropdown-menu-light label="Competencia">
-                    <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{level}} attr-for-selected="myvalue" required>
-                        <template is="dom-repeat" items="[[levels]]" as="level">
-                            <paper-item myvalue="[[level]]">{{level}}</paper-item>
-                        </template>
-                    </paper-listbox>
-                </paper-dropdown-menu-light>
+                <div class="flex-div">
+                    <paper-input id="language_name" type="text" name="idioma" label="Idioma" required error-message="Campo requerido" allowed-pattern="[a-zA-Z]"
+                        value="{{language.name}}"></paper-input>
+                    <paper-dropdown-menu-light id="level_name" label="Nivel">
+                        <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{level}} attr-for-selected="myvalue" required>
+                            <template is="dom-repeat" items="[[levels]]" as="level">
+                                <paper-item myvalue="[[level]]">{{level}}</paper-item>
+                            </template>
+                        </paper-listbox>
+                    </paper-dropdown-menu-light>
+                </div>
                 <input is="iron-input" name="title" type="hidden" value$="[[level]]">
-                <paper-button raised on-click="_addLanguage">Agregar</paper-button>
-                <paper-button raised on-click="_saveData">Guardar</paper-button>
+                <paper-button class="save-and-continue paper-button-k" raised on-click="_addLanguage">Agregar</paper-button>
+                <paper-button class="save-and-continue paper-button-k" raised on-click="_saveData">Guardar y Continuar</paper-button>
             </form>
         </iron-form>
         <template is="dom-repeat" items="[[languages]]" as="language">

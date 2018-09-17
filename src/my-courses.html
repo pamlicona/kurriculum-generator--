@@ -9,12 +9,12 @@
 
 <dom-module id="my-courses">
     <template>
-        <style>
+        <style include="app-styles">
             :host {
                 display: block;
             }
         </style>
-        <h1>Cursos y diplomados</h1>
+        <h1 class="data-header-name">Cursos y diplomados</h1>
         <iron-form id="coursesForm">
             <form>
                 <paper-input id="course_name" type="text" name="course" label="Curso" required error-message="Campo requerido" value="{{name}}"></paper-input>
@@ -26,8 +26,8 @@
                     </app-datepicker-dialog>
                 </div>
                 <paper-input id="course_institution" type="text" name="institution" label="Institución" required error-message="Campo requerido" value="{{institution}}"></paper-input>
-                <paper-button raised on-click="_addCourse">Agregar</paper-button>
-                <paper-button raised on-click="_saveData">Guardar</paper-button>
+                <paper-button class="paper-button-k" raised on-click="_addCourse">Agregar</paper-button>
+                <paper-button class="paper-button-k save-and-continue" raised on-click="_saveData">guardar y continuar</paper-button>
             </form>
         </iron-form>
         <template is="dom-repeat" items="[[courses]]" as="curso">

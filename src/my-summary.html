@@ -11,11 +11,13 @@
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="app-styles.html">
+
 
 
 <dom-module id="my-summary">
   <template>
-    <style>
+    <style include="app-styles">
       .container{
         border: 1px solid #ccc!important;
         border-radius: 16px;
@@ -228,7 +230,7 @@
         </template>
       </dl>
     </div>
-    <paper-button raised on-click="_openModal">Generar PDF</paper-button>
+    <paper-button class="paper-button-k save-and-continue" raised on-click="_openModal">Generar PDF</paper-button>
 
     <paper-dialog id="modal" modal>
       <div class="title">
@@ -256,8 +258,8 @@
         </iron-form>
       </div>
       <div class="buttons">
-        <paper-button raised dialog-confirm>Cancelar</paper-button>
-        <paper-button raised on-tap="_downloadCv">Aceptar</paper-button>
+        <paper-button class="paper-button-k save-and-continue" raised dialog-confirm>Cancelar</paper-button>
+        <paper-button class="paper-button-k save-and-continue" raised on-tap="_downloadCv">Aceptar</paper-button>
       </div>
     </paper-dialog>
   </template>
