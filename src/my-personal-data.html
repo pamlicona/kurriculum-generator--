@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="list-element.html">
 <link rel="import" href="profile-picture.html">
+<link rel="import" href="app-styles.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
@@ -15,7 +16,7 @@
 
 <dom-module id="my-personal-data">
     <template>
-        <style>
+        <style include="app-styles">
             .button {
                 background-color: black;
                 width: 30%;
@@ -95,7 +96,7 @@
         <section class="container">
             <iron-form id="formPersonalData">
                 <form action="/" method="get">
-                    <h1>Datos Personales</h1>
+                    <h1 class="data-header-name">Datos Personales</h1>
                     <div class="image-container">
                         <!-- <profile-picture></profile-picture> -->
                     </div>
@@ -207,7 +208,7 @@
                            <list-element title="Correos" items="{{emails}}" placeholder="ejemplo@company.com"></list-element>
                        </div>
                     </div>
-                    <paper-button raised on-click="_saveData">Guardar</paper-button>
+                    <paper-button class="save-and-continue paper-button-k" raised on-click="_saveData">guardar y continuar</paper-button>
                 </form>
             </iron-form>
         </section>

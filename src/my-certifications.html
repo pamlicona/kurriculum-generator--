@@ -42,7 +42,7 @@
         display: inline-block;
       }
       .cont-input{
-        padding: 15% 0 0 0;
+        padding: 7% 0 0 0;
       }
       .btn-send{
         padding: 5px;
@@ -58,7 +58,7 @@
     </style>
 
     <div id="">
-    <h1>Certificaciones</h1>
+    <h1 class="data-header-name" >Certificaciones</h1>
      <iron-form id="formCertifications">
       <form id="container-formacion">
         <div class="col">
@@ -106,7 +106,7 @@
           </div>
 
           <div class="cont-input">
-            <paper-checkbox name="permanente" checked="{{permanente}}">Certificación Permanente</paper-checkbox>
+            <paper-checkbox name="permanente" checked="{{permanente}}">Esta certificacion no vence</paper-checkbox>
           </div>
 
           <template is="dom-repeat" items="{{certification}}">
@@ -124,12 +124,13 @@
           </template>
 
 
-          <div class="cont-input">
-            <paper-button class="paper-button-k" raised on-click="_addData">Añadir</paper-button>
-            <paper-button class="paper-button-k" raised on-click="_saveData">Guardar</paper-button>
+          <div class="cont-input" on-click="_addData">
+            <img src="../assets/img/group.svg" alt="" class="plus">
+            <a class="add-link" >Añadir nueva certificación</a>
           </div>
         </div>
       </form>
+      <paper-button class="paper-button-k save-and-continue" raised on-click="_saveData">guardar y continuar</paper-button>
      </iron-form>
     </div>
 

@@ -68,14 +68,15 @@
             <div class="line"></div>
 
             <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list list-nums" role="navigation">
-                <a name="personal-data"  class="numbutton" href="[[rootPath]]#personal-data">1</a>
-                <a name="experience" class="numbutton numbutton-unselected" href="[[rootPath]]#experience">2</a>
-                <a name="knowledge" class="numbutton numbutton-unselected" href="[[rootPath]]#knowledge">3</a>
-                <a name="skills" class="numbutton numbutton-unselected" href="[[rootPath]]#skills">4</a>
-                <a name="language" class="numbutton numbutton-unselected" href="[[rootPath]]#language">5</a>
-                <a name="formation" class="numbutton numbutton-unselected" href="[[rootPath]]#formation">6</a>
-                <a name="certifications" class="numbutton numbutton-unselected" href="[[rootPath]]#certifications">7</a>
-                <a name="summary" class="numbutton numbutton-unselected" href="[[rootPath]]#summary">8</a>
+                <a name="personal-data" on-click="_changeNumber" class="numbutton" href="[[rootPath]]#personal-data">1</a>
+                <a name="experience" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#experience">2</a>
+                <a name="knowledge" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#knowledge">3</a>
+                <a name="skills" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#skills">4</a>
+                <a name="language" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#language">5</a>
+                <a name="formation" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#formation">6</a>
+                <a name="certifications" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#certifications">7</a>
+                <a name="courses" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#courses">8</a>
+                <a name="summary" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#summary">9</a>
             </iron-selector> <br><br>
 
 
@@ -109,7 +110,7 @@
             </firebase-document>
       </div>
       <footer>
-        <h3>© Kairós DS • Todos los derechos reservados</h3>
+        <h3 class="-Kairs-DS-Todos">© Kairós DS • Todos los derechos reservados</h3>
       </footer>
     </template>
 
@@ -127,6 +128,10 @@
                     routeData: Object,
                     subroute: Object,
                     rootPath: String,
+                    step: {
+                        type: Number,
+                        value: 0
+                    },
                     user: Object,
                     data: Object
                 };
@@ -141,6 +146,20 @@
             connectedCallback() {
                 super.connectedCallback();
                 //this._saveInfo('user',{});
+            }
+
+            _changeNumber(event){
+                //console.log("cambio ");
+                //event.target.innerHTML = "✓";
+                let cnumbers = event.target.parentNode.getElementsByTagName("*");
+                for (let n=0; n<cnumbers.length; n++){
+                    cnumbers[n].style.background = "white";
+                    cnumbers[n].style.color = "gray";
+                    cnumbers[n].style.border = "1px solid gray";
+                }
+                event.target.style.background = "rgb(255, 121, 0)";
+                event.target.style.color = "white";
+                event.target.style.border = "0";
             }
 
             _routePageChanged(page) {
@@ -176,6 +195,17 @@
                 // Firebase
                 this.data = data;
                 console.log("Firebase data: ", this.data);
+                
+                //pasar al siguiente paso y marcar el actual
+                console.log(this.step);
+                let items = document.getElementsByClassName("numbutton");
+                items[this.step].style.background = "white !important";
+                items[this.step].style.color = "rgb(255, 121, 0)!important";
+                items[this.step].style.border = "1px solid rgb(255, 121, 0) !important";
+                items[this.step].innerHTML = "✓";
+                this.step++;
+                items[this.step].click();
+                console.log(items); 
             }
 
             _getInfo(){

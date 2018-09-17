@@ -58,10 +58,13 @@
       .cont-input.radio {
         margin-bottom: 10px;
       }
+      .dropdown{
+        width: 100%;
+      }
     </style>
 
     <div id="">
-    <h1>Formación Académica</h1>
+    <h1 class="data-header-name" >Formación Académica</h1>
      <iron-form id="formFormation">
       <form id="container-formacion">
         <div class="col">
@@ -74,7 +77,7 @@
           </div>
 
           <div class="cont-input">
-            <paper-dropdown-menu-light label="Estatus">
+            <paper-dropdown-menu-light label="Estatus" class="dropdown">
               <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{level}} attr-for-selected="myvalue" required>
                   <template is="dom-repeat" items="[[levels]]" as="level">
                       <paper-item myvalue="[[level]]">{{level}}</paper-item>
@@ -131,10 +134,10 @@
 
           <div class="cont-input">
             <paper-button class="paper-button-k" raised on-click="_addData">Añadir</paper-button>
-            <paper-button class="paper-button-k" raised on-click="_saveData">Guardar</paper-button>
-        </div>
+          </div>  
         </div>
       </form>
+      <paper-button class="paper-button-k save-and-continue" raised on-click="_saveData">guardar y continuar</paper-button>
      </iron-form>
     </div>
 
