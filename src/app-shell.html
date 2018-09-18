@@ -80,7 +80,7 @@
             </iron-selector> <br><br>
 
 
-            <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
+            <iron-pages id="selector" selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
                 <my-personal-data on-save-info="_saveInfoEvent" name="personal-data"></my-personal-data>
                 <my-experience on-save-info="_saveInfoEvent" name="experience"></my-experience>
                 <my-knowledge on-save-info="_saveInfoEvent" name="knowledge"></my-knowledge>
@@ -163,10 +163,16 @@
             }
 
             _routePageChanged(page) {
+                if (!this.user) {
+                    this.page = 'login';
+                    return;
+                }
+
                 if(page == 'summary'){
                     this.user = this._getInfo();
                 }
-                // If not page was found go to 'personal-data' in that case.
+
+                // If not page was found go to 'login' in that case.
                 this.page = page || 'login';
             }
 
