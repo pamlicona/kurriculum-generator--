@@ -99,6 +99,16 @@
                     <h1 class="data-header-name">Datos Personales</h1>
                     <div class="image-container">
                         <!-- <profile-picture></profile-picture> -->
+                        <firebase-storage-multiupload
+                            id="fs"
+                            app-name="kurriculum"
+                            path="/users/{{user.uid}}/files"
+                            upload-tasks="{{uploadedFiles}}"
+                            on-error="catchError">
+                        </firebase-storage-multiupload>
+                        <input id="fileUploader" type="file" /> <br>
+                        <button on-click="_upload">Upload</button> <br>
+
                     </div>
                     <div class="row">
                         <div class="l2">
@@ -222,6 +232,10 @@
                 
                 static get properties() {
                     return {
+                        user: {
+                            type: Object,
+                            observer: '_userChanged',
+                        },
                         userImage : {
                             type : String,
                             value : ""
@@ -323,6 +337,18 @@
                 
                 connectedCallback() {
                     super.connectedCallback();  
+                }
+
+                _userChanged() {
+                    //console.log('User: ', this.user);
+                }
+
+                _upload() {
+                    this.$.fs.upload(this.$.fileUploader.files)
+                }
+
+                catchError(e) {
+                    console.log(e.detail.message);
                 }
             
                 _timeAgo() {

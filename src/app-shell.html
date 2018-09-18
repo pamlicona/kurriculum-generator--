@@ -82,7 +82,7 @@
 
 
             <iron-pages id="selector" selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-                <my-personal-data on-save-info="_saveInfoEvent" name="personal-data"></my-personal-data>
+                <my-personal-data on-save-info="_saveInfoEvent" name="personal-data" user="[[user]]"></my-personal-data>
                 <my-experience on-save-info="_saveInfoEvent" name="experience"></my-experience>
                 <my-knowledge on-save-info="_saveInfoEvent" name="knowledge"></my-knowledge>
                 <my-skills on-save-info="_saveInfoEvent" name="skills"></my-skills>
