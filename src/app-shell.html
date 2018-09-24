@@ -53,7 +53,7 @@
             <div style="margin-top: 110px">
                 <div class="cont-comp-photo">
                     <div class="photo">
-                            <img class="person-img" src="../assets/img/person.png" alt="person">
+                            <img class="person-img" src="[[profilePic]]" alt="person">
                     </div>
                     <div class="data-photo">
                         <p><strong>Annuar</strong></p>
@@ -82,7 +82,7 @@
 
 
             <iron-pages id="selector" selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-                <my-personal-data on-save-info="_saveInfoEvent" name="personal-data" user="[[user]]"></my-personal-data>
+                <my-personal-data on-save-info="_saveInfoEvent" on-profile-pic-uploaded="_profilePicUploaded" name="personal-data" user="[[user]]"></my-personal-data>
                 <my-experience on-save-info="_saveInfoEvent" name="experience"></my-experience>
                 <my-knowledge on-save-info="_saveInfoEvent" name="knowledge"></my-knowledge>
                 <my-skills on-save-info="_saveInfoEvent" name="skills"></my-skills>
@@ -136,9 +136,11 @@
                         value: 0
                     },
                     user: Object,
-                    data: Object//,
-                    //usercv: Object,
-                    //templatecv: Object
+                    data: Object,
+                    profilePic: {
+                        type: String,
+                        value: './assets/img/person.png'
+                    }
                 };
             }
 
@@ -150,7 +152,11 @@
 
             connectedCallback() {
                 super.connectedCallback();
-                //this._saveInfo('user',{});
+            }
+
+            _profilePicUploaded(e) {
+                this.profilePic =  e.detail.data;
+                console.log('_profilePicUploaded ', e.detail.data);
             }
 
             _downloadCv(event) {
