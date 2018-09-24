@@ -62,6 +62,83 @@
                     <input class="search-field" type="text" placeholder="Escribe un nombre o un perfil de Kairos">
                 </form>
             </iron-form>
+
+            <div class="results">
+                <div class="container">
+                    <div class="card">    
+                        <div style="">
+                            <div class="cont-comp-photo">
+                                <div class="photo">
+                                        <img class="person-img" src="../assets/img/person.png" alt="person">
+                                </div>
+                                <div class="data-photo">
+                                    <p><strong>Annuar</strong></p>
+                                    <p><strong>Harb </strong></p> <br>
+                                    <p><strong>Polymer Expert</strong></p>
+                                    <p>annuarh@kairosds.com</p>
+                                    <p>+52 5542 159 282</p>
+                                </div>
+                            </div>
+                            <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                        </div>
+
+                    </div>
+                    <div class="card">    
+                            <div style="">
+                                <div class="cont-comp-photo">
+                                    <div class="photo">
+                                            <img class="person-img" src="../assets/img/person.png" alt="person">
+                                    </div>
+                                    <div class="data-photo">
+                                        <p><strong>Annuar</strong></p>
+                                        <p><strong>Harb </strong></p> <br>
+                                        <p><strong>Polymer Expert</strong></p>
+                                        <p>annuarh@kairosds.com</p>
+                                        <p>+52 5542 159 282</p>
+                                    </div>
+                                </div>
+                                <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                            </div>
+    
+                        </div>
+                        <div class="card">    
+                                <div style="">
+                                    <div class="cont-comp-photo">
+                                        <div class="photo">
+                                                <img class="person-img" src="../assets/img/person.png" alt="person">
+                                        </div>
+                                        <div class="data-photo">
+                                            <p><strong>Annuar</strong></p>
+                                            <p><strong>Harb </strong></p> <br>
+                                            <p><strong>Polymer Expert</strong></p>
+                                            <p>annuarh@kairosds.com</p>
+                                            <p>+52 5542 159 282</p>
+                                        </div>
+                                    </div>
+                                    <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                                </div>
+                        </div>
+                        <div class="card">    
+                                <div style="">
+                                    <div class="cont-comp-photo">
+                                        <div class="photo">
+                                                <img class="person-img" src="../assets/img/person.png" alt="person">
+                                        </div>
+                                        <div class="data-photo">
+                                            <p><strong>Annuar</strong></p>
+                                            <p><strong>Harb </strong></p> <br>
+                                            <p><strong>Polymer Expert</strong></p>
+                                            <p>annuarh@kairosds.com</p>
+                                            <p>+52 5542 159 282</p>
+                                        </div>
+                                        
+                                    </div>
+                                    <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                                </div>
+                        </div>
+
+                </div>
+            </div>
         </div>
         
         <div class="contls">
@@ -208,7 +285,8 @@
                 this._saveInfo('user',user);
             }
 
-            _showSearch(){
+            _showSearch(event){
+                event.target.classList.add("hidden");
                 document.getElementsByClassName("contls")[0].classList.add("hidden");
                 document.getElementsByClassName("line")[0].classList.add("hidden");
                 document.getElementsByClassName("line")[1].classList.add("hidden");
