@@ -13,10 +13,20 @@
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 
 <dom-module id="my-personal-data">
     <template>
         <style include="app-styles">
+            :host{
+                --orange: rgb(255, 121, 0);
+                --paper-spinner-layer-1-color: var(--orange);
+                --paper-spinner-layer-2-color: var(--orange);
+                --paper-spinner-layer-3-color: var(--orange);
+                --paper-spinner-layer-4-color: var(--orange);
+            }
             .button {
                 background-color: black;
                 width: 30%;
@@ -92,14 +102,56 @@
                 padding-right:3px;
                 padding-left:3px;
             }
+            .spinner {
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: 0;
+                height: 100vh;
+                background: #00000080;
+                z-index: 2;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            paper-spinner {
+                width: 150px;
+                height: 150px;
+            }
+            .image-container {
+                align-items: center;
+            }
+
         </style>
+        <template is="dom-if" if="[[uploading]]">
+            <div class="spinner">
+                <paper-spinner active class="orange thick" alt="Subiendo imagen"></paper-spinner>
+            </div>
+        </template>
         <section class="container">
             <iron-form id="formPersonalData">
-                <form action="/" method="get">
-                    <h1 class="data-header-name">Datos Personales</h1>
-                    <div class="image-container">
-                        <!-- <profile-picture></profile-picture> -->
+                <h1 class="data-header-name">Datos Personales</h1>
+                <div class="image-container row">
+                    <!-- TODO: reemplazar por componente para subir foto -->
+                    <!-- <profile-picture></profile-picture> -->
+                    <firebase-storage-multiupload id="fs" app-name="kurriculum" path="/users/{{user.uid}}/files"
+                        upload-tasks="{{uploadedFiles}}" on-error="catchError" force-unique>
+                    </firebase-storage-multiupload>
+                    <div class="l50">
+                            <div class="form-label">Imagen CV</div>
+                        <input id="fileUploader" type="file" on-change="onFileUpload" />
                     </div>
+                    <div class="l50">
+                        <button type="button" on-click="_upload" class="save-and-continue paper-button-k">Subir imagen</button>
+                    </div>
+                </div>
+                <form action="/" method="get">
+                    <template is="dom-repeat" items="[[uploadedFiles]]">
+                        <firebase-storage-upload-task task="[[item]]" id="task-[[index]]" bytes-transferred="{{item.bytesTransferred}}"
+                            total-bytes="{{item.totalBytes}}" state="{{item.state}}" download-url="{{item.downloadUrl}}"
+                            metadata="{{item.metadata}}" path="{{item.path}}">
+                        </firebase-storage-upload-task>
+                    </template>
                     <div class="row">
                         <div class="l2">
                             <paper-input type="text" name="linkedin" required label="URL de LinkedIn" value="{{userLinkedIn}}"></paper-input>
@@ -140,7 +192,8 @@
                     <div class="row">
                         <div class="l1">
                             <paper-dropdown-menu-light label="Estado Civil">
-                                <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{maritalStatus}} required>
+                                <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{maritalStatus}}
+                                    required>
                                     <paper-item>Selecciona estado civil</paper-item>
                                     <paper-item>Soltero</paper-item>
                                     <paper-item>Casado</paper-item>
@@ -153,9 +206,7 @@
                                 <div>Fecha de Nacimiento</div>
                                 <paper-button disabled>{{userBirthday}}</paper-button>
                                 <paper-icon-button icon="icons:today" on-tap="_openDialogInit"></paper-icon-button>
-                                <app-datepicker-dialog id="birthDay"
-                                    date="{{userBirthday}}"
-                                    locale="es-ES">
+                                <app-datepicker-dialog id="birthDay" date="{{userBirthday}}" locale="es-ES">
                                 </app-datepicker-dialog>
                             </div>
                         </div>
@@ -190,200 +241,258 @@
                         </div>
                     </div>
                     <div class="row">
-                       <div class="l1">
-                           <paper-input type="text" name="zipcode" required label="C.P." value="{{userAddressCP}}"></paper-input>
-                       </div>
-                       <div class="l1">
-                           <paper-input type="text" name="state" required label="Estado / Provincia" value="{{userAddressState}}"></paper-input>
-                       </div>
-                       <div class="l1">
-                           <paper-input type="text" name="city" required label="Ciudad" value="{{userAddressCity}}"></paper-input>
-                       </div>
+                        <div class="l1">
+                            <paper-input type="text" name="zipcode" required label="C.P." value="{{userAddressCP}}"></paper-input>
+                        </div>
+                        <div class="l1">
+                            <paper-input type="text" name="state" required label="Estado / Provincia" value="{{userAddressState}}"></paper-input>
+                        </div>
+                        <div class="l1">
+                            <paper-input type="text" name="city" required label="Ciudad" value="{{userAddressCity}}"></paper-input>
+                        </div>
                     </div>
                     <div class="row">
-                       <div class="l50">
-                           <list-element title="Teléfonos" items="{{phones}}" placeholder="10 dígitos"></list-element>
-                       </div>
-                       <div class="l50">
-                           <list-element title="Correos" items="{{emails}}" placeholder="ejemplo@company.com"></list-element>
-                       </div>
+                        <div class="l50">
+                            <list-element title="Teléfonos" items="{{phones}}" placeholder="10 dígitos"></list-element>
+                        </div>
+                        <div class="l50">
+                            <list-element title="Correos" items="{{emails}}" placeholder="ejemplo@company.com"></list-element>
+                        </div>
                     </div>
-                    <paper-button class="save-and-continue paper-button-k" raised on-click="_saveData">guardar y continuar</paper-button>
+                    <paper-button class="save-and-continue paper-button-k" raised on-click="_saveData">guardar y
+                        continuar</paper-button>
                 </form>
             </iron-form>
         </section>
     </template>
     <script>
-        (function myPersonalData(customElements){
+        (function myPersonalData(customElements) {
             'use strict';
 
             class MyPersonalData extends Polymer.Element {
                 static get is() { return 'my-personal-data'; }
-                
+
                 static get properties() {
                     return {
-                        userImage : {
-                            type : String,
-                            value : ""
+                        uploading: {
+                            type: Boolean,
+                            value: false
                         },
-                        userLinkedIn : {
-                            type : String,
-                            value : ""
+                        user: {
+                            type: Object
                         },
-                        userSexWoman : {
-                            type : Boolean,
-                            value : false
+                        uploadedFiles: {
+                            type: Array,
+                            value: [],
                         },
-                        userSexMan : {
-                            type : Boolean,
-                            value : false
+                        files: {
+                            type: Array,
+                            notify: true,
+                            value: [],
                         },
-                        userSex : {
-                            type : String,
-                            value : "W"
+                        userImage: {
+                            type: String,
+                            value: ""
                         },
-                        userName : {
-                            type : String,
-                            value : ""
+                        userLinkedIn: {
+                            type: String,
+                            value: ""
                         },
-                        userSurname : {
-                            type : String,
-                            value : ""
+                        userSexWoman: {
+                            type: Boolean,
+                            value: false
                         },
-                        userLastname : {
-                            type : String,
-                            value : ""
+                        userSexMan: {
+                            type: Boolean,
+                            value: false
                         },
-                        userCurp : {
-                            type : String,
-                            value : ""
+                        userSex: {
+                            type: String,
+                            value: "W"
                         },
-                        userRFC : {
-                            type : String,
-                            value : ""
+                        userName: {
+                            type: String,
+                            value: ""
                         },
-                        userEnsurance : {
-                            type : String,
-                            value : ""
+                        userSurname: {
+                            type: String,
+                            value: ""
                         },
-                        maritalStatus : {
-                            type : Number,
-                            value : 0
+                        userLastname: {
+                            type: String,
+                            value: ""
                         },
-                        userBirthday : {
-                            type : String,
-                            value : ""
+                        userCurp: {
+                            type: String,
+                            value: ""
                         },
-                        userAge : {
-                            type : String,
-                            computed : "_timeAgo(userBirthday)"
+                        userRFC: {
+                            type: String,
+                            value: ""
                         },
-                        professionalGoal  : {
-                            type : String,
-                            value : ""
+                        userEnsurance: {
+                            type: String,
+                            value: ""
                         },
-                        userAddressStreet  : {
-                            type : String,
-                            value : ""
+                        maritalStatus: {
+                            type: Number,
+                            value: 0
                         },
-                        userAddressOutsideNumber  : {
-                            type : String,
-                            value : ""
+                        userBirthday: {
+                            type: String,
+                            value: ""
                         },
-                        userAddressInsideNumber  : {
-                            type : String,
-                            value : ""
+                        userAge: {
+                            type: String,
+                            computed: "_timeAgo(userBirthday)"
                         },
-                        userAddressNeighborhood  : {
-                            type : String,
-                            value : ""
+                        professionalGoal: {
+                            type: String,
+                            value: ""
                         },
-                        userAddressCP  : {
-                            type : String,
-                            value : ""
+                        userAddressStreet: {
+                            type: String,
+                            value: ""
                         },
-                        userAddressCity  : {
-                            type : String,
-                            value : ""
+                        userAddressOutsideNumber: {
+                            type: String,
+                            value: ""
                         },
-                        userAddressState  : {
-                            type : String,
-                            value : ""
+                        userAddressInsideNumber: {
+                            type: String,
+                            value: ""
                         },
-                        phones : {
-                            type : Array,
-                            value : []
+                        userAddressNeighborhood: {
+                            type: String,
+                            value: ""
                         },
-                        emails : {
-                            type : Array,
-                            value : []
+                        userAddressCP: {
+                            type: String,
+                            value: ""
+                        },
+                        userAddressCity: {
+                            type: String,
+                            value: ""
+                        },
+                        userAddressState: {
+                            type: String,
+                            value: ""
+                        },
+                        phones: {
+                            type: Array,
+                            value: []
+                        },
+                        emails: {
+                            type: Array,
+                            value: []
                         }
                     }
                 }
-                
+
                 connectedCallback() {
-                    super.connectedCallback();  
+                    super.connectedCallback();
                 }
-            
+
+                onFileUpload(e) {
+                    this.files = e.target.files;
+                    console.log(e.target.files)
+                }
+
+                _upload() {
+                    // Upload Image
+                    if(this.files.length < 1) {
+                        alert("Selecciona un archivo");
+                        return
+                    }
+
+                    this.uploading = true;
+                    const file = this.shadowRoot.querySelector('#fileUploader').files;
+                    this.shadowRoot.querySelector('#fs').upload(file);
+
+                    const downloadUrl = this.uploadedFiles[0].downloadUrl;
+                    if (!downloadUrl) {
+                        setTimeout(() => {
+                            this._profileImageEvent();
+                        }, 2000);
+                    } else {
+                        this._profileImageEvent();
+                    }
+                }
+
+                _profileImageEvent() {
+                    this.dispatchEvent(new CustomEvent('profile-pic-uploaded', {
+                        bubbles: true,
+                        detail: {
+                            data: this.uploadedFiles[0].downloadUrl
+                        }
+                    }));
+                    alert("Imagen subida correctamente");
+                    this.uploading = false;
+                }
+
+                catchError(e) {
+                    console.log(e.detail.message);
+                }
+
                 _timeAgo() {
-                    if(!this.userBirthday || this.userBirthday == "" || this.userBirthday == " ") return "";
-                    
-                    const birthday = new Date(this.userBirthday); 
+                    if (!this.userBirthday || this.userBirthday == "" || this.userBirthday == " ") return "";
+
+                    const birthday = new Date(this.userBirthday);
                     const ageDifMs = Date.now() - birthday.getTime();
                     const ageDate = new Date(ageDifMs);
                     return "Edad: " + Math.abs(ageDate.getUTCFullYear() - 1970) + " años cumplidos";
                 }
-                
+
                 _sexChanged() {
-                    if(this.userSexWoman) return "W";
+                    if (this.userSexWoman) return "W";
                     return "M";
                 }
-                
+
                 _saveData() {
-                    if(!this.$.formPersonalData.validate()) return; //no pasó la validacion de iron-form
-                    
+                    if (!this.$.formPersonalData.validate()) return; //no pasó la validacion de iron-form
+
                     const data = {
-                        userImage : this.userImage,
-                        userLinkedIn : this.userLinkedIn,
-                        userSex : this.userSex,                        
-                        userName : this.userName,
-                        userSurname : this.userSurname,
-                        userLastname : this.userLastname,
-                        userCurp : this.userCurp,
-                        userRFC : this.userRFC,
-                        userEnsurance : this.userEnsurance,
-                        maritalStatus : this.maritalStatus,
-                        userBirthday : this.userBirthday,
-                        userAge : this.userAge,
-                        professionalGoal : this.professionalGoal,
-                        userAddressStreet : this.userAddressStreet,
-                        userAddressOutsideNumber : this.userAddressOutsideNumber,
-                        userAddressInsideNumber : this.userAddressInsideNumber,
-                        userAddressNeighborhood : this.userAddressNeighborhood,
-                        userAddressCP : this.userAddressCP,
-                        userAddressCity : this.userAddressCity,
-                        userAddressState : this.userAddressState,
-                        phones : this.phones,
-                        emails : this.emails
+                        userImage: this.userImage,
+                        userLinkedIn: this.userLinkedIn,
+                        userSex: this.userSex,
+                        userName: this.userName,
+                        userSurname: this.userSurname,
+                        userLastname: this.userLastname,
+                        userCurp: this.userCurp,
+                        userRFC: this.userRFC,
+                        userEnsurance: this.userEnsurance,
+                        maritalStatus: this.maritalStatus,
+                        userBirthday: this.userBirthday,
+                        userAge: this.userAge,
+                        professionalGoal: this.professionalGoal,
+                        userAddressStreet: this.userAddressStreet,
+                        userAddressOutsideNumber: this.userAddressOutsideNumber,
+                        userAddressInsideNumber: this.userAddressInsideNumber,
+                        userAddressNeighborhood: this.userAddressNeighborhood,
+                        userAddressCP: this.userAddressCP,
+                        userAddressCity: this.userAddressCity,
+                        userAddressState: this.userAddressState,
+                        phones: this.phones,
+                        emails: this.emails
                     }
-                    
+
                     console.log("Datos");
                     console.log(data);
-                    
-                    this.dispatchEvent(new CustomEvent('save-info',{
+
+                    this.dispatchEvent(new CustomEvent('save-info', {
                         bubbles: true,
-                        detail:{
+                        detail: {
                             key: 'personalInfo',
                             data: data
                         }
                     }));
                 }
-                
+
                 _openDialogInit(event) {
                     this.$.birthDay.open();
                 }
             }
-        customElements.define(MyPersonalData.is, MyPersonalData);
+            customElements.define(MyPersonalData.is, MyPersonalData);
         })(window.customElements);
-  </script>
+    </script>
 </dom-module>

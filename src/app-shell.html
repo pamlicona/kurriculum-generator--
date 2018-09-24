@@ -9,6 +9,7 @@
 
 <link rel="import" href="app-styles.html">
 <link rel="import" href="my-photo.html">
+<link rel="import" href="pdf-cv.html">
 
 <link rel="lazy-import" href="my-personal-data.html">
 <link rel="lazy-import" href="my-experience.html">
@@ -147,7 +148,7 @@
             <div style="margin-top: 110px">
                 <div class="cont-comp-photo">
                     <div class="photo">
-                            <img class="person-img" src="../assets/img/person.png" alt="person">
+                            <img class="person-img" src="[[profilePic]]" alt="person">
                     </div>
                     <div class="data-photo">
                         <p><strong>Annuar</strong></p>
@@ -175,8 +176,8 @@
             </iron-selector> <br><br>
 
 
-            <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-                <my-personal-data on-save-info="_saveInfoEvent" name="personal-data"></my-personal-data>
+            <iron-pages id="selector" selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
+                <my-personal-data on-save-info="_saveInfoEvent" on-profile-pic-uploaded="_profilePicUploaded" name="personal-data" user="[[user]]"></my-personal-data>
                 <my-experience on-save-info="_saveInfoEvent" name="experience"></my-experience>
                 <my-knowledge on-save-info="_saveInfoEvent" name="knowledge"></my-knowledge>
                 <my-skills on-save-info="_saveInfoEvent" name="skills"></my-skills>
@@ -184,10 +185,12 @@
                 <my-formation on-save-info="_saveInfoEvent" name="formation"></my-formation>
                 <my-certifications on-save-info="_saveInfoEvent" name="certifications"></my-certifications>
                 <my-courses on-save-info="_saveInfoEvent" name="courses"></my-courses>
-                <my-summary user="[[user]]" name="summary"></my-summary>
+                <my-summary on-download-cv="_downloadCv" user="[[user]]" name="summary"></my-summary>
                 <my-view404 name="view404"></my-view404>
                 <my-login on-sign-in="_signIn" signed-in="[[signedIn]]" name="login"></my-login>
             </iron-pages>
+
+            <pdf-cv class="hidden-class" user-cv="{{usercv}}" template-cv="{{templatecv}}"></pdf-cv>
 
             <firebase-auth
                 id="auth"
@@ -228,7 +231,11 @@
                         value: 0
                     },
                     user: Object,
-                    data: Object
+                    data: Object,
+                    profilePic: {
+                        type: String,
+                        value: '../assets/img/person.png'
+                    }
                 };
             }
 
@@ -240,7 +247,16 @@
 
             connectedCallback() {
                 super.connectedCallback();
-                //this._saveInfo('user',{});
+            }
+
+            _profilePicUploaded(e) {
+                this.profilePic =  e.detail.data;
+                console.log('_profilePicUploaded ', e.detail.data);
+            }
+
+            _downloadCv(event) {
+              this.set('usercv', event.detail.data);
+              this.set('templatecv', event.detail.template);
             }
 
             _changeNumber(event){
@@ -258,10 +274,16 @@
             }
 
             _routePageChanged(page) {
+                if (!this.user) {
+                    this.page = 'login';
+                    return;
+                }
+
                 if(page == 'summary'){
                     this.user = this._getInfo();
                 }
-                // If not page was found go to 'personal-data' in that case.
+
+                // If not page was found go to 'login' in that case.
                 this.page = page || 'login';
             }
 
@@ -298,7 +320,7 @@
                 // Firebase
                 this.data = data;
                 console.log("Firebase data: ", this.data);
-                
+
                 //pasar al siguiente paso y marcar el actual
                 console.log(this.step);
                 let items = document.getElementsByClassName("numbutton");
@@ -308,7 +330,7 @@
                 items[this.step].innerHTML = "✓";
                 this.step++;
                 items[this.step].click();
-                console.log(items); 
+                console.log(items);
             }
 
             _getInfo(){

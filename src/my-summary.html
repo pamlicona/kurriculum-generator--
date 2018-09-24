@@ -238,18 +238,18 @@
         <iron-form id="formPrint">
           <form action="/" method="get">
             <paper-dropdown-menu-light name="template" label="Tipo de plantilla" required>
-                <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{template}} attr-for-selected="myvalue">
-                    <template is="dom-repeat" items="[[templates]]">
-                        <paper-item myvalue="[[templates]]">{{item}}</paper-item>
-                    </template>
-                </paper-listbox>
+              <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{template}} attr-for-selected="myvalue">
+                <template is="dom-repeat" items="[[templates]]">
+                    <paper-item myvalue="[[templates]]">{{item}}</paper-item>
+                </template>
+              </paper-listbox>
             </paper-dropdown-menu-light>
             <paper-dropdown-menu-light name="printType" label="Formato" required>
-                <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{printType}} attr-for-selected="myvalue">
-                    <template is="dom-repeat" items="[[printTypes]]">
-                        <paper-item myvalue="[[printTypes]]">{{item}}</paper-item>
-                    </template>
-                </paper-listbox>
+              <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{printType}} attr-for-selected="myvalue">
+                <template is="dom-repeat" items="[[printTypes]]">
+                    <paper-item myvalue="[[printTypes]]">{{item}}</paper-item>
+                </template>
+              </paper-listbox>
             </paper-dropdown-menu-light>
           </form>
         </iron-form>
@@ -351,19 +351,14 @@
           },
           templates: {
             type: Array,
-            value: ['Plantilla 1', 'Plantilla 2', 'Plantilla 3', 'Plantilla 4']
+            value: ['Agile', 'Development', 'DevOps', 'UX']
           },
           printTypes: {
             type: Array,
-            value: ['Completo', 'Ciego']
+            value: ['Básico', 'Completo']
           }
         }
       };
-
-      connectedCallback() {
-        super.connectedCallback();
-        console.log(this.user);
-      }
 
       _getMaritalStatus(id){
         let maritalStatus = {
@@ -386,7 +381,13 @@
       _downloadCv(event) {
         const validate = this.$.formPrint.validate();
         if (validate) {
-          const form = this.$.formPrint.serializeForm();
+          this.dispatchEvent(new CustomEvent('download-cv',{
+            bubbles: true,
+            detail:{
+              data: this.data,
+              template: this.$.formPrint.serializeForm()
+            }
+          }));
         }
 
       }

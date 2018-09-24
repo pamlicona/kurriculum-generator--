@@ -1,0 +1,229 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
+
+<dom-module id="pdf-cv">
+  <template>
+    <style>
+      .red-color {
+        color: red;
+      }
+    </style>
+    <main id="pdf">
+      <h2 class="red-color">Pruebaaaa</h2>
+      <div class="container">
+        <h2 class="title_info">Información Personal</h2>
+        <div class="container__personal">
+          <dl>
+            <dt>Imagen</dt>
+            <dd><img src="[[userCv.user.personalInfo.userImage]]" alt="Usuario"></dd>
+            <dt>Nombre</dt>
+            <dd>[[userCv.user.personalInfo.userName]]</dd>
+            <dt>Apellido Paterno</dt>
+            <dd>[[userCv.user.personalInfo.userSurname]]</dd>
+            <dt>Apellido Materno</dt>
+            <dd>[[userCv.user.personalInfo.userLastname]]</dd>
+            <dt>Sexo</dt>
+            <dd>[[_getSex(userCv.user.personalInfo.userSex)]]</dd>
+            <dt>Curp</dt>
+            <dd>[[userCv.user.personalInfo.userCurp]]</dd>
+            <dt>RFC</dt>
+            <dd>[[userCv.user.personalInfo.userRFC]]</dd>
+            <dt>Numero Seguro Social</dt>
+            <dd>[[userCv.user.personalInfo.userEnsurance]]</dd>
+            <dt>Estado Civil</dt>
+            <dd>[[_getMaritalStatus(userCv.user.personalInfo.maritalStatus)]]</dd>
+            <dt>Fecha Nacimiento</dt>
+            <dd>[[userCv.user.personalInfo.userBirthday]]</dd>
+          </dl>
+          <dl>
+            <dt>Meta Profesional</dt>
+            <dd>[[userCv.user.personalInfo.professionalGoal]]</dd>
+            <dt>Calle</dt>
+            <dd>[[userCv.user.personalInfo.userAddressStreet]]</dd>
+            <dt>Numero</dt>
+            <dd>[[userCv.user.personalInfo.userAddressOutsideNumber]]</dd>
+            <dt>Numero Interior</dt>
+            <dd>[[userCv.user.personalInfo.userAddressInsideNumber]]</dd>
+            <dt>Colonia</dt>
+            <dd>[[userCv.user.personalInfo.userAddressNeighborhood]]</dd>
+            <dt>Código Postal</dt>
+            <dd>[[userCv.user.personalInfo.userAddressPC]]</dd>
+            <dt>Ciudad</dt>
+            <dd>[[userCv.user.personalInfo.userAddressCity]]</dd>
+            <dt>Telefonos</dt>
+            <template is="dom-repeat" items="{{userCv.user.personalInfo.phones}}" as="item">
+              <dd>[[item]]</dd>
+            </template>
+            <dt>Emails</dt>
+            <template is="dom-repeat" items="{{userCv.user.personalInfo.emails}}" as="item">
+              <dd>[[item]]</dd>
+            </template>
+            <dt>Linkedin</dt>
+            <dd> <a href="[[userCv.user.personalInfo.userLinkedIn]]"><img src="../assets/img/linkedin.png" alt="Linkedin"></a></dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="container">
+        <h2 class="title_info">Formación</h2>
+        <dl>
+          <template class="hidden" is="dom-repeat" items="{{userCv.user.formacion}}" as="item">
+            <dt>Institución</dt>
+            <dd>[[item.institucion]]</dd>
+            <dt>Titulación</dt>
+            <dd>[[item.titulacion]]</dd>
+            <dt>Estatus</dt>
+            <dd>[[item.level]]</dd>
+            <dt>En curso</dt>
+            <template class="hidden" is="dom-if" if="[[item.actual]]">
+              <dd>Si</dd>
+            </template>
+            <template class="hidden" is="dom-if" if="[[!item.actual]]">
+              <dd>No</dd>
+            </template>
+            <dt>Inicio</dt>
+            <dd>[[item.desde]]</dd>
+            <dt>Fin</dt>
+            <dd>[[item.hasta]]</dd>
+          </template>
+        </dl>
+      </div>
+
+        <div class="container">
+          <h2 class="title_info">Experiencia</h2>
+          <dl>
+            <template class="hidden" is="dom-repeat" items="{{userCv.user.experience}}" as="item">
+              <dt>Compañia</dt>
+              <dd>[[item.company]]</dd>
+              <dt>Posición</dt>
+              <dd>[[item.position]]</dd>
+              <dt>Localización</dt>
+              <dd>[[item.location]]</dd>
+              <dt>Descripción</dt>
+              <dd>[[item.description]]</dd>
+              <dt>Fecha Inicial</dt>
+              <dd>[[item.startDate]]</dd>
+              <dt>Fecha Final</dt>
+              <dd>[[item.finalDate]]</dd>
+              <dt>Es tu trabajo actual</dt>
+              <template class="hidden" is="dom-if" if="[[item.actual]]">
+                <dd>Si</dd>
+              </template>
+              <template class="hidden" is="dom-if" if="[[!item.actual]]">
+                <dd>No</dd>
+              </template>
+            </template>
+          </dl>
+        </div>
+
+        <div class="container">
+          <h2 class="title_info">Conocimientos</h2>
+          <dl>
+            <dt>Conocimiento - Porcentaje</dt>
+            <template class="hidden" is="dom-repeat" items="{{userCv.user.knowledges}}" as="item">
+              <dd>[[item.knowledge]] - [[item.percent]]</dd>
+            </template>
+          </dl>
+        </div>
+
+        <div class="container">
+          <h2 class="title_info">Aptitudes</h2>
+          <dl>
+            <dt>Aptitud</dt>
+            <template class="hidden" is="dom-repeat" items="{{userCv.user.skills}}" as="item">
+              <dd>[[item]]</dd>
+            </template>
+          </dl>
+        </div>
+
+        <div class="container">
+          <h2 class="title_info">Idiomas</h2>
+          <dl>
+            <dt>Idioma - Nivel</dt>
+            <template class="hidden" is="dom-repeat" items="{{userCv.user.languages}}" as="item">
+              <dd>[[item.name]] - [[item.level]]</dd>
+            </template>
+          </dl>
+        </div>
+
+
+      <div class="container">
+        <h2 class="title_info">Certificaciones</h2>
+        <dl>
+          <template class="hidden" is="dom-repeat" items="{{userCv.user.certificaciones}}" as="item">
+            <dt>Nombre de Certificación</dt>
+            <dd>[[item.nombre]]</dd>
+            <dt>Empresa</dt>
+            <dd>[[item.entidad]]</dd>
+            <dt>Licencia</dt>
+            <dd>[[item.licencia]]</dd>
+            <dt>Inicio</dt>
+            <dd>[[item.fechaInicio]]</dd>
+            <dt>Fin</dt>
+            <dd>[[item.fechaFin]]</dd>
+            <dt>Es permanente tu Licencia</dt>
+            <template class="hidden" is="dom-if" if="[[item.permanente]]">
+              <dd>Si</dd>
+            </template>
+            <template class="hidden" is="dom-if" if="[[!item.permanente]]">
+              <dd>No</dd>
+            </template>
+          </template>
+        </dl>
+      </div>
+    </main>
+  </template>
+
+  <script>
+    /**
+     * `pdf-cv`
+     *
+     *
+     * @customElement
+     * @polymer
+     *
+     */
+    class PdfCv extends Polymer.Element {
+      static get is() { return 'pdf-cv'; }
+      static get properties() {
+        return {
+          userCv: {
+            type: Object
+          },
+          templateCv: {
+            type: Object
+          }
+        }
+      }
+
+      static get observers() {
+        return [
+          '_templateForDownload(userCv, templateCv)'
+        ]
+      }
+
+      _templateForDownload(userCv, templateCv) {
+        console.log(userCv, templateCv)
+        if (userCv !== undefined && templateCv !== undefined) {
+          const doc = new jsPDF('l', 'px');
+          const elementToPrint = Polymer.dom(this.root).querySelector('#pdf ');
+          doc.fromHTML(elementToPrint, 0, 0, {
+            pagesplit: true
+          },
+          function(dispose) {
+            doc.save('prueba.pdf');
+          });
+        }
+      }
+    }
+
+    window.customElements.define(PdfCv.is, PdfCv);
+  </script>
+
+  <script data-require="jquery@2.0.1" data-semver="2.0.1" src="//code.jquery.com/jquery-2.0.1.min.js"></script>
+  <script src="../assets/js/html2canvas.min.js"></script>
+  <script src="../assets/js/jspdf.min.js"></script>
+</dom-module>
