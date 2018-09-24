@@ -40,6 +40,11 @@
             <paper-button hidden$="[[signedIn]]" class="close__session">
                 <iron-icon icon="lock"></iron-icon>
             </paper-button>
+            
+            <paper-button on-click="_showSearch" hidden$="[[!signedIn]]" class="search-button">
+                <span>Buscar Kairosero</span>
+            </paper-button>
+            
             <paper-button on-click="_signOut" hidden$="[[!signedIn]]" class="close__session">
                 <iron-icon icon="exit-to-app"></iron-icon>
                 <span>Sign out</span>
@@ -47,6 +52,18 @@
         </header>
         <div class="line line-progress line-orange"></div>
         <div class="line line-progress"></div>
+
+        <div class="search-container hidden">
+            <!-- TODO: cambiar por componente serch -->
+            <h1>Busqueda de Kairoseros</h1>
+            
+            <iron-form id="formExperience">
+                <form action="/" method="get">
+                    <input class="search-field" type="text" placeholder="Escribe un nombre o un perfil de Kairos">
+                </form>
+            </iron-form>
+        </div>
+        
         <div class="contls">
 
             <!-- TODO: cambiar por componente de myphoto -->
@@ -189,6 +206,13 @@
                 let user = this._getInfo();
                 user[event.detail.key] = event.detail.data;
                 this._saveInfo('user',user);
+            }
+
+            _showSearch(){
+                document.getElementsByClassName("contls")[0].classList.add("hidden");
+                document.getElementsByClassName("line")[0].classList.add("hidden");
+                document.getElementsByClassName("line")[1].classList.add("hidden");
+                document.getElementsByClassName("search-container")[0].classList.remove("hidden");
             }
 
             _saveInfo(key,data){
