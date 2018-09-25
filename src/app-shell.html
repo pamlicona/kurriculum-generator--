@@ -21,6 +21,7 @@
 <link rel="lazy-import" href="my-courses.html">
 <link rel="lazy-import" href="my-view404.html">
 <link rel="lazy-import" href="my-login.html">
+<link rel="lazy-import" href="search-component.html">
 
 <dom-module id="app-shell">
     <template>
@@ -40,6 +41,11 @@
             <paper-button hidden$="[[signedIn]]" class="close__session">
                 <iron-icon icon="lock"></iron-icon>
             </paper-button>
+            
+            <paper-button on-click="_showSearch" hidden$="[[!signedIn]]" class="search-button">
+                <span>Buscar Kairosero</span>
+            </paper-button>
+            
             <paper-button on-click="_signOut" hidden$="[[!signedIn]]" class="close__session">
                 <iron-icon icon="exit-to-app"></iron-icon>
                 <span>Sign out</span>
@@ -47,7 +53,96 @@
         </header>
         <div class="line line-progress line-orange"></div>
         <div class="line line-progress"></div>
-        <div class="contls">
+
+        <div class="search-container hidden">
+            <!-- TODO: cambiar por componente serch -->
+            <h1>Busqueda de Kairoseros</h1>
+            
+            <iron-form id="formExperience">
+                <form action="/" method="get">
+                    <input class="search-field" type="text" placeholder="Escribe un nombre o un perfil de Kairos">
+                </form>
+            </iron-form>
+
+            <div class="results">
+                <div class="container">
+                    <div class="card">    
+                        <div>
+                            <div class="cont-comp-photo">
+                                <div class="photo">
+                                        <img class="person-img" src="../assets/img/person.png" alt="person">
+                                </div>
+                                <div class="data-photo">
+                                    <p><strong>David</strong></p>
+                                    <p><strong>Duran </strong></p> <br>
+                                    <p><strong>Polymer Expert</strong></p>
+                                    <p>david.duran@kairosds.com</p>
+                                    <p>+52 5542 159 282</p>
+                                </div>
+                            </div>
+                            <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                        </div>
+
+                    </div>
+                    <div class="card">    
+                            <div style="">
+                                <div class="cont-comp-photo">
+                                    <div class="photo">
+                                            <img class="person-img" src="../assets/img/person.png" alt="person">
+                                    </div>
+                                    <div class="data-photo">
+                                        <p><strong>Pamela</strong></p>
+                                        <p><strong> </strong></p> <br>
+                                        <p><strong>Frontend Expert</strong></p>
+                                        <p>pamela.martinez@kairosds.com</p>
+                                        <p>+52 5542 159 282</p>
+                                    </div>
+                                </div>
+                                <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                            </div>
+    
+                        </div>
+                        <div class="card">    
+                                <div style="">
+                                    <div class="cont-comp-photo">
+                                        <div class="photo">
+                                                <img class="person-img" src="../assets/img/person.png" alt="person">
+                                        </div>
+                                        <div class="data-photo">
+                                            <p><strong>David</strong></p>
+                                            <p><strong>Duran </strong></p> <br>
+                                            <p><strong>Sr Frontend</strong></p>
+                                            <p>david.duran@kairosds.com</p>
+                                            <p>+52 5542 2345234 282</p>
+                                        </div>
+                                    </div>
+                                    <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                                </div>
+                        </div>
+                        <div class="card">    
+                                <div style="">
+                                    <div class="cont-comp-photo">
+                                        <div class="photo">
+                                                <img class="person-img" src="../assets/img/person.png" alt="person">
+                                        </div>
+                                        <div class="data-photo">
+                                            <p><strong>Abner</strong></p>
+                                            <p><strong>Rojas </strong></p> <br>
+                                            <p><strong>Polymer Expert</strong></p>
+                                            <p>abner.rojas@kairosds.com</p>
+                                            <p>+52 3423 159 253482</p>
+                                        </div>
+                                        
+                                    </div>
+                                    <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                                </div>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+        
+        <div class="contls containerEsp" id="containerEsp" name ="containerEsp">
 
             <!-- TODO: cambiar por componente de myphoto -->
             <div style="margin-top: 110px">
@@ -210,6 +305,23 @@
                 let user = this._getInfo();
                 user[event.detail.key] = event.detail.data;
                 this._saveInfo('user',user);
+            }
+
+            _showSearch(event){
+                event.target.classList.add("hidden");
+                let cont  = Polymer.dom(this.root).querySelector(".contls");
+                let line  = Polymer.dom(this.root).querySelectorAll(".line");
+                let searchcont  = Polymer.dom(this.root).querySelectorAll(".search-container");
+                cont.classList.add("hidden");
+                line[0].classList.add("hidden");
+                line[1].classList.add("hidden");
+                searchcont[0].classList.remove("hidden");
+                /*
+                document.getElementsByClassName("contls")[0].classList.add("hidden");
+                document.getElementsByClassName("line")[0].classList.add("hidden");
+                document.getElementsByClassName("line")[1].classList.add("hidden");
+                document.getElementsByClassName("search-container")[0].classList.remove("hidden");
+                */
             }
 
             _saveInfo(key,data){
