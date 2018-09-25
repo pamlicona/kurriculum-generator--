@@ -332,7 +332,7 @@
 
                 //pasar al siguiente paso y marcar el actual
                 console.log(this.step);
-                let items = document.getElementsByClassName("numbutton");
+                let items = Polymer.dom(this.root).querySelectorAll(".numbutton"); //document.getElementsByClassName("numbutton");
                 items[this.step].style.background = "white !important";
                 items[this.step].style.color = "rgb(255, 121, 0)!important";
                 items[this.step].style.border = "1px solid rgb(255, 121, 0) !important";
