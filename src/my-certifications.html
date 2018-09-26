@@ -109,7 +109,7 @@
             <paper-checkbox name="permanente" checked="{{permanente}}">Esta certificacion no vence</paper-checkbox>
           </div>
 
-          <template is="dom-repeat" items="{{certification}}">
+          <template is="dom-repeat" items="{{certifications}}">
               <div id="[[index]]" class="listData">
                 <div>Certificación: <span>{{item.certificacion}}</span></div>
                 <div>Entidad: <span>{{item.entidad}}</span></div>
@@ -146,7 +146,7 @@
         static get is() { return 'my-certifications'; }
         static get properties() {
           return {
-            certification: {
+            certifications: {
               type: Array,
               value: []
             },
@@ -197,7 +197,7 @@
         }
       
       _saveData(){
-        this.certification.forEach(element => {
+        this.certifications.forEach(element => {
           delete element.edit;
         });
 
@@ -205,14 +205,14 @@
           bubbles: true,
           detail:{
             key: 'certifications',
-            data: this.certification
+            data: this.certifications
           }
         }));
       }
 
       _removeItem(event) {
         const index = event.model.index;
-        this.splice('certification', index, 1);
+        this.splice('certifications', index, 1);
       }
 
       _editItem(event) {
@@ -230,7 +230,7 @@
         const validate = this.$.formCertifications.validate();
         if (validate) {
           const form = this._formatJson();
-          this.push('certification', form)
+          this.push('certifications', form)
           this._resetData();
         }
       }

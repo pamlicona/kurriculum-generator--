@@ -13,9 +13,9 @@
 
 <link rel="lazy-import" href="my-personal-data.html">
 <link rel="lazy-import" href="my-experience.html">
-<link rel="lazy-import" href="my-knowledge.html">
+<link rel="lazy-import" href="my-knowledges.html">
 <link rel="lazy-import" href="my-skills.html">
-<link rel="lazy-import" href="my-language.html">
+<link rel="lazy-import" href="my-languages.html">
 <link rel="lazy-import" href="my-formation.html">
 <link rel="lazy-import" href="my-certifications.html">
 <link rel="lazy-import" href="my-courses.html">
@@ -166,9 +166,9 @@
             <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list list-nums" role="navigation">
                 <a name="personal-data" on-click="_changeNumber" class="numbutton" href="[[rootPath]]#personal-data">1</a>
                 <a name="experience" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#experience">2</a>
-                <a name="knowledge" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#knowledge">3</a>
+                <a name="knowledges" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#knowledges">3</a>
                 <a name="skills" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#skills">4</a>
-                <a name="language" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#language">5</a>
+                <a name="languages" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#languages">5</a>
                 <a name="formation" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#formation">6</a>
                 <a name="certifications" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#certifications">7</a>
                 <a name="courses" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#courses">8</a>
@@ -179,9 +179,9 @@
             <iron-pages id="selector" selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
                 <my-personal-data on-save-info="_saveInfoEvent" on-profile-pic-uploaded="_profilePicUploaded" name="personal-data" user="[[user]]"></my-personal-data>
                 <my-experience on-save-info="_saveInfoEvent" name="experience"></my-experience>
-                <my-knowledge on-save-info="_saveInfoEvent" name="knowledge"></my-knowledge>
+                <my-knowledges on-save-info="_saveInfoEvent" name="knowledges"></my-knowledges>
                 <my-skills on-save-info="_saveInfoEvent" name="skills"></my-skills>
-                <my-language on-save-info="_saveInfoEvent" name="language"></my-language>
+                <my-languages on-save-info="_saveInfoEvent" name="languages"></my-languages>
                 <my-formation on-save-info="_saveInfoEvent" name="formation"></my-formation>
                 <my-certifications on-save-info="_saveInfoEvent" name="certifications"></my-certifications>
                 <my-courses on-save-info="_saveInfoEvent" name="courses"></my-courses>
@@ -231,7 +231,10 @@
                         value: 0
                     },
                     user: Object,
-                    data: Object,
+                    data: {
+                        type: Object,
+                        observer: 'dataChanged'
+                    },
                     profilePic: {
                         type: String,
                         value: '../assets/img/person.png'
@@ -247,6 +250,33 @@
 
             connectedCallback() {
                 super.connectedCallback();
+            }
+
+            dataChanged(newData, oldData) {
+                // Set data in forms
+                this._checkData();
+            }
+
+            _checkData() {
+                const data = this.data;
+                // if there isn't data
+                if( Object.keys(data).length < 1 ) {
+                    return;
+                }
+
+                const properties = [
+                    "personal", "experience", "knowledges", "skills", "languages", "formation", "certifications", "courses"
+                ];
+                properties.forEach(myProp => {
+                    if (data.hasOwnProperty(myProp)) {
+                        this._setData(myProp)
+                    }
+                });
+            }
+
+            _setData(prop) {
+                const querySelector = this.shadowRoot.querySelector(`my-${prop}`);
+                querySelector.setAttribute(prop, JSON.stringify(this.data[prop]));
             }
 
             _profilePicUploaded(e) {
