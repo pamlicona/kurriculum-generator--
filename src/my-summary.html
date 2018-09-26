@@ -71,51 +71,51 @@
       <div class="container__personal">
         <dl>
           <dt>Imagen</dt>
-          <dd><img src="[[data.user.personalInfo.userImage]]" alt="Usuario"></dd>
+          <dd><img src="[[data.personalInfo.userImage]]" alt="Usuario"></dd>
           <dt>Nombre</dt>
-          <dd>[[data.user.personalInfo.userName]]</dd>
+          <dd>[[data.personalInfo.userName]]</dd>
           <dt>Apellido Paterno</dt>
-          <dd>[[data.user.personalInfo.userSurname]]</dd>
+          <dd>[[data.personalInfo.userSurname]]</dd>
           <dt>Apellido Materno</dt>
-          <dd>[[data.user.personalInfo.userLastname]]</dd>
+          <dd>[[data.personalInfo.userLastname]]</dd>
           <dt>Sexo</dt>
-          <dd>[[_getSex(data.user.personalInfo.userSex)]]</dd>
+          <dd>[[_getSex(data.personalInfo.userSex)]]</dd>
           <dt>Curp</dt>
-          <dd>[[data.user.personalInfo.userCurp]]</dd>
+          <dd>[[data.personalInfo.userCurp]]</dd>
           <dt>RFC</dt>
-          <dd>[[data.user.personalInfo.userRFC]]</dd>
+          <dd>[[data.personalInfo.userRFC]]</dd>
           <dt>Numero Seguro Social</dt>
-          <dd>[[data.user.personalInfo.userEnsurance]]</dd>
+          <dd>[[data.personalInfo.userEnsurance]]</dd>
           <dt>Estado Civil</dt>
-          <dd>[[_getMaritalStatus(data.user.personalInfo.maritalStatus)]]</dd>
+          <dd>[[_getMaritalStatus(data.personalInfo.maritalStatus)]]</dd>
           <dt>Fecha Nacimiento</dt>
-          <dd>[[data.user.personalInfo.userBirthday]]</dd>
+          <dd>[[data.personalInfo.userBirthday]]</dd>
         </dl>
         <dl>
           <dt>Meta Profesional</dt>
-          <dd>[[data.user.personalInfo.professionalGoal]]</dd>
+          <dd>[[data.personalInfo.professionalGoal]]</dd>
           <dt>Calle</dt>
-          <dd>[[data.user.personalInfo.userAddressStreet]]</dd>
+          <dd>[[data.personalInfo.userAddressStreet]]</dd>
           <dt>Numero</dt>
-          <dd>[[data.user.personalInfo.userAddressOutsideNumber]]</dd>
+          <dd>[[data.personalInfo.userAddressOutsideNumber]]</dd>
           <dt>Numero Interior</dt>
-          <dd>[[data.user.personalInfo.userAddressInsideNumber]]</dd>
+          <dd>[[data.personalInfo.userAddressInsideNumber]]</dd>
           <dt>Colonia</dt>
-          <dd>[[data.user.personalInfo.userAddressNeighborhood]]</dd>
+          <dd>[[data.personalInfo.userAddressNeighborhood]]</dd>
           <dt>Código Postal</dt>
-          <dd>[[data.user.personalInfo.userAddressPC]]</dd>
+          <dd>[[data.personalInfo.userAddressPC]]</dd>
           <dt>Ciudad</dt>
-          <dd>[[data.user.personalInfo.userAddressCity]]</dd>
+          <dd>[[data.personalInfo.userAddressCity]]</dd>
           <dt>Telefonos</dt>
-          <template is="dom-repeat" items="{{data.user.personalInfo.phones}}" as="item">
+          <template is="dom-repeat" items="{{data.personalInfo.phones}}" as="item">
             <dd>[[item]]</dd>
           </template>
           <dt>Emails</dt>
-          <template is="dom-repeat" items="{{data.user.personalInfo.emails}}" as="item">
+          <template is="dom-repeat" items="{{data.personalInfo.emails}}" as="item">
             <dd>[[item]]</dd>
           </template>
           <dt>Linkedin</dt>
-          <dd> <a href="[[data.user.personalInfo.userLinkedIn]]"><img src="../assets/img/linkedin.png" alt="Linkedin"></a></dd>
+          <dd> <a href="[[data.personalInfo.userLinkedIn]]"><img src="../assets/img/linkedin.png" alt="Linkedin"></a></dd>
         </dl>
       </div>
     </div>
@@ -123,7 +123,7 @@
     <div class="container">
       <h2 class="title_info">Formación</h2>
       <dl>
-        <template class="hidden" is="dom-repeat" items="{{data.user.formacion}}" as="item">
+        <template class="hidden" is="dom-repeat" items="{{data.formation}}" as="item">
           <dt>Institución</dt>
           <dd>[[item.institucion]]</dd>
           <dt>Titulación</dt>
@@ -148,7 +148,7 @@
       <div class="container">
         <h2 class="title_info">Experiencia</h2>
         <dl>
-          <template class="hidden" is="dom-repeat" items="{{data.user.experience}}" as="item">
+          <template class="hidden" is="dom-repeat" items="{{data.experience}}" as="item">
             <dt>Compañia</dt>
             <dd>[[item.company]]</dd>
             <dt>Posición</dt>
@@ -176,7 +176,7 @@
         <h2 class="title_info">Conocimientos</h2>
         <dl>
           <dt>Conocimiento - Porcentaje</dt>
-          <template class="hidden" is="dom-repeat" items="{{data.user.knowledges}}" as="item">
+          <template class="hidden" is="dom-repeat" items="{{data.knowledges}}" as="item">
             <dd>[[item.knowledge]] - [[item.percent]]</dd>
           </template>
         </dl>
@@ -186,7 +186,7 @@
         <h2 class="title_info">Aptitudes</h2>
         <dl>
           <dt>Aptitud</dt>
-          <template class="hidden" is="dom-repeat" items="{{data.user.skills}}" as="item">
+          <template class="hidden" is="dom-repeat" items="{{data.skills}}" as="item">
             <dd>[[item]]</dd>
           </template>
         </dl>
@@ -196,7 +196,7 @@
         <h2 class="title_info">Idiomas</h2>
         <dl>
           <dt>Idioma - Nivel</dt>
-          <template class="hidden" is="dom-repeat" items="{{data.user.languages}}" as="item">
+          <template class="hidden" is="dom-repeat" items="{{data.languages}}" as="item">
             <dd>[[item.name]] - [[item.level]]</dd>
           </template>
         </dl>
@@ -206,7 +206,7 @@
     <div class="container">
       <h2 class="title_info">Certificaciones</h2>
       <dl>
-        <template class="hidden" is="dom-repeat" items="{{data.user.certificaciones}}" as="item">
+        <template class="hidden" is="dom-repeat" items="{{data.certifications}}" as="item">
           <dt>Nombre de Certificación</dt>
           <dd>[[item.nombre]]</dd>
           <dt>Empresa</dt>
@@ -276,78 +276,78 @@
         return {
           data: {
             type: Object,
-            value: {
-              "user":{
-                "languages":[ { "name" : "ingles", "level": "Principiante" } ],
+            // value: {
+            //   // "user":{
+            //     "languages":[ { "name" : "ingles", "level": "Principiante" } ],
 
-                "knowledges": [{
-                  "knowledge": "JavaScript",
-                  "percent": "50%",
-                  "description": "Angular 2, Polymer 2, React"
-                  }],
+            //     "knowledges": [{
+            //       "knowledge": "JavaScript",
+            //       "percent": "50%",
+            //       "description": "Angular 2, Polymer 2, React"
+            //       }],
 
-                "skills":["Teamwork", "Responsibility"],
+            //     "skills":["Teamwork", "Responsibility"],
 
-                "experience": [{
-                  "company": "Kairos",
-                  "position": "Web Developer",
-                  "location": "WeWork Varsovia",
-                  "description": "Web Developer for CV",
-                  "finalDate": "2017/06/09",
-                  "startDate": "2018/07/10",
-                  "actual": false
-                }],
+            //     "experience": [{
+            //       "company": "Kairos",
+            //       "position": "Web Developer",
+            //       "location": "WeWork Varsovia",
+            //       "description": "Web Developer for CV",
+            //       "finalDate": "2017/06/09",
+            //       "startDate": "2018/07/10",
+            //       "actual": false
+            //     }],
 
-                "formacion": [
-                    {
-                      "id" : "1",
-                      "institucion" : "Politecnico Nacional",
-                      "titulacion"  : "Lic. en Informatica",
-                      "estatus"     : "Titulado",
-                      "encurso"     : "No",
-                      "desde"       : "2017/06/09",
-                      "hasta"       : "2018/07/10"
-                    }
-                ],
+            //     "formation": [
+            //         {
+            //           "id" : "1",
+            //           "institucion" : "Politecnico Nacional",
+            //           "titulacion"  : "Lic. en Informatica",
+            //           "estatus"     : "Titulado",
+            //           "encurso"     : "No",
+            //           "desde"       : "2017/06/09",
+            //           "hasta"       : "2018/07/10"
+            //         }
+            //     ],
 
-                "certificaciones": [
-                    {
-                      "id" : "",
-                      "nombre" : "Certificación JS",
-                      "entidad" : "Big Nerd Ranch",
-                      "licencia" : "2929349848",
-                      "fechaFin" : "2017/06/09",
-                      "fechaInicio" : "2018/07/10",
-                      "permanente" : false
-                    }
-                ],
+            //     "certifications": [
+            //         {
+            //           "id" : "",
+            //           "nombre" : "Certificación JS",
+            //           "entidad" : "Big Nerd Ranch",
+            //           "licencia" : "2929349848",
+            //           "fechaFin" : "2017/06/09",
+            //           "fechaInicio" : "2018/07/10",
+            //           "permanente" : false
+            //         }
+            //     ],
 
-                "personalInfo":{
-                    "userImage" : "https://randomuser.me/api/portraits/med/men/65.jpg",
-                    "userLinkedIn" : "https://www.linkedin.com/in/octavio-delgado-real-98948069/",
-                    "userSex" : "M",
-                    "userName" : "Ignacio",
-                    "userSurname" : "Villarreal",
-                    "userLastname" : "Alvarez",
-                    "userCurp" : "VIAI9105300G0HDF",
-                    "userRFC" : "VIAI910530",
-                    "userEnsurance" : "92893848292",
-                    "maritalStatus" : "1",
-                    "userBirthday" : "1991-05-30",
-                    "professionalGoal" : "Trabajar en Google",
-                    "userAddressStreet" : "Joaquin Romo",
-                    "userAddressOutsideNumber" : "14",
-                    "userAddressInsideNumber" : "0",
-                    "userAddressNeighborhood" : "Tlalpan",
-                    "userAddressPC" : "14300",
-                    "userAddressState" : "CDMX",
-                    "userAddressCity" : "CDMX",
-                    "phones" : ["2282183578", "5534332211"],
-                    "emails" : ["ralpuchev@gmail.com", "rafael.alpuche@kairosds.com"]
-                }
+            //     "personalInfo":{
+            //         "userImage" : "https://randomuser.me/api/portraits/med/men/65.jpg",
+            //         "userLinkedIn" : "https://www.linkedin.com/in/octavio-delgado-real-98948069/",
+            //         "userSex" : "M",
+            //         "userName" : "Ignacio",
+            //         "userSurname" : "Villarreal",
+            //         "userLastname" : "Alvarez",
+            //         "userCurp" : "VIAI9105300G0HDF",
+            //         "userRFC" : "VIAI910530",
+            //         "userEnsurance" : "92893848292",
+            //         "maritalStatus" : "1",
+            //         "userBirthday" : "1991-05-30",
+            //         "professionalGoal" : "Trabajar en Google",
+            //         "userAddressStreet" : "Joaquin Romo",
+            //         "userAddressOutsideNumber" : "14",
+            //         "userAddressInsideNumber" : "0",
+            //         "userAddressNeighborhood" : "Tlalpan",
+            //         "userAddressPC" : "14300",
+            //         "userAddressState" : "CDMX",
+            //         "userAddressCity" : "CDMX",
+            //         "phones" : ["2282183578", "5534332211"],
+            //         "emails" : ["ralpuchev@gmail.com", "rafael.alpuche@kairosds.com"]
+            //     }
 
-              }
-            }
+            //   // }
+            // }
           },
           templates: {
             type: Array,

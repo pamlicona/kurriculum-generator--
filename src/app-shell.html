@@ -33,7 +33,7 @@
         </style>
         <app-location route="{{route}}" use-hash-as-path></app-location>
         <app-route route="{{route}}" pattern=":page" data="{{routeData}}" tail="{{subroute}}"></app-route>
-
+        
         <!-- TODO: componente header o toolbar -->
         <header class="header">
             <img class="logoK" src="../assets/img/logo.jpg" alt="kairos">
@@ -272,6 +272,10 @@
                         this._setData(myProp)
                     }
                 });
+
+                // Summary
+                const querySelector = this.shadowRoot.querySelector('my-summary');
+                querySelector.setAttribute('data', JSON.stringify(this.data));
             }
 
             _setData(prop) {
