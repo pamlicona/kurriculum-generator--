@@ -122,6 +122,10 @@
                 align-items: center;
             }
 
+            paper-dropdown-menu-light {
+                width: 200px;
+            }
+
         </style>
         <template is="dom-if" if="[[uploading]]">
             <div class="spinner">
@@ -144,6 +148,15 @@
                     <div class="l50">
                         <button type="button" on-click="_upload" class="save-and-continue paper-button-k">Subir imagen</button>
                     </div>
+                </div>
+                <div>
+                    <paper-dropdown-menu-light id="profile_name" label="Perfil">
+                        <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{profileStatus}} attr-for-selected="myvalue" required>
+                            <template is="dom-repeat" items="[[profiles]]" as="profile">
+                                <paper-item myvalue="[[profile]]">{{profile}}</paper-item>
+                            </template>
+                        </paper-listbox>
+                    </paper-dropdown-menu-light>
                 </div>
                 <form action="/" method="get">
                     <template is="dom-repeat" items="[[uploadedFiles]]">
@@ -385,7 +398,14 @@
                         emails: {
                             type: Array,
                             value: []
-                        }
+                        },
+                        profileStatus: {
+                            type: String
+                        },
+                        profiles: {
+                            type: Array,
+                            value: ['Agile Coach', 'SCRUM Master', 'PM/Gestor Agile', 'Diseñador/Diseñadora UX', 'Ingeniero DevOps', 'Desarrollador/Desarrolladora', 'Tester QA']
+                        },
                     }
                 }
 
@@ -473,7 +493,8 @@
                         userAddressCity: this.userAddressCity,
                         userAddressState: this.userAddressState,
                         phones: this.phones,
-                        emails: this.emails
+                        emails: this.emails,
+                        profileStatus: this.profileStatus
                     }
 
                     console.log("Datos");
