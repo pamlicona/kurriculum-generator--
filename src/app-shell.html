@@ -321,10 +321,6 @@
                     return;
                 }
 
-                if(page == 'summary'){
-                    this.user = this._getInfo();
-                }
-
                 // If not page was found go to 'login' in that case.
                 this.page = page || 'login';
             }
@@ -358,12 +354,7 @@
                 line[0].classList.add("hidden");
                 line[1].classList.add("hidden");
                 searchcont[0].classList.remove("hidden");
-                /*
-                document.getElementsByClassName("contls")[0].classList.add("hidden");
-                document.getElementsByClassName("line")[0].classList.add("hidden");
-                document.getElementsByClassName("line")[1].classList.add("hidden");
-                document.getElementsByClassName("search-container")[0].classList.remove("hidden");
-                */
+
             }
 
             _saveInfo(key, data){
