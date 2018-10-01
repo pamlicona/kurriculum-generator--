@@ -37,8 +37,7 @@
         <app-route route="{{route}}" pattern=":page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
         <!-- TODO: componente header o toolbar -->
-        
-
+    
         <header class="header">
             <img class="logoK" src="../assets/img/logo.jpg" alt="kairos">
             <p><strong>Mi</strong>KURRICULUM</p>
@@ -60,9 +59,7 @@
         <div class="line line-progress"></div>
         
         
-
         <div class="contls containerEsp" id="containerEsp" name ="containerEsp">
-            <search-component class="hidden"></search-component>
             
             <!-- TODO: cambiar por componente de myphoto <my-photo></my-photo>  -->
             <div style="margin-top: 110px">
@@ -127,6 +124,11 @@
                 data="{{data}}">
             </firebase-document>
       </div>
+
+        <div class="contls containerEsp">
+            <search-component class="hidden-class" ></search-component>
+        </div>
+
       <footer>
         <h3 class="-Kairs-DS-Todos">© Kairós DS • Todos los derechos reservados</h3>
       </footer>
@@ -143,6 +145,7 @@
                         reflectToAttribute: true,
                         observer: '_pageChanged',
                     },
+                    search: Boolean,
                     routeData: Object,
                     subroute: Object,
                     rootPath: String,
@@ -268,17 +271,17 @@
             }
 
             _showSearch(event){
+                this.search = true;
+                console.log("busqueda activada:" + this.search);
                 event.target.classList.add("hidden");
                 let cont  = Polymer.dom(this.root).querySelector(".contls");
                 let line  = Polymer.dom(this.root).querySelectorAll(".line");
                 let searchcont  = Polymer.dom(this.root).querySelectorAll("search-component");
-                cont.classList.add("hidden");
-                line[0].classList.add("hidden");
-                line[1].classList.add("hidden");
-                searchcont[0].classList.remove("hidden");
+                cont.classList.add("hidden-class");
+                line[0].classList.add("hidden-class");
+                line[1].classList.add("hidden-class");
+                searchcont[0].classList.remove("hidden-class");
             }
-
-
 
             _saveInfo(key,data){
                 localStorage.setItem(key, JSON.stringify(data));
