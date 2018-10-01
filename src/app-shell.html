@@ -6,10 +6,12 @@
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 
 <link rel="import" href="app-styles.html">
 <link rel="import" href="my-photo.html">
 <link rel="import" href="pdf-cv.html">
+<link rel="import" href="search-component.html">
 
 <link rel="lazy-import" href="my-personal-data.html">
 <link rel="lazy-import" href="my-experience.html">
@@ -21,7 +23,7 @@
 <link rel="lazy-import" href="my-courses.html">
 <link rel="lazy-import" href="my-view404.html">
 <link rel="lazy-import" href="my-login.html">
-<link rel="lazy-import" href="search-component.html">
+
 
 <dom-module id="app-shell">
     <template>
@@ -35,6 +37,8 @@
         <app-route route="{{route}}" pattern=":page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
         <!-- TODO: componente header o toolbar -->
+        
+
         <header class="header">
             <img class="logoK" src="../assets/img/logo.jpg" alt="kairos">
             <p><strong>Mi</strong>KURRICULUM</p>
@@ -50,101 +54,17 @@
                 <iron-icon icon="exit-to-app"></iron-icon>
                 <span>Sign out</span>
             </paper-button>
+
         </header>
         <div class="line line-progress line-orange"></div>
         <div class="line line-progress"></div>
-
-        <div class="search-container hidden">
-            <!-- TODO: cambiar por componente serch -->
-            <h1>Busqueda de Kairoseros</h1>
-            
-            <iron-form id="formExperience">
-                <form action="/" method="get">
-                    <input class="search-field" type="text" placeholder="Escribe un nombre o un perfil de Kairos">
-                </form>
-            </iron-form>
-
-            <div class="results">
-                <div class="container">
-                    <div class="card">    
-                        <div>
-                            <div class="cont-comp-photo">
-                                <div class="photo">
-                                        <img class="person-img" src="../assets/img/person.png" alt="person">
-                                </div>
-                                <div class="data-photo">
-                                    <p><strong>David</strong></p>
-                                    <p><strong>Duran </strong></p> <br>
-                                    <p><strong>Polymer Expert</strong></p>
-                                    <p>david.duran@kairosds.com</p>
-                                    <p>+52 5542 159 282</p>
-                                </div>
-                            </div>
-                            <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
-                        </div>
-
-                    </div>
-                    <div class="card">    
-                            <div style="">
-                                <div class="cont-comp-photo">
-                                    <div class="photo">
-                                            <img class="person-img" src="../assets/img/person.png" alt="person">
-                                    </div>
-                                    <div class="data-photo">
-                                        <p><strong>Pamela</strong></p>
-                                        <p><strong> </strong></p> <br>
-                                        <p><strong>Frontend Expert</strong></p>
-                                        <p>pamela.martinez@kairosds.com</p>
-                                        <p>+52 5542 159 282</p>
-                                    </div>
-                                </div>
-                                <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
-                            </div>
-    
-                        </div>
-                        <div class="card">    
-                                <div style="">
-                                    <div class="cont-comp-photo">
-                                        <div class="photo">
-                                                <img class="person-img" src="../assets/img/person.png" alt="person">
-                                        </div>
-                                        <div class="data-photo">
-                                            <p><strong>David</strong></p>
-                                            <p><strong>Duran </strong></p> <br>
-                                            <p><strong>Sr Frontend</strong></p>
-                                            <p>david.duran@kairosds.com</p>
-                                            <p>+52 5542 2345234 282</p>
-                                        </div>
-                                    </div>
-                                    <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
-                                </div>
-                        </div>
-                        <div class="card">    
-                                <div style="">
-                                    <div class="cont-comp-photo">
-                                        <div class="photo">
-                                                <img class="person-img" src="../assets/img/person.png" alt="person">
-                                        </div>
-                                        <div class="data-photo">
-                                            <p><strong>Abner</strong></p>
-                                            <p><strong>Rojas </strong></p> <br>
-                                            <p><strong>Polymer Expert</strong></p>
-                                            <p>abner.rojas@kairosds.com</p>
-                                            <p>+52 3423 159 253482</p>
-                                        </div>
-                                        
-                                    </div>
-                                    <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
-                                </div>
-                        </div>
-
-                </div>
-            </div>
-        </div>
         
-        <div class="contls containerEsp" id="containerEsp" name ="containerEsp">
+        
 
-            <!-- TODO: cambiar por componente de myphoto -->
+        <div class="contls containerEsp" id="containerEsp" name ="containerEsp">
+            <search-component class="hidden"></search-component>
+            
+            <!-- TODO: cambiar por componente de myphoto <my-photo></my-photo>  -->
             <div style="margin-top: 110px">
                 <div class="cont-comp-photo">
                     <div class="photo">
@@ -260,8 +180,6 @@
             }
 
             _changeNumber(event){
-                //console.log("cambio ");
-                //event.target.innerHTML = "✓";
                 let cnumbers = event.target.parentNode.getElementsByTagName("*");
                 for (let n=0; n<cnumbers.length; n++){
                     cnumbers[n].style.background = "white";
@@ -311,18 +229,14 @@
                 event.target.classList.add("hidden");
                 let cont  = Polymer.dom(this.root).querySelector(".contls");
                 let line  = Polymer.dom(this.root).querySelectorAll(".line");
-                let searchcont  = Polymer.dom(this.root).querySelectorAll(".search-container");
+                let searchcont  = Polymer.dom(this.root).querySelectorAll("search-component");
                 cont.classList.add("hidden");
                 line[0].classList.add("hidden");
                 line[1].classList.add("hidden");
                 searchcont[0].classList.remove("hidden");
-                /*
-                document.getElementsByClassName("contls")[0].classList.add("hidden");
-                document.getElementsByClassName("line")[0].classList.add("hidden");
-                document.getElementsByClassName("line")[1].classList.add("hidden");
-                document.getElementsByClassName("search-container")[0].classList.remove("hidden");
-                */
             }
+
+
 
             _saveInfo(key,data){
                 localStorage.setItem(key, JSON.stringify(data));
@@ -348,8 +262,8 @@
 
             _signIn() {
                 this.$.auth.signInWithPopup()
-                    .then( response => this.page = 'personal-data')
-                    .catch( error => console.log(error));
+                    .then  ( response => this.page = 'personal-data')
+                    .catch ( error => console.log(error));
             }
 
             _signOut() {

@@ -6,48 +6,129 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
-<link rel="import" href="app-styles.html">
 
 
 <dom-module id="search-component">
-  <template>
-    <style include="app-styles">
-     
-    </style>
+    <template>
+            <style include="app-styles"></style>
 
-    <div id="">
-        <h1 class="data-header-name">Busqueda de Kairoseros</h1>
-    </div>
+            <div class="search-container">
+              <!-- TODO: cambiar por componente serch -->
+              <h1>Busqueda de Kairoseros</h1>
+              
+              <iron-form id="formExperience">
+                  <form action="/" method="get">
+                      <input class="search-field" type="text" placeholder="Escribe un nombre o un perfil de Kairos">
+                  </form>
+              </iron-form>
+      
+              <div class="results">
+                  <div class="container">
+                      <div class="card">    
+                          <div>
+                              <div class="cont-comp-photo">
+                                  <div class="photo">
+                                          <img class="person-img" src="../assets/img/person.png" alt="person">
+                                  </div>
+                                  <div class="data-photo">
+                                      <p><strong>David</strong></p>
+                                      <p><strong>Duran </strong></p> <br>
+                                      <p><strong>Polymer Expert</strong></p>
+                                      <p>david.duran@kairosds.com</p>
+                                      <p>+52 5542 159 282</p>
+                                  </div>
+                              </div>
+                              <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                          </div>
+      
+                      </div>
+                      <div class="card">    
+                              <div style="">
+                                  <div class="cont-comp-photo">
+                                      <div class="photo">
+                                              <img class="person-img" src="../assets/img/person.png" alt="person">
+                                      </div>
+                                      <div class="data-photo">
+                                          <p><strong>Pamela</strong></p>
+                                          <p><strong> </strong></p> <br>
+                                          <p><strong>Frontend Expert</strong></p>
+                                          <p>pamela.martinez@kairosds.com</p>
+                                          <p>+52 5542 159 282</p>
+                                      </div>
+                                  </div>
+                                  <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                              </div>
+      
+                          </div>
+                          <div class="card">    
+                                  <div style="">
+                                      <div class="cont-comp-photo">
+                                          <div class="photo">
+                                                  <img class="person-img" src="../assets/img/person.png" alt="person">
+                                          </div>
+                                          <div class="data-photo">
+                                              <p><strong>David</strong></p>
+                                              <p><strong>Duran </strong></p> <br>
+                                              <p><strong>Sr Frontend</strong></p>
+                                              <p>david.duran@kairosds.com</p>
+                                              <p>+52 5542 2345234 282</p>
+                                          </div>
+                                      </div>
+                                      <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                                  </div>
+                          </div>
+                          <div class="card">    
+                                  <div style="">
+                                      <div class="cont-comp-photo">
+                                          <div class="photo">
+                                                  <img class="person-img" src="../assets/img/person.png" alt="person">
+                                          </div>
+                                          <div class="data-photo">
+                                              <p><strong>Abner</strong></p>
+                                              <p><strong>Rojas </strong></p> <br>
+                                              <p><strong>Polymer Expert</strong></p>
+                                              <p>abner.rojas@kairosds.com</p>
+                                              <p>+52 3423 159 253482</p>
+                                          </div>
+                                          
+                                      </div>
+                                      <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                                  </div>
+                          </div>
+      
+                  </div>
+              </div>
+      
+              <paper-dialog id="modalCV" modal>
+                      <my-summary on-download-cv="_downloadCv" user="[[user]]" name="summaryCV"></my-summary>
+              </paper-dialog>
+      
+            </div>
 
-  </template>
+    </template>
 
-  <script>
-    (function appShell(customElements){
-      'use strict';
 
-      class SearchComponent extends Polymer.Element {
-        static get is() { return 'search-component'; }
-        static get properties() {
-          return {
-            search: {
-              type: text,
-              value: ''
-            },
-            results: {
-                type: Object,
-                value: {}
+    <script>
+        class SearchComponent extends Polymer.Element {
+            static get is() { return 'search-component'; }
+            static get properties(){
+                return {
+                    photo:{
+                        type: String,
+                        value: ""
+                    }
+                };
             }
-          }
+
+             //show the resume inside a modal 
+        _watchResume(event){    
+            this.$.modalCV.open();
+        }
+            
+
+           
         }
 
-        connectedCallback() {
-            super.connectedCallback();
-        }
-
-        
-
-      }
-      customElements.define(SearchComponent.is, SearchComponent);
-    })(window.customElements);
-  </script>
+        window.customElements.define(SearchComponent.is, SearchComponent);
+    </script>
 </dom-module>
