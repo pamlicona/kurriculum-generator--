@@ -150,8 +150,8 @@
                     </div>
                 </div>
                 <div>
-                    <paper-dropdown-menu-light id="profile_name" label="Perfil">
-                        <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{profileStatus}} attr-for-selected="myvalue" required>
+                    <paper-dropdown-menu-light id="profileStatus" label="Perfil">
+                        <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{personalInfo.profileStatus}} attr-for-selected="myvalue" required>
                             <template is="dom-repeat" items="[[profiles]]" as="profile">
                                 <paper-item myvalue="[[profile]]">{{profile}}</paper-item>
                             </template>
@@ -328,9 +328,22 @@
                                 userAddressCP: null,
                                 userAddressCity: null,
                                 userAddressState: null,
-                                phones: null,
-                                emails: null
+                                phones: [],
+                                emails: [],
+                                profileStatus: null
                             }
+                        },
+                        profiles: {
+                            type: Array,
+                            value: [
+                                'Agile Coach', 
+                                'SCRUM Master',
+                                'PM/Gestor Agile', 
+                                'Diseñador/Diseñadora UX', 
+                                'Ingeniero DevOps', 
+                                'Desarrollador/Desarrolladora', 
+                                'Tester QA'
+                            ]
                         }
                     }
                 }

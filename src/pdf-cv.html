@@ -12,57 +12,56 @@
       }
     </style>
     <main id="pdf">
-      <h2 class="red-color">Pruebaaaa</h2>
       <div class="container">
         <h2 class="title_info">Información Personal</h2>
         <div class="container__personal">
           <dl>
             <dt>Imagen</dt>
-            <dd><img src="[[userCv.user.personalInfo.userImage]]" alt="Usuario"></dd>
+            <dd><img src="[[userCv.personalInfo.userImage]]" alt="Usuario"></dd>
             <dt>Nombre</dt>
-            <dd>[[userCv.user.personalInfo.userName]]</dd>
+            <dd>[[userCv.personalInfo.userName]]</dd>
             <dt>Apellido Paterno</dt>
-            <dd>[[userCv.user.personalInfo.userSurname]]</dd>
+            <dd>[[userCv.personalInfo.userSurname]]</dd>
             <dt>Apellido Materno</dt>
-            <dd>[[userCv.user.personalInfo.userLastname]]</dd>
+            <dd>[[userCv.personalInfo.userLastname]]</dd>
             <dt>Sexo</dt>
-            <dd>[[_getSex(userCv.user.personalInfo.userSex)]]</dd>
+            <dd>[[_getSex(userCv.personalInfo.userSex)]]</dd>
             <dt>Curp</dt>
-            <dd>[[userCv.user.personalInfo.userCurp]]</dd>
+            <dd>[[userCv.personalInfo.userCurp]]</dd>
             <dt>RFC</dt>
-            <dd>[[userCv.user.personalInfo.userRFC]]</dd>
+            <dd>[[userCv.personalInfo.userRFC]]</dd>
             <dt>Numero Seguro Social</dt>
-            <dd>[[userCv.user.personalInfo.userEnsurance]]</dd>
+            <dd>[[userCv.personalInfo.userEnsurance]]</dd>
             <dt>Estado Civil</dt>
-            <dd>[[_getMaritalStatus(userCv.user.personalInfo.maritalStatus)]]</dd>
+            <dd>[[_getMaritalStatus(userCv.personalInfo.maritalStatus)]]</dd>
             <dt>Fecha Nacimiento</dt>
-            <dd>[[userCv.user.personalInfo.userBirthday]]</dd>
+            <dd>[[userCv.personalInfo.userBirthday]]</dd>
           </dl>
           <dl>
             <dt>Meta Profesional</dt>
-            <dd>[[userCv.user.personalInfo.professionalGoal]]</dd>
+            <dd>[[userCv.personalInfo.professionalGoal]]</dd>
             <dt>Calle</dt>
-            <dd>[[userCv.user.personalInfo.userAddressStreet]]</dd>
+            <dd>[[userCv.personalInfo.userAddressStreet]]</dd>
             <dt>Numero</dt>
-            <dd>[[userCv.user.personalInfo.userAddressOutsideNumber]]</dd>
+            <dd>[[userCv.personalInfo.userAddressOutsideNumber]]</dd>
             <dt>Numero Interior</dt>
-            <dd>[[userCv.user.personalInfo.userAddressInsideNumber]]</dd>
+            <dd>[[userCv.personalInfo.userAddressInsideNumber]]</dd>
             <dt>Colonia</dt>
-            <dd>[[userCv.user.personalInfo.userAddressNeighborhood]]</dd>
+            <dd>[[userCv.personalInfo.userAddressNeighborhood]]</dd>
             <dt>Código Postal</dt>
-            <dd>[[userCv.user.personalInfo.userAddressPC]]</dd>
+            <dd>[[userCv.personalInfo.userAddressPC]]</dd>
             <dt>Ciudad</dt>
-            <dd>[[userCv.user.personalInfo.userAddressCity]]</dd>
+            <dd>[[userCv.personalInfo.userAddressCity]]</dd>
             <dt>Telefonos</dt>
-            <template is="dom-repeat" items="{{userCv.user.personalInfo.phones}}" as="item">
+            <template is="dom-repeat" items="{{userCv.personalInfo.phones}}" as="item">
               <dd>[[item]]</dd>
             </template>
             <dt>Emails</dt>
-            <template is="dom-repeat" items="{{userCv.user.personalInfo.emails}}" as="item">
+            <template is="dom-repeat" items="{{userCv.personalInfo.emails}}" as="item">
               <dd>[[item]]</dd>
             </template>
             <dt>Linkedin</dt>
-            <dd> <a href="[[userCv.user.personalInfo.userLinkedIn]]"><img src="../assets/img/linkedin.png" alt="Linkedin"></a></dd>
+            <dd> <a href="[[userCv.personalInfo.userLinkedIn]]"><img src="../assets/img/linkedin.png" alt="Linkedin"></a></dd>
           </dl>
         </div>
       </div>
@@ -70,7 +69,7 @@
       <div class="container">
         <h2 class="title_info">Formación</h2>
         <dl>
-          <template class="hidden" is="dom-repeat" items="{{userCv.user.formacion}}" as="item">
+          <template class="hidden" is="dom-repeat" items="{{userCv.formacion}}" as="item">
             <dt>Institución</dt>
             <dd>[[item.institucion]]</dd>
             <dt>Titulación</dt>
@@ -95,7 +94,7 @@
         <div class="container">
           <h2 class="title_info">Experiencia</h2>
           <dl>
-            <template class="hidden" is="dom-repeat" items="{{userCv.user.experience}}" as="item">
+            <template class="hidden" is="dom-repeat" items="{{userCv.experience}}" as="item">
               <dt>Compañia</dt>
               <dd>[[item.company]]</dd>
               <dt>Posición</dt>
@@ -123,7 +122,7 @@
           <h2 class="title_info">Conocimientos</h2>
           <dl>
             <dt>Conocimiento - Porcentaje</dt>
-            <template class="hidden" is="dom-repeat" items="{{userCv.user.knowledges}}" as="item">
+            <template class="hidden" is="dom-repeat" items="{{userCv.knowledges}}" as="item">
               <dd>[[item.knowledge]] - [[item.percent]]</dd>
             </template>
           </dl>
@@ -133,7 +132,7 @@
           <h2 class="title_info">Aptitudes</h2>
           <dl>
             <dt>Aptitud</dt>
-            <template class="hidden" is="dom-repeat" items="{{userCv.user.skills}}" as="item">
+            <template class="hidden" is="dom-repeat" items="{{userCv.skills}}" as="item">
               <dd>[[item]]</dd>
             </template>
           </dl>
@@ -143,7 +142,7 @@
           <h2 class="title_info">Idiomas</h2>
           <dl>
             <dt>Idioma - Nivel</dt>
-            <template class="hidden" is="dom-repeat" items="{{userCv.user.languages}}" as="item">
+            <template class="hidden" is="dom-repeat" items="{{userCv.languages}}" as="item">
               <dd>[[item.name]] - [[item.level]]</dd>
             </template>
           </dl>
@@ -153,7 +152,7 @@
       <div class="container">
         <h2 class="title_info">Certificaciones</h2>
         <dl>
-          <template class="hidden" is="dom-repeat" items="{{userCv.user.certificaciones}}" as="item">
+          <template class="hidden" is="dom-repeat" items="{{userCv.certificaciones}}" as="item">
             <dt>Nombre de Certificación</dt>
             <dd>[[item.nombre]]</dd>
             <dt>Empresa</dt>

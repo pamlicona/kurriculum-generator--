@@ -220,8 +220,8 @@
             }
 
             _downloadCv(event) {
-              this.set('usercv', event.detail.data);
-              this.set('templatecv', event.detail.template);
+                this.set('usercv', event.detail.data);
+                this.set('templatecv', event.detail.template);
             }
 
             _changeNumber(event){
@@ -240,10 +240,6 @@
                 if (!this.user) {
                     this.page = 'login';
                     return;
-                }
-
-                if(page == 'summary'){
-                    this.user = this._getInfo();
                 }
 
                 // If not page was found go to 'login' in that case.
@@ -265,9 +261,9 @@
             }
 
             _saveInfoEvent(event){
-                let user = this._getInfo();
+                let user = this.data;
                 user[event.detail.key] = event.detail.data;
-                this._saveInfo('user',user);
+                this._saveInfo(event.detail.key, user);
             }
 
             _showSearch(event){
@@ -281,12 +277,13 @@
                 line[0].classList.add("hidden-class");
                 line[1].classList.add("hidden-class");
                 searchcont[0].classList.remove("hidden-class");
+
             }
 
-            _saveInfo(key,data){
-                localStorage.setItem(key, JSON.stringify(data));
+            _saveInfo(key, data){
                 // Firebase
-                this.data = data;
+                this.set('data', data);
+                this.notifyPath(`data.${key}`);
                 console.log("Firebase data: ", this.data);
 
                 //pasar al siguiente paso y marcar el actual
@@ -299,10 +296,6 @@
                 this.step++;
                 items[this.step].click();
                 console.log(items);
-            }
-
-            _getInfo(){
-                return JSON.parse(localStorage.getItem('user'));
             }
 
             _signIn() {
