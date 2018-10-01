@@ -238,16 +238,16 @@
         <iron-form id="formPrint">
           <form action="/" method="get">
             <paper-dropdown-menu-light name="template" label="Tipo de plantilla" required>
-              <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{template}} attr-for-selected="myvalue">
-                <template is="dom-repeat" items="[[templates]]">
-                    <paper-item myvalue="[[templates]]">{{item}}</paper-item>
+              <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{template}} attr-for-selected="myvalue" required>
+                <template is="dom-repeat" items="[[templates]]" as="itemTemplate">
+                    <paper-item myvalue="[[itemTemplate]]">{{itemTemplate}}</paper-item>
                 </template>
               </paper-listbox>
             </paper-dropdown-menu-light>
             <paper-dropdown-menu-light name="printType" label="Formato" required>
-              <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{printType}} attr-for-selected="myvalue">
-                <template is="dom-repeat" items="[[printTypes]]">
-                    <paper-item myvalue="[[printTypes]]">{{item}}</paper-item>
+              <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{printType}} attr-for-selected="myvalue" required>
+                <template is="dom-repeat" items="[[printTypes]]" as="itemsType">
+                    <paper-item myvalue="[[itemsType]]">{{itemsType}}</paper-item>
                 </template>
               </paper-listbox>
             </paper-dropdown-menu-light>
@@ -275,79 +275,7 @@
       static get properties() {
         return {
           data: {
-            type: Object,
-            // value: {
-            //   // "user":{
-            //     "languages":[ { "name" : "ingles", "level": "Principiante" } ],
-
-            //     "knowledges": [{
-            //       "knowledge": "JavaScript",
-            //       "percent": "50%",
-            //       "description": "Angular 2, Polymer 2, React"
-            //       }],
-
-            //     "skills":["Teamwork", "Responsibility"],
-
-            //     "experience": [{
-            //       "company": "Kairos",
-            //       "position": "Web Developer",
-            //       "location": "WeWork Varsovia",
-            //       "description": "Web Developer for CV",
-            //       "finalDate": "2017/06/09",
-            //       "startDate": "2018/07/10",
-            //       "actual": false
-            //     }],
-
-            //     "formation": [
-            //         {
-            //           "id" : "1",
-            //           "institucion" : "Politecnico Nacional",
-            //           "titulacion"  : "Lic. en Informatica",
-            //           "estatus"     : "Titulado",
-            //           "encurso"     : "No",
-            //           "desde"       : "2017/06/09",
-            //           "hasta"       : "2018/07/10"
-            //         }
-            //     ],
-
-            //     "certifications": [
-            //         {
-            //           "id" : "",
-            //           "nombre" : "Certificación JS",
-            //           "entidad" : "Big Nerd Ranch",
-            //           "licencia" : "2929349848",
-            //           "fechaFin" : "2017/06/09",
-            //           "fechaInicio" : "2018/07/10",
-            //           "permanente" : false
-            //         }
-            //     ],
-
-            //     "personalInfo":{
-            //         "userImage" : "https://randomuser.me/api/portraits/med/men/65.jpg",
-            //         "userLinkedIn" : "https://www.linkedin.com/in/octavio-delgado-real-98948069/",
-            //         "userSex" : "M",
-            //         "userName" : "Ignacio",
-            //         "userSurname" : "Villarreal",
-            //         "userLastname" : "Alvarez",
-            //         "userCurp" : "VIAI9105300G0HDF",
-            //         "userRFC" : "VIAI910530",
-            //         "userEnsurance" : "92893848292",
-            //         "maritalStatus" : "1",
-            //         "userBirthday" : "1991-05-30",
-            //         "professionalGoal" : "Trabajar en Google",
-            //         "userAddressStreet" : "Joaquin Romo",
-            //         "userAddressOutsideNumber" : "14",
-            //         "userAddressInsideNumber" : "0",
-            //         "userAddressNeighborhood" : "Tlalpan",
-            //         "userAddressPC" : "14300",
-            //         "userAddressState" : "CDMX",
-            //         "userAddressCity" : "CDMX",
-            //         "phones" : ["2282183578", "5534332211"],
-            //         "emails" : ["ralpuchev@gmail.com", "rafael.alpuche@kairosds.com"]
-            //     }
-
-            //   // }
-            // }
+            type: Object
           },
           templates: {
             type: Array,
@@ -381,15 +309,19 @@
       _downloadCv(event) {
         const validate = this.$.formPrint.validate();
         if (validate) {
-          this.dispatchEvent(new CustomEvent('download-cv',{
-            bubbles: true,
-            detail:{
-              data: this.data,
-              template: this.$.formPrint.serializeForm()
-            }
-          }));
+          const detail = {
+            data: this.data,
+            template: this.$.formPrint.serializeForm()
+          }
+          this._dispatchEvent(event, detail)
         }
+      }
 
+      _dispatchEvent(event, detail) {
+        this.dispatchEvent(new CustomEvent('download-cv',{
+            bubbles: true,
+            detail: detail
+        }));
       }
     }
 
