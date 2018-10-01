@@ -344,9 +344,9 @@
             }
 
             _saveInfoEvent(event){
-                let user = this._getInfo();
+                let user = this.data;
                 user[event.detail.key] = event.detail.data;
-                this._saveInfo('user',user);
+                this._saveInfo(event.detail.key, user);
             }
 
             _showSearch(event){
@@ -366,10 +366,10 @@
                 */
             }
 
-            _saveInfo(key,data){
-                localStorage.setItem(key, JSON.stringify(data));
+            _saveInfo(key, data){
                 // Firebase
-                this.data = data;
+                this.set('data', data);
+                this.notifyPath(`data.${key}`);
                 console.log("Firebase data: ", this.data);
 
                 //pasar al siguiente paso y marcar el actual
@@ -382,10 +382,6 @@
                 this.step++;
                 items[this.step].click();
                 console.log(items);
-            }
-
-            _getInfo(){
-                return JSON.parse(localStorage.getItem('user'));
             }
 
             _signIn() {
