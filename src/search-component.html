@@ -6,48 +6,218 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
-<link rel="import" href="app-styles.html">
+<link rel="import" href="my-summary.html">
 
 
 <dom-module id="search-component">
-  <template>
-    <style include="app-styles">
-     
-    </style>
+    <template>
+            <style include="app-styles">
+                .search-container{
+                    margin-top: 120px;
+                    display: flex;
+                    justify-content: center;
+                }
 
-    <div id="">
-        <h1 class="data-header-name">Busqueda de Kairoseros</h1>
-    </div>
+                .search-container h1{
+                    color: gray;
+                }
 
-  </template>
+                .search-field{
+                    padding: 15px 10px;
+                    margin: 15px;
+                    width: 300px;
+                }
+                .hidden{
+                    display: none;
+                }
 
-  <script>
-    (function appShell(customElements){
-      'use strict';
 
-      class SearchComponent extends Polymer.Element {
-        static get is() { return 'search-component'; }
-        static get properties() {
-          return {
-            search: {
-              type: text,
-              value: ''
-            },
-            results: {
-                type: Object,
-                value: {}
-            }
-          }
-        }
 
-        connectedCallback() {
-            super.connectedCallback();
-        }
+                /* CARDS DE BUSQUEDA */
+                .card{
+                    background: white;
+                    border: 5px solid rgb(255, 121, 0);;
+                    margin-right: 10px;
+                    margin-top: 10px;
+                    width: 600px;
+                }
 
+
+                .card:hover
+                {
+                        box-shadow:
+                                1px 1px gray,
+                                2px 2px gray,
+                                3px 3px gray;
+                        -webkit-transform: translateX(-3px);
+                        transform: translateX(-3px);
+                        background-color: rgb(255, 121, 0, 0.5);
+                }
+
+
+                .results{
+                    position: fixed;
+                    margin-top: 150px;
+                }
+                .results .container{
+                    display: flex;
+                    justify-content: space-evenly;
+                    width: 100% !important;
+                    flex-wrap: wrap;
+                }
         
+                .min-width{
+                    min-width: 680px;
+                    padding: 15px;
+                }
 
-      }
-      customElements.define(SearchComponent.is, SearchComponent);
-    })(window.customElements);
-  </script>
+                .hidden-class {
+                    display: none;
+                }
+                .search-button{
+                    height: 35px;
+                    margin-top: 20px;
+                    background-color: rgb(255, 121, 0);
+                    color: white;
+                    font-size: 16px;
+                }
+                
+            </style>
+
+            <div class="search-container">
+              
+
+            <firebase-auth
+                id="auth"
+                app-name="kurriculum"
+                provider="google"
+                signed-in="{{signedIn}}"
+                user="{{user}}">
+            </firebase-auth>
+
+            <firebase-document
+                id="allUsers"
+                app-name="kurriculum"
+                path="/users"
+                data="{{results}}">
+            </firebase-document>
+
+
+            <h1>Busqueda de Kairoseros</h1>
+            
+            <iron-form id="formExperience">
+                <form action="/" method="get">
+                    <input class="search-field" type="text" placeholder="Escribe un nombre o un perfil de Kairos">
+                </form>
+            </iron-form>
+            <paper-button class="search-button" raised on-click="_refreshFilter">Buscar</paper-button>
+            
+            
+    
+            <div class="results">
+                <div class="container">
+                    <template is="dom-repeat" items="{{resultsF}}" as="user" id="listSearch">
+                    <div class="card">    
+                        <div>
+                            <div class="cont-comp-photo">
+                                <div class="photo">
+                                        <img class="person-img" src="../assets/img/person.png" alt="person">
+                                </div>
+                                <div class="data-photo">
+                                    <p><strong>[[user.personalInfo.userName]]</strong></p>
+                                    <p><strong>[[user.personalInfo.userLastname]]</strong></p> <br>
+                                    <p><strong>[[user.personalInfo.profileStatus]]</strong></p>
+                                    <p>[[user.personalInfo.userLinkedIn]]</p>
+                                </div>
+                            </div>
+                            <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
+                        </div>
+                    </div>
+                    </template>
+                </div>
+            </div>
+    
+            <paper-dialog id="modalCV" modal class="min-width">
+                    <my-summary on-download-cv="_downloadCv" user="[[user]]" name="summaryCV"></my-summary>
+                    <div class="buttons">
+                        <paper-button dialog-dismiss>Cancel</paper-button>
+                    </div>
+            </paper-dialog>
+    
+        </div>
+
+    </template>
+
+
+    <script>
+        class SearchComponent extends Polymer.Element {
+            static get is() { return 'search-component'; }
+            static get properties(){
+                return {
+                    photos:{
+                        type: String,
+                        value: ""
+                    },
+                    results: {
+                        type: Object,
+                        value: {}
+                    },
+                    resultsF: {
+                        type: Object,
+                        value: {}
+                    }, 
+                    profiles:{
+                        type: Array,
+                        value: ["Agile Coach", "SCRUM Master", "PM/Gestor Agile", "Diseñador/a UX", "Ingeniero DevOps","Front-End", "Back-End", "Middleware", "Android", "iOS", "Fullstack","Tester QA"]
+                    }
+                };
+            }
+
+            //show the resume inside a modal 
+            _watchResume(event){    
+                this.$.modalCV.open();
+                setTimeout(function() {
+                    let over  = document.getElementsByTagName("iron-overlay-backdrop");
+                    over[0].classList.remove("opened");
+                }, 50);
+            }
+            
+
+            _refreshFilter() {
+                let keyWord = Polymer.dom(this.root).querySelector(".search-field").value;
+                let allresult = this._snapshotToArray(this.results);
+                let list_filtered = [];
+                console.log(this.results);
+                allresult.forEach(function (user) {
+                    if(user.personalInfo.userName.includes(keyWord)){
+                        list_filtered.push(user);
+                        console.log("encontrado!");
+                    }
+                    if(user.personalInfo.hasOwnProperty("profileStatus")){
+                        if(user.personalInfo.profileStatus.includes(keyWord)){
+                            list_filtered.push(user);
+                            console.log("encontrado!");
+                        }
+                    }
+                });
+                this.resultsF = list_filtered;
+                console.log("Lista actualizada: ");
+                
+
+            }
+
+            _snapshotToArray(snapshot) {
+                let araryR = [];
+                Object.keys(snapshot).forEach(function(key) {
+                    console.log(key + ': ' + snapshot[key]);
+                    araryR.push(snapshot[key]);
+                });
+                return araryR;
+            };
+            
+           
+        }
+
+        window.customElements.define(SearchComponent.is, SearchComponent);
+    </script>
 </dom-module>
