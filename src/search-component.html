@@ -38,8 +38,8 @@
                     background: white;
                     border: 5px solid rgb(255, 121, 0);;
                     margin-right: 10px;
-                    margin-top: 10px;
-                    width: 600px;
+                    margin-top: 20px;
+                    width: 500px;
                 }
 
 
@@ -117,22 +117,22 @@
             <div class="results">
                 <div class="container">
                     <template is="dom-repeat" items="{{resultsF}}" as="user" id="listSearch">
-                    <div class="card">    
-                        <div>
-                            <div class="cont-comp-photo">
-                                <div class="photo">
-                                        <img class="person-img" src="../assets/img/person.png" alt="person">
+                        <div class="card">    
+                            <div>
+                                <div class="cont-comp-photo">
+                                    <div class="photo">
+                                            <img class="person-img" src="../assets/img/person.png" alt="person">
+                                    </div>
+                                    <div class="data-photo">
+                                        <p><strong>[[user.personalInfo.userName]]</strong></p>
+                                        <p><strong>[[user.personalInfo.userLastname]]</strong></p> <br>
+                                        <p><strong>[[user.personalInfo.profileStatus]]</strong></p>
+                                        <p>[[user.personalInfo.userLinkedIn]]</p>
+                                    </div>
                                 </div>
-                                <div class="data-photo">
-                                    <p><strong>[[user.personalInfo.userName]]</strong></p>
-                                    <p><strong>[[user.personalInfo.userLastname]]</strong></p> <br>
-                                    <p><strong>[[user.personalInfo.profileStatus]]</strong></p>
-                                    <p>[[user.personalInfo.userLinkedIn]]</p>
-                                </div>
+                                <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
                             </div>
-                            <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
                         </div>
-                    </div>
                     </template>
                 </div>
             </div>
@@ -164,7 +164,7 @@
                     },
                     resultsF: {
                         type: Object,
-                        value: {}
+                        value: null
                     }, 
                     profiles:{
                         type: Array,
@@ -179,7 +179,7 @@
                 setTimeout(function() {
                     let over  = document.getElementsByTagName("iron-overlay-backdrop");
                     over[0].classList.remove("opened");
-                }, 50);
+                }, 90);
             }
             
 
