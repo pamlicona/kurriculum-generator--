@@ -12,6 +12,7 @@
 <link rel="import" href="my-photo.html">
 <link rel="import" href="pdf-cv.html">
 <link rel="import" href="search-component.html">
+<link rel="import" href="components/ks-header.html">
 
 <link rel="lazy-import" href="my-personal-data.html">
 <link rel="lazy-import" href="my-experience.html">
@@ -27,39 +28,18 @@
 
 <dom-module id="app-shell">
     <template>
-        <style include="app-styles">
-            /* TODO: enviar a componente header */
-            .close__session {
-                position: absolute; right: 0; font-size: 0.5em; margin: 20px 0px;
-            }
-        </style>
+        <style include="app-styles"></style>
         <app-location route="{{route}}" use-hash-as-path></app-location>
         <app-route route="{{route}}" pattern=":page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
-        <!-- TODO: componente header o toolbar -->
     
-        <header class="header">
-            <img class="logoK" src="../assets/img/logo.jpg" alt="kairos">
-            <p><strong>Mi</strong>KURRICULUM</p>
-            <paper-button hidden$="[[signedIn]]" class="close__session">
-                <iron-icon icon="lock"></iron-icon>
-            </paper-button>
-            
-            <paper-button on-click="_showSearch" hidden$="[[!signedIn]]" class="search-button">
-                <span>Buscar Kairosero</span>
-            </paper-button>
-            
-            <paper-button on-click="_signOut" hidden$="[[!signedIn]]" class="close__session">
-                <iron-icon icon="exit-to-app"></iron-icon>
-                <span>Sign out</span>
-            </paper-button>
-
-        </header>
         <div class="line line-progress line-orange"></div>
         <div class="line line-progress"></div>
         
         
         <div class="contls containerEsp" id="containerEsp" name ="containerEsp">
+            <!-- TODO: componente header o toolbar -->
+            <ks-header signed-in="[[signedIn]]" on-show-search="_showSearch" on-sign-out="_signOut"></ks-header>
             
             <!-- TODO: cambiar por componente de myphoto <my-photo></my-photo>  -->
             <div style="margin-top: 110px">
