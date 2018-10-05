@@ -7,6 +7,7 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
 <link rel="import" href="app-styles.html">
+<link rel="import" href="components/ks-info-card.html">
 
 
 <dom-module id="my-certifications">
@@ -108,22 +109,6 @@
           <div class="cont-input">
             <paper-checkbox name="permanente" checked="{{permanente}}">Esta certificacion no vence</paper-checkbox>
           </div>
-
-          <template is="dom-repeat" items="{{certifications}}">
-              <div id="[[index]]" class="listData">
-                <div>Certificación: <span>{{item.certificacion}}</span></div>
-                <div>Entidad: <span>{{item.entidad}}</span></div>
-                <div>Licencia: <span>{{item.licencia}}</span></div>
-                <div>URL: <span>{{item.url}}</span></div>
-                <div>Desde: <span>{{item.desde}}</span></div>
-                <div>Hasta: <span>{{item.hasta}}</span></div>
-                <div>Permanente: <span>{{item.permanente}}</span></div>
-                <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
-                <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
-              </div>
-          </template>
-
-
           <div class="cont-input" on-click="_addData">
             <img src="../assets/img/group.svg" alt="" class="plus">
             <a class="add-link" >Añadir nueva certificación</a>
@@ -134,7 +119,15 @@
      </iron-form>
     </div>
 
-      <br>
+    <template is="dom-repeat" items="{{certifications}}">
+        <ks-info-card 
+            title="{{item.certificacion}}" 
+            on-remove-item="_removeItem"
+            on-edit-item="_editItem"
+            aditional-data="{{item}}"
+            index="{{index}}">
+        </ks-info-card>
+    </template>
 
   </template>
 
@@ -211,17 +204,14 @@
       }
 
       _removeItem(event) {
-        const index = event.model.index;
+        const index = event.detail.index;
         this.splice('certifications', index, 1);
       }
 
       _editItem(event) {
         this._removeItem(event);
-        const item = event.model.item;
-        console.log(item);
+        const item = event.detail.item;
         this.set('currentItem', item);
-        //this.set('desde', item.desde);
-        //this.set('hasta', item.hasta);
         this.set('permanente', item.permanente);
       }
 

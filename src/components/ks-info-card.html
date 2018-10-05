@@ -1,0 +1,147 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="ks-names-fields.html">
+
+<dom-module id="ks-info-card">
+    <template>
+        <style>
+            paper-card {
+                width: 100%;
+                margin-top: 20px;
+                font-size: 18px;
+            }
+
+            .title-text {
+                font-size: 24px;
+                font-weight: bold;
+                letter-spacing: 1.5px;
+            }
+
+            .card-actions {
+                text-align: right;
+                color: rgb(255, 121, 0);
+            }
+
+            .header-card {
+                background-color: #dbdbdb;
+                padding: 5px 18px;
+            }
+        </style>
+
+        <paper-card id="paperItem-{{index}}">
+            <template is="dom-if" if="{{header}}">
+                <div class="header-card">
+                    <div class="title-text">{{title}}</div>
+                    <div class="subtitle-text">{{subtitle}}</div>
+                </div>
+            </template>
+            <div class="card-content list-items">
+                <ul id="listItems"></ul>
+            </div>
+            <div class="card-actions">
+                <template is="dom-if" if="{{edit}}">
+                    <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
+                </template>
+                <template is="dom-if" if="{{delete}}">
+                    <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
+                </template>
+            </div>
+        </paper-card>
+    </template>
+
+    <script>
+        /**
+         * `ks-info-card`
+         *
+         * @customElement
+         * @polymer
+         */
+        class KsInfoCard extends MyBehaviorMixin(Polymer.Element) {
+            static get is() { return 'ks-info-card'; }
+            static get properties() {
+                return {
+                    edit: {
+                        type: Boolean,
+                        value: true
+                    },
+                    delete: {
+                        type: Boolean,
+                        value: true
+                    },
+                    aditionalData: {
+                        type: Object,
+                        observer: '_setItem'
+                    },
+                    title: {
+                        type: String,
+                        value: ''
+                    },
+                    subtitle: {
+                        String,
+                        value: ''
+                    },
+                    index: Number,
+                    header: {
+                        type: Boolean,
+                        value: false
+                    }
+                };
+            }
+
+            static get observers() {
+                return [
+                    '_showHeader(title, subtitle)'
+                ]
+            }
+
+            _showHeader(title, subtitle) {
+                if (title !== '' || subtitle !== '') {
+                    this.header = true;
+                }
+            }
+
+            _setItem() {
+                if (this.aditionalData != undefined) {
+                    this._removeCard();
+                    const listItems = this.$.listItems;
+                    Object.entries(this.aditionalData).forEach(([key, value]) => {
+                        if (value != '' && value !== undefined) {
+                            value = value === true ? "Si" : value;
+                            listItems.innerHTML += `<li>${this._searchEquivalent(key)}: ${value}</li>`
+                        }
+                    });
+                }
+            }
+
+            _removeItem(event) {
+                this.dispatchEvent(new CustomEvent('remove-item', {
+                    bubbles: true,
+                    detail:{
+                        index: this.index
+                    }
+                }));
+            }
+
+            _removeCard() {
+                const myNode = this.$.listItems;
+                while (myNode.firstChild) {
+                    myNode.removeChild(myNode.firstChild);
+                }
+            }
+
+            _editItem(event) {
+                this.dispatchEvent(new CustomEvent('edit-item', {
+                    bubbles: true,
+                    detail:{
+                        item: this.aditionalData,
+                        index: this.index
+                    }
+                }));
+            }
+        }
+
+        window.customElements.define(KsInfoCard.is, KsInfoCard);
+    </script>
+</dom-module>

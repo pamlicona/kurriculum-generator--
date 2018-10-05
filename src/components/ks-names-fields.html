@@ -1,0 +1,51 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<script>
+    /**
+     * `ks-names-fields`
+     *
+     * @customMixin
+     * @polymer
+     */
+     const MyBehaviorMixin = Polymer.dedupingMixin(function(superClass){
+        return class MyBehavior extends superClass {
+            static get properties() {
+                return {
+                    equivalent: {
+                        type: Object,
+                        value: {
+                            actual: "Actual",
+                            company: "Compañía",
+                            description: "Descripción",
+                            finalDate: "Fecha de fin",
+                            location: "Ubicación",
+                            position: "Puesto",
+                            startDate: "Fecha de inicio",
+                            percent: "Porcentaje de conocimiento",
+                            knowledge: "Herramienta",
+                            level: "Nivel",
+                            name: "Nombre",
+                            titulacion: "Titulación",
+                            desde: "Fecha de inicio",
+                            hasta: "Fecha de fin",
+                            institucion: "Institución",
+                            institution: "Institución",
+                            date: "Fecha",
+                            certificacion: "Certificación",
+                            entidad: "Entidad",
+                            licencia: "Licencia",
+                            permanente: "Permanente",
+                            url: "Url"
+                        }
+                    }
+                }
+            }
+
+            _searchEquivalent(field) {
+                if(field in this.equivalent) {
+                    return this.equivalent[field];
+                }
+            }
+        }
+    })
+</script>
