@@ -6,12 +6,10 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
-<link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/iron-icons/maps-icons.html">
-<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
-<link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="components/ks-info-card.html">
 
 
 <dom-module id="my-knowledges">
@@ -40,12 +38,6 @@
       .hidden{
         display: none;
       }
-      .container-knowledge {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 15px;
-        margin-top: 5%;
-      }
     </style>
     <h1>Herramientas</h1>
     <iron-form id="form">
@@ -63,19 +55,15 @@
         </div>
       </form>
 		</iron-form>
-    <div class="container-knowledge">
+    <div class="container-3-grid container-grid">
   		<template  is="dom-repeat" items="{{knowledges}}" as="item">
-        <paper-card>
-          <div class="header-card">
-            <div class="title-text item__added">{{item.knowledge}}</div>
-            <div class="subtitle-text item__added">{{item.percent}}%</div>
-          </div>
-          <div class="card-content" id="[[index]]">{{item.description}}</div>
-          <div class="card-actions">
-            <iron-icon  data-id$="[[index]]" on-click="_deleteItem" class="item__added" icon="icons:close"></iron-icon>
-            <iron-icon data-id$="[[index]]" class="item__added" on-click="_editItem" icon="icons:create"></iron-icon>
-          </div>
-        </paper-card>
+          <ks-info-card 
+            title="{{item.knowledge}}" 
+            on-remove-item="_deleteItem"
+            on-edit-item="_editItem"
+            aditional-data="{{item}}"
+            index="{{index}}">
+        </ks-info-card>
   		</template>
     </div>
   </template>
@@ -140,12 +128,13 @@
       }
 
       _deleteItem(event){
-        let id = JSON.parse(event.target.dataset.id);
+        const id = event.detail.index;
         this.splice("knowledges", id, 1);
+        console.log(this.knowledges)
       }
       _editItem(event){
         this._deleteItem(event);
-        const item = event.model.item;
+        const item = event.detail.item;
         this.set('currentKnowledge', item);
         this.set('valueSlider', item.percent);
       }

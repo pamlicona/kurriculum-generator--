@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
+<link rel="import" href="components/ks-info-card.html">
 
 <dom-module id="my-courses">
     <template>
@@ -30,13 +31,16 @@
                 <paper-button class="paper-button-k save-and-continue" raised on-click="_saveData">guardar y continuar</paper-button>
             </form>
         </iron-form>
-        <template is="dom-repeat" items="[[courses]]" as="curso">
-            <p>
-                {{curso.name}} - {{curso.institution}} - {{curso.date}} | 
-                <iron-icon  data-id$="[[index]]" on-click="_removeCourse" class="item__added" icon="icons:close"></iron-icon>
-                <iron-icon data-id$="[[index]]" class="item__added" on-click="_editCourse" icon="icons:create"></iron-icon>
-            </p>
-        </template>
+        <div class="container-grid container-2-grid">
+            <template is="dom-repeat" items="[[courses]]" as="curso">
+                <ks-info-card 
+                    on-remove-item="_removeCourse"
+                    on-edit-item="_editCourse"
+                    aditional-data="{{curso}}"
+                    index="{{index}}">
+                </ks-info-card>
+            </template>
+        </div>
     </template>
 
     <script>
@@ -94,12 +98,12 @@
             }
 
             _removeCourse(e) {
-                const id = e.target.getAttribute('id');
+                const id = e.detail.index;
                 this.splice('courses', id, 1);
             }
 
             _editCourse(e) {
-                const id = e.target.getAttribute('data-id');
+                const id = e.detail.index;
                 this.set('date', this.courses[id].date);
                 this.set('name', this.courses[id].name);
                 this.set('institution', this.courses[id].institution);

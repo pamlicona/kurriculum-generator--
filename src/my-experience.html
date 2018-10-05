@@ -4,11 +4,9 @@
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="components/ks-info-card.html">
 
 <dom-module id="my-experience">
   <template>
@@ -52,11 +50,6 @@
         grid-template-columns: 1fr 1fr 1fr;
         align-items: center;
         margin-bottom: 30px;
-        margin-top: 20px;
-      }
-
-      paper-card {
-        width: 100%;
         margin-top: 20px;
       }
 
@@ -125,23 +118,14 @@
       </paper-dialog>
 
       <template is="dom-repeat" items="{{experience}}">
-        <paper-card>
-          <div class="header-card">
-            <div class="title-text">{{item.company}}</div>
-            <div class="subtitle-text">{{item.position}}</div>
-          </div>
-          <div class="card-content list-experience" id="[[index]]">
-            <div>Ubicación: <span>{{item.location}}</span></div>
-            <div>Descripción: <span>{{item.description}}</span></div>
-            <div>Fecha inicio: <span>{{item.startDate}}</span></div>
-            <div class$="[[_displayClass(item.actual)]]">Fecha final: <span>{{item.finalDate}}</span></div>
-            <div>Trabajo actual: <span>[[_isActual(item.actual)]]</span></div>
-          </div>
-          <div class="card-actions">
-            <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
-            <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
-          </div>
-        </paper-card>
+        <ks-info-card 
+          title="{{item.company}}" 
+          subtitle="{{item.position}}"
+          on-remove-item="_removeItem"
+          on-edit-item="_editItem"
+          aditional-data="{{item}}"
+          index="{{index}}">
+        </ks-info-card>
       </template>
     </div>
   </template>
@@ -239,7 +223,6 @@
       }
 
       _saveData() {
-        console.log(this.experience)
         this.dispatchEvent(new CustomEvent('save-info',{
           bubbles: true,
           detail:{
@@ -250,13 +233,13 @@
       }
 
       _removeItem(event) {
-        const index = event.model.index;
+        const index = event.detail.index;
         this.splice('experience', index, 1);
       }
 
       _editItem(event) {
         this._removeItem(event);
-        const item = event.model.item;
+        const item = event.detail.item;
         this.set('currentItem', item);
         this.set('finalDate', item.finalDate);
         this.set('startDate', item.startDate);

@@ -10,6 +10,7 @@
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="app-styles.html">
+<link rel="import" href="components/ks-info-card.html">
 
 
 <dom-module id="my-formation">
@@ -119,19 +120,6 @@
               <paper-checkbox name="actual" checked="{{actual}}">En curso</paper-checkbox>
             </div>
 
-            <template is="dom-repeat" items="{{formation}}">
-                <div id="[[index]]" class="listData">
-                  <div>Institución: <span>{{item.institucion}}</span></div>
-                  <div>Titulo: <span>{{item.titulacion}}</span></div>
-                  <div>Estatus: <span>{{item.level}}</span></div>
-                  <div>En curso: <span>{{item.actual}}</span></div>
-                  <div>Desde: <span>{{item.desde}}</span></div>
-                  <div>Hasta: <span>{{item.hasta}}</span></div>
-                  <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
-                  <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
-                </div>
-            </template>
-
           <div class="cont-input">
             <paper-button class="paper-button-k" raised on-click="_addData">Añadir</paper-button>
           </div>  
@@ -141,7 +129,15 @@
      </iron-form>
     </div>
 
-      <br>
+    <template is="dom-repeat" items="{{formation}}">
+        <ks-info-card 
+            title="{{item.institucion}}" 
+            on-remove-item="_removeItem"
+            on-edit-item="_editItem"
+            aditional-data="{{item}}"
+            index="{{index}}">
+        </ks-info-card>
+    </template>
 
   </template>
 
@@ -210,7 +206,6 @@
 
         _formatJson() {
           const form = this.$.formFormation.serializeForm();
-          console.log(form);
           form.desde = this.desde;
           form.hasta = this.hasta;
           form.level = this.level;
@@ -218,10 +213,10 @@
             form.level = 'Titulado';
           }
           if(form.actual == 'on'){
-            form.actual = 'si';
+            form.actual = 'Si';
             form.hasta = '';
           }else{
-            form.actual = 'no';
+            form.actual = 'No';
           }
           return form;
         }
@@ -241,15 +236,14 @@
         }
 
         _removeItem(event) {
-          const index = event.model.index;
+          const index = event.detail.index;
           this.splice('formation', index, 1);
         }
 
         _editItem(event) {
           this._removeItem(event);
-          const item = event.model.item;
+          const item = event.detail.item;
           this.level = item.level;
-          console.log(item);
           this.set('currentItem', item);
 
         }

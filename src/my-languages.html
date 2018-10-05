@@ -11,6 +11,7 @@
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="app-styles.html">
+<link rel="import" href="components/ks-info-card.html">
 
 
 <dom-module id="my-languages">
@@ -46,11 +47,16 @@
                 <paper-button class="save-and-continue paper-button-k" raised on-click="_saveData">Guardar y Continuar</paper-button>
             </form>
         </iron-form>
-        <template is="dom-repeat" items="[[languages]]" as="language">
-            <p>{{language.name}} {{language.level}}</p>
-            <iron-icon  data-id$="[[index]]" on-click="_removeLanguage" class="item__added" icon="icons:close"></iron-icon>
-            <iron-icon data-id$="[[index]]" class="item__added" on-click="_editLanguage" icon="icons:create"></iron-icon>
-        </template>
+        <div class="container-grid container-3-grid">
+            <template is="dom-repeat" items="[[languages]]" as="language">
+                <ks-info-card 
+                    on-remove-item="_removeLanguage"
+                    on-edit-item="_editLanguage"
+                    aditional-data="{{language}}"
+                    index="{{index}}">
+                </ks-info-card>
+            </template>
+        </div>
     </template>
 
     <script>
@@ -111,12 +117,12 @@
             }
 
             _removeLanguage(e) {
-                const id = e.target.getAttribute('id');
+                const id = e.detail.index;
                 this.splice('languages', id, 1);
             }
 
             _editLanguage(e) {
-                const id = e.target.getAttribute('data-id');
+                const id = e.detail.index;
                 this.level = this.languages[id].level;
                 this.$.language_name.value = this.languages[id].name;
                 this.splice('languages', id, 1);
