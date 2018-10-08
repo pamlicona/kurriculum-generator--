@@ -1,6 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="list-element.html">
-<link rel="import" href="profile-picture.html">
+<link rel="import" href="components/ks-profile-picture.html">
 <link rel="import" href="app-styles.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
@@ -13,20 +13,10 @@
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
-
-<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 
 <dom-module id="my-personal-data">
     <template>
         <style include="app-styles">
-            :host{
-                --orange: rgb(255, 121, 0);
-                --paper-spinner-layer-1-color: var(--orange);
-                --paper-spinner-layer-2-color: var(--orange);
-                --paper-spinner-layer-3-color: var(--orange);
-                --paper-spinner-layer-4-color: var(--orange);
-            }
             .button {
                 background-color: black;
                 width: 30%;
@@ -102,56 +92,22 @@
                 padding-right:3px;
                 padding-left:3px;
             }
-            .spinner {
-                position: fixed;
-                left: 0;
-                right: 0;
-                top: 0;
-                height: 100vh;
-                background: #00000080;
-                z-index: 2;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            paper-spinner {
-                width: 150px;
-                height: 150px;
-            }
-            .image-container {
-                align-items: center;
-            }
 
             paper-dropdown-menu-light {
                 width: 200px;
             }
 
         </style>
-        <template is="dom-if" if="[[uploading]]">
-            <div class="spinner">
-                <paper-spinner active class="orange thick" alt="Subiendo imagen"></paper-spinner>
-            </div>
-        </template>
         <section class="container">
             <iron-form id="formPersonalData">
                 <h1 class="data-header-name">Datos Personales</h1>
                 <div class="image-container row">
-                    <!-- TODO: reemplazar por componente para subir foto -->
-                    <!-- <profile-picture></profile-picture> -->
-                    <firebase-storage-multiupload id="fs" app-name="kurriculum" path="/users/{{user.uid}}/files"
-                        upload-tasks="{{uploadedFiles}}" on-error="catchError" force-unique>
-                    </firebase-storage-multiupload>
-                    <div class="l50">
-                            <div class="form-label">Imagen CV</div>
-                        <input id="fileUploader" type="file" on-change="onFileUpload" />
-                    </div>
-                    <div class="l50">
-                        <button type="button" on-click="_upload" class="save-and-continue paper-button-k">Subir imagen</button>
-                    </div>
+                    <ks-profile-picture user="[[user]]" on-profile-pic-uploaded="_updateImage"></ks-profile-picture>
                 </div>
                 <div>
                     <paper-dropdown-menu-light id="profileStatus" label="Perfil">
-                        <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{personalInfo.profileStatus}} attr-for-selected="myvalue" required>
+                        <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{personalInfo.profileStatus}}
+                            attr-for-selected="myvalue" required>
                             <template is="dom-repeat" items="[[profiles]]" as="profile">
                                 <paper-item myvalue="[[profile]]">{{profile}}</paper-item>
                             </template>
@@ -159,12 +115,6 @@
                     </paper-dropdown-menu-light>
                 </div>
                 <form action="/" method="get">
-                    <template is="dom-repeat" items="[[uploadedFiles]]">
-                        <firebase-storage-upload-task task="[[item]]" id="task-[[index]]" bytes-transferred="{{item.bytesTransferred}}"
-                            total-bytes="{{item.totalBytes}}" state="{{item.state}}" download-url="{{item.downloadUrl}}"
-                            metadata="{{item.metadata}}" path="{{item.path}}">
-                        </firebase-storage-upload-task>
-                    </template>
                     <div class="row">
                         <div class="l2">
                             <paper-input type="text" name="linkedin" required label="URL de LinkedIn" value="{{personalInfo.userLinkedIn}}"></paper-input>
@@ -287,24 +237,6 @@
 
                 static get properties() {
                     return {
-                        /* Firebase upload */
-                        uploading: {
-                            type: Boolean,
-                            value: false
-                        },
-                        user: {
-                            type: Object
-                        },
-                        uploadedFiles: {
-                            type: Array,
-                            value: [],
-                        },
-                        files: {
-                            type: Array,
-                            notify: true,
-                            value: [],
-                        },
-                        /* Firebase upload */
                         personalInfo: {
                             type: Object,
                             value: {
@@ -330,18 +262,19 @@
                                 userAddressState: null,
                                 phones: [],
                                 emails: [],
-                                profileStatus: null
+                                profileStatus: null,
+                                userImage: null
                             }
                         },
                         profiles: {
                             type: Array,
                             value: [
-                                'Agile Coach', 
+                                'Agile Coach',
                                 'SCRUM Master',
-                                'PM/Gestor Agile', 
-                                'Diseñador/Diseñadora UX', 
-                                'Ingeniero DevOps', 
-                                'Desarrollador/Desarrolladora', 
+                                'PM/Gestor Agile',
+                                'Diseñador/Diseñadora UX',
+                                'Ingeniero DevOps',
+                                'Desarrollador/Desarrolladora',
                                 'Tester QA'
                             ]
                         }
@@ -352,40 +285,8 @@
                     super.connectedCallback();
                 }
 
-                onFileUpload(e) {
-                    this.files = e.target.files;
-                    console.log(e.target.files)
-                }
-
-                _upload() {
-                    // Upload Image
-                    if(this.files.length < 1) {
-                        alert("Selecciona un archivo");
-                        return
-                    }
-
-                    this.uploading = true;
-                    const file = this.shadowRoot.querySelector('#fileUploader').files;
-                    this.shadowRoot.querySelector('#fs').upload(file);
-
-                    const downloadUrl = this.uploadedFiles[0].downloadUrl;
-                    if (!downloadUrl) {
-                        setTimeout(() => {
-                            this._profileImageEvent();
-                        }, 2000);
-                    } else {
-                        this._profileImageEvent();
-                    }
-                }
-
-                _profileImageEvent() {
-                    this._dispatchEvent('profile-pic-uploaded', this.uploadedFiles[0].downloadUrl);
-                    alert("Imagen subida correctamente");
-                    this.uploading = false;
-                }
-
-                catchError(e) {
-                    console.log(e.detail.message);
+                _updateImage(event) {
+                    this.personalInfo.userImage = event.detail.data;
                 }
 
                 _timeAgo() {
@@ -409,15 +310,15 @@
                     this._dispatchEvent('save-info', this.personalInfo, 'personalInfo');
                 }
 
-                _dispatchEvent(event, detail, key = null,  bubbles = true) {
-                    this.dispatchEvent(new CustomEvent( event, {
+                _dispatchEvent(event, detail, key = null, bubbles = true) {
+                    this.dispatchEvent(new CustomEvent(event, {
                         bubbles: bubbles,
                         composed: true,
                         detail: {
-                                key: key,
-                                data: detail
-                            }
-                        })
+                            key: key,
+                            data: detail
+                        }
+                    })
                     );
                 }
 
