@@ -1,0 +1,151 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+
+
+
+<dom-module id="ks-profile-picture">
+    <template>
+        <style include="app-styles">
+            :host{
+                --orange: rgb(255, 121, 0);
+                --paper-spinner-layer-1-color: var(--orange);
+                --paper-spinner-layer-2-color: var(--orange);
+                --paper-spinner-layer-3-color: var(--orange);
+                --paper-spinner-layer-4-color: var(--orange);
+            }
+            .spinner {
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: 0;
+                height: 100vh;
+                background: #00000080;
+                z-index: 2;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            paper-spinner {
+                width: 150px;
+                height: 150px;
+            }
+            .image-container {
+                align-items: center;
+            }
+        </style>
+        <template is="dom-if" if="[[uploading]]">
+            <div class="spinner">
+                <paper-spinner active class="orange thick" alt="Subiendo imagen"></paper-spinner>
+            </div>
+        </template>
+
+        <div class="image-container row">
+            <firebase-storage-multiupload id="fs" app-name="kurriculum" path="/users/{{user.uid}}/files" upload-tasks="{{uploadedFiles}}"
+                on-error="catchError">
+            </firebase-storage-multiupload>
+            <div class="l50">
+                <div class="form-label">Imagen CV</div>
+                <input id="fileUploader" type="file" on-change="onFileUpload" />
+            </div>
+            <div class="l50">
+                <button type="button" on-click="_upload" class="save-and-continue paper-button-k">Subir imagen</button>
+            </div>
+        </div>
+        <template is="dom-repeat" items="[[uploadedFiles]]">
+            <firebase-storage-upload-task task="[[item]]" id="task-[[index]]" bytes-transferred="{{item.bytesTransferred}}"
+                total-bytes="{{item.totalBytes}}" state="{{item.state}}" download-url="{{item.downloadUrl}}" metadata="{{item.metadata}}"
+                path="{{item.path}}">
+            </firebase-storage-upload-task>
+        </template>
+    </template>
+
+    <script>
+        /**
+         * `ks-profile-picture`
+         *
+         * @customElement
+         * @polymer
+         */
+        class KsProfilePicture extends Polymer.Element {
+            static get is() { return 'ks-profile-picture'; }
+            static get properties() {
+                return {
+                    /* Firebase upload */
+                    uploading: {
+                        type: Boolean,
+                        value: false
+                    },
+                    user: {
+                        type: Object
+                    },
+                    uploadedFiles: {
+                        type: Array,
+                        value: [],
+                    },
+                    files: {
+                        type: Array,
+                        notify: true,
+                        value: [],
+                    },
+                    /* Firebase upload */
+                };
+            }
+
+            connectedCallback() {
+                super.connectedCallback();
+            }
+
+            onFileUpload(e) {
+                this.files = e.target.files;
+                console.log(e.target.files)
+            }
+
+            _upload() {
+                // Upload Image
+                if (this.files.length < 1) {
+                    alert("Selecciona un archivo");
+                    return
+                }
+
+                this.uploading = true;
+                const file = this.shadowRoot.querySelector('#fileUploader').files;
+                this.shadowRoot.querySelector('#fs').upload(file);
+
+                const downloadUrl = this.uploadedFiles[0].downloadUrl;
+                if (!downloadUrl) {
+                    setTimeout(() => {
+                        this._profileImageEvent();
+                    }, 2000);
+                } else {
+                    this._profileImageEvent();
+                }
+            }
+
+            _profileImageEvent() {
+                this._dispatchEvent('profile-pic-uploaded', this.uploadedFiles[0].downloadUrl);
+                this.uploading = false;
+            }
+
+            catchError(e) {
+                console.log(e.detail.message);
+            }
+
+            _dispatchEvent(event, info = null, bubbles = true) {
+                this.dispatchEvent(new CustomEvent(event, {
+                    bubbles: bubbles,
+                    composed: true,
+                    detail: {
+                        data: info
+                    }
+                }));
+            }
+        }
+
+        window.customElements.define(KsProfilePicture.is, KsProfilePicture);
+    </script>
+</dom-module>
