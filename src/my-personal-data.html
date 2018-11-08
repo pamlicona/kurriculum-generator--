@@ -192,7 +192,7 @@
                         <div class="l1">
                             <div class="row">
                                 <div class="l15">
-                                    <paper-input type="text" name="outside" required label="No. Ext." value="{{personalInfo.userAddressOutsideNumber}}"></paper-input>
+                                    <paper-input type="number" name="outside" required label="No. Ext." value="{{personalInfo.userAddressOutsideNumber}}"></paper-input>
                                 </div>
                                 <div class="l15">
                                     <paper-input type="text" name="inside" required label="No. Int." value="{{personalInfo.userAddressInsideNumber}}"></paper-input>
@@ -205,7 +205,7 @@
                     </div>
                     <div class="row">
                         <div class="l1">
-                            <paper-input type="text" name="zipcode" required label="C.P." value="{{personalInfo.userAddressCP}}"></paper-input>
+                            <paper-input type="number" name="zipcode" required label="C.P." value="{{personalInfo.userAddressCP}}"></paper-input>
                         </div>
                         <div class="l1">
                             <paper-input type="text" name="state" required label="Estado / Provincia" value="{{personalInfo.userAddressState}}"></paper-input>
@@ -283,6 +283,7 @@
 
                 connectedCallback() {
                     super.connectedCallback();
+                    console.log(this.personalInfo);
                 }
 
                 _updateImage(event) {
@@ -291,7 +292,6 @@
 
                 _timeAgo() {
                     if (!this.userBirthday || this.userBirthday == "" || this.userBirthday == " ") return "";
-
                     const birthday = new Date(this.userBirthday);
                     const ageDifMs = Date.now() - birthday.getTime();
                     const ageDate = new Date(ageDifMs);
@@ -305,8 +305,6 @@
 
                 _saveData() {
                     if (!this.$.formPersonalData.validate()) return; //no pasó la validacion de iron-form
-
-                    console.log("Datos personalInfo: ", this.personalInfo);
                     this._dispatchEvent('save-info', this.personalInfo, 'personalInfo');
                 }
 

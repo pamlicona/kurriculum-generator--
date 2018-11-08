@@ -82,11 +82,12 @@
                         },
                         items : {
                             type : Array,
-                            value : []
+                            value : [],
+                            notify: true
                         },
                         hasItems: {
                             type: Boolean,
-                            computed: 'numberOfItems(items.length)'
+                            value: false
                         },
                         placeholder : {
                             type : String,
@@ -98,19 +99,28 @@
                 connectedCallback() {
                     super.connectedCallback();  
                 }
+
+                static get observers() {
+                    return [
+                        'numberOfItems(items.*)'
+                    ]
+                }
                 
                 addNewItem() {
                     this.push('items', '');
                 }
                 
                 numberOfItems() {
-                    if(this.items.length > 0) return true;
-                    return false;
+                    if (this.items !== undefined) {
+                        this.hasItems = true ? this.items.length > 0 : false;
+                        return false;
+                    } else {
+                        this.items = [];
+                    }
                 }
                 
                 deleteItem(event) {
                     if(!confirm("¿Deseas eliminar este elemento?")) return;
-                    
                     this.splice("items", event.composedPath()[0].index, 1);
                 }
             }
