@@ -1,5 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="list-element.html">
+<link rel="import" href="components/ks-list-element.html">
 <link rel="import" href="components/ks-profile-picture.html">
 <link rel="import" href="app-styles.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
@@ -216,10 +216,10 @@
                     </div>
                     <div class="row">
                         <div class="l50">
-                            <list-element title="Teléfonos" items="{{personalInfo.phones}}" placeholder="10 dígitos"></list-element>
+                            <ks-list-element title="Teléfonos" items="{{personalInfo.phones}}" placeholder="10 dígitos"></ks-list-element>
                         </div>
                         <div class="l50">
-                            <list-element title="Correos" items="{{personalInfo.emails}}" placeholder="ejemplo@company.com"></list-element>
+                            <ks-list-element title="Correos" items="{{personalInfo.emails}}" placeholder="ejemplo@company.com"></ks-list-element>
                         </div>
                     </div>
                     <paper-button class="save-and-continue paper-button-k" raised on-click="_saveData">guardar y

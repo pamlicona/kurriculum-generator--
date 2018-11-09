@@ -4,7 +4,7 @@
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 
-<dom-module id="list-element">
+<dom-module id="ks-list-element">
     <template>
         <style>
             .list-head-container {
@@ -68,11 +68,11 @@
         </section>
     </template>
     <script>
-        (function listElement(customElements){
+        (function KslistElement(customElements){
             'use strict';
 
-            class ListElement extends Polymer.Element {
-                static get is() { return 'list-element'; }
+            class KsListElement extends Polymer.Element {
+                static get is() { return 'ks-list-element'; }
                 
                 static get properties() {
                     return {
@@ -124,7 +124,7 @@
                     this.splice("items", event.composedPath()[0].index, 1);
                 }
             }
-        customElements.define(ListElement.is, ListElement);
+        customElements.define(KsListElement.is, KsListElement);
         })(window.customElements);
   </script>
 </dom-module>
