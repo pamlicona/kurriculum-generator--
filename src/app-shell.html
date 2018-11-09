@@ -10,7 +10,7 @@
 
 <link rel="import" href="app-styles.html">
 <link rel="import" href="my-photo.html">
-<link rel="import" href="components/pdf-cv.html">
+<link rel="import" href="pdf-cv.html">
 <link rel="import" href="search-component.html">
 <link rel="import" href="components/ks-header.html">
 
@@ -38,23 +38,9 @@
         
         
         <div class="contls containerEsp" id="containerEsp" name ="containerEsp">
-            <ks-header signed-in="[[signedIn]]" on-show-search="_showSearch" on-sign-out="_signOut"></ks-header>
-            
-            <!-- TODO: cambiar por componente de myphoto <my-photo></my-photo>  -->
-            <div style="margin-top: 110px">
-                <div class="cont-comp-photo">
-                    <div class="photo">
-                            <img class="person-img" src="[[profilePic]]" alt="person">
-                    </div>
-                    <div class="data-photo">
-                        <p><strong>Annuar</strong></p>
-                        <p><strong>Harb </strong></p> <br>
-                        <p><strong>Polymer Expert</strong></p>
-                        <p>annuarh@kairosds.com</p>
-                        <p>+52 5542 159 282</p>
-                    </div>
-                </div>
-            </div>
+
+            <ks-header signed-in="[[signedIn]]" on-go-home="_goHome" on-show-search="_showSearch" on-sign-out="_signOut"></ks-header>            
+            <my-photo user="{{data}}" profilePic="{{profilePic}}"></my-photo>
 
             <p>Introduce tus Datos</p>
             <div class="line"></div>
@@ -105,6 +91,7 @@
       </div>
 
         <div class="contls containerEsp">
+            <ks-header signed-in="[[signedIn]]" on-go-home="_goHome" on-show-search="_showSearch" on-sign-out="_signOut"></ks-header>            
             <search-component class="hidden-class" ></search-component>
         </div>
 
@@ -247,8 +234,6 @@
 
             _showSearch(event){
                 this.search = true;
-                console.log("busqueda activada:" + this.search);
-                event.target.classList.add("hidden");
                 let cont  = Polymer.dom(this.root).querySelector(".contls");
                 let line  = Polymer.dom(this.root).querySelectorAll(".line");
                 let searchcont  = Polymer.dom(this.root).querySelectorAll("search-component");
@@ -256,7 +241,17 @@
                 line[0].classList.add("hidden-class");
                 line[1].classList.add("hidden-class");
                 searchcont[0].classList.remove("hidden-class");
+            }
 
+            _goHome(event){
+                this.search = false;
+                let cont  = Polymer.dom(this.root).querySelector(".contls");
+                let line  = Polymer.dom(this.root).querySelectorAll(".line");
+                let searchcont  = Polymer.dom(this.root).querySelectorAll("search-component");
+                cont.classList.remove("hidden-class");
+                line[0].classList.remove("hidden-class");
+                line[1].classList.remove("hidden-class");
+                searchcont[0].classList.add("hidden-class");
             }
 
             _saveInfo(key, data){
