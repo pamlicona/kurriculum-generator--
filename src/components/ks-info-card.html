@@ -44,9 +44,11 @@
                 <template is="dom-if" if="{{edit}}">
                     <paper-icon-button icon="icons:cancel" on-tap="_removeItem"></paper-icon-button>
                 </template>
-                <template is="dom-if" if="{{delete}}">
+                
+                <template is="dom-if" if="{{deleteI}}">
                     <paper-icon-button icon="icons:create" on-tap="_editItem"></paper-icon-button>
                 </template>
+                
             </div>
         </paper-card>
     </template>
@@ -66,7 +68,7 @@
                         type: Boolean,
                         value: true
                     },
-                    delete: {
+                    deleteI: {
                         type: Boolean,
                         value: true
                     },
