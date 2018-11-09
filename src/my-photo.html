@@ -16,18 +16,44 @@
                 display: flex;
                 align-items: flex-start;
             }
+            .person-img{
+                height: 150px;
+                border-radius: 50%;
+
+            }
+            .cont-comp-photo{
+                padding: 10px;
+                display: flex;
+                align-items: flex-start;
+                padding: 10px 10px;
+                margin: 40px 0;
+            }
+            .data-photo{
+                margin: 20px 90px;
+                color:gray;
+            }
+            .data-photo p{
+                margin: 0;
+            }
         </style>
 
-        <div class="cont-comp-photo">
-            <div class="photo">
-                <img src="[[photo]]" alt="">
-            </div>
-            <div class="data-photo">
-                <p><strong>David</strong></p>
-                <p><strong>Durán Rodríguez</strong></p> <br>
-                <p><strong>Sr. Frontend Developer</strong></p>
-                <p>david.duran@kairosds.com</p>
-                <p>+52 5542 159 282</p>
+        <div style="margin-top: 110px">
+            <div class="cont-comp-photo">
+                <div class="photo">
+                    <template is="dom-if" if="{{profilePic}}">
+                            <img class="person-img" src="{{profilePic}}" alt="person">
+                    </template>
+                    <template is="dom-if" if="{{!profilePic}}">
+                            <img class="person-img" src="../assets/img/person.png" alt="person">
+                    </template>
+                        
+                </div>
+                <div class="data-photo">
+                    <p><strong>{{user.personalInfo.userName}}</strong></p>
+                    <p><strong>{{user.personalInfo.userSurname}}</strong></p> <br>
+                    <p><strong>{{user.personalInfo.profileStatus}}</strong></p>
+                    <p>{{user.personalInfo.userLinkedIn}}</p>
+                </div>
             </div>
         </div>
 
@@ -39,12 +65,21 @@
             static get is() { return 'my-photo'; }
             static get properties(){
                 return {
-                    photo:{
+                    profilePic:{
                         type: String,
                         value: ""
+                    },
+                    user: {
+                            type: Object,
+                            value: {}
                     }
-                };
+                }
             }
+
+            connectedCallback() {
+                super.connectedCallback();
+            }
+
 
            
         }
