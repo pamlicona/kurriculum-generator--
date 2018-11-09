@@ -8,7 +8,7 @@
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
 
 
-<dom-module id="my-photo">
+<dom-module id="ks-my-photo">
     <template>
         <style>
             .cont-comp-photo{
@@ -61,8 +61,8 @@
 
 
     <script>
-        class MyPhoto extends Polymer.Element {
-            static get is() { return 'my-photo'; }
+        class KsMyPhoto extends Polymer.Element {
+            static get is() { return 'ks-my-photo'; }
             static get properties(){
                 return {
                     profilePic:{
@@ -84,6 +84,6 @@
            
         }
 
-        window.customElements.define(MyPhoto.is, MyPhoto);
+        window.customElements.define(KsMyPhoto.is, KsMyPhoto);
     </script>
 </dom-module>

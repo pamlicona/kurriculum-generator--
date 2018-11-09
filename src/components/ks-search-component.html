@@ -9,7 +9,7 @@
 <link rel="import" href="my-summary.html">
 
 
-<dom-module id="search-component">
+<dom-module id="ks-search-component">
     <template>
             <style include="app-styles">
                 .search-container{
@@ -144,8 +144,8 @@
 
 
     <script>
-        class SearchComponent extends Polymer.Element {
-            static get is() { return 'search-component'; }
+        class KsSearchComponent extends Polymer.Element {
+            static get is() { return 'ks-search-component'; }
             static get properties(){
                 return {
                     photos:{
@@ -220,6 +220,6 @@
            
         }
 
-        window.customElements.define(SearchComponent.is, SearchComponent);
+        window.customElements.define(KsSearchComponent.is, KsSearchComponent);
     </script>
 </dom-module>

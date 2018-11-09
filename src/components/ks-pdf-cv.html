@@ -4,7 +4,7 @@
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
-<dom-module id="pdf-cv">
+<dom-module id="ks-pdf-cv">
   <template>
     <style>
       .red-color {
@@ -185,8 +185,8 @@
      * @polymer
      *
      */
-    class PdfCv extends Polymer.Element {
-      static get is() { return 'pdf-cv'; }
+    class KsPdfCv extends Polymer.Element {
+      static get is() { return 'ks-pdf-cv'; }
       static get properties() {
         return {
           userCv: {
@@ -219,7 +219,7 @@
       }
     }
 
-    window.customElements.define(PdfCv.is, PdfCv);
+    window.customElements.define(KsPdfCv.is, KsPdfCv);
   </script>
 
   <script data-require="jquery@2.0.1" data-semver="2.0.1" src="//code.jquery.com/jquery-2.0.1.min.js"></script>
