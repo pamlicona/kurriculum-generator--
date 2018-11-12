@@ -203,7 +203,7 @@
                     }
                 });
                 this.resultsF = list_filtered;
-                console.log("Lista actualizada: ");
+                //console.log("Lista actualizada: ");
                 
 
             }
@@ -211,7 +211,7 @@
             _snapshotToArray(snapshot) {
                 let araryR = [];
                 Object.keys(snapshot).forEach(function(key) {
-                    console.log(key + ': ' + snapshot[key]);
+                    //console.log(key + ': ' + snapshot[key]);
                     araryR.push(snapshot[key]);
                 });
                 return araryR;

@@ -4,7 +4,7 @@
 <link rel="import" href="../bower_components/iron-icons/maps-icons.html">
 
 <dom-module id="my-login">
-    <template>
+    <template dom-if=>
         <style>
             :host {
                 position: fixed;
@@ -20,10 +20,10 @@
                 justify-content: center;
                 align-items: center;
             }
-            /* :host([signed-in]) {
+            :host([signed-in]) {
                 opacity: 0;
                 pointer-events: none;
-            } */
+            } 
             paper-button > * {
                 vertical-align: middle;
                 text-transform: none;
@@ -32,7 +32,7 @@
         
         <paper-button on-click="signIn">
             <iron-icon icon="account-circle"></iron-icon>
-            <span> Ingresar con correo de Kairós</span>
+            <span> Ingresar con correo de Kairos</span>
         </paper-button>
 
     </template>

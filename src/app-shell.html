@@ -13,8 +13,8 @@
 <link rel="import" href="components/pdf-cv.html">
 <link rel="import" href="search-component.html">
 <link rel="import" href="components/ks-header.html">
+<link rel="import" href="my-personal-data.html">
 
-<link rel="lazy-import" href="my-personal-data.html">
 <link rel="lazy-import" href="my-experience.html">
 <link rel="lazy-import" href="my-knowledges.html">
 <link rel="lazy-import" href="my-skills.html">
@@ -42,7 +42,7 @@
             <ks-header signed-in="[[signedIn]]" on-go-home="_goHome" on-show-search="_showSearch" on-sign-out="_signOut"></ks-header>            
             <my-photo user="{{data}}" profilePic="{{profilePic}}"></my-photo>
 
-            <p>Introduce tus Datos</p>
+            <p class="introduce-text">Introduce tus Datos</p>
             <div class="line"></div>
 
             <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list list-nums" role="navigation">
@@ -269,8 +269,10 @@
                 //Pasos                
                 let items = Polymer.dom(this.root).querySelectorAll(".numbutton"); 
                 items[this.step].style.background = "white !important";
-                items[this.step].style.color = "rgb(255, 121, 0)!important";
+                items[this.step].style.color = "rgb(255, 121, 0) !important";
                 items[this.step].style.border = "1px solid rgb(255, 121, 0) !important";
+                //items[this.step-1].style.color = "rgb(255, 121, 0) !important";
+                //items[this.step-1].style.border = "1px solid rgb(255, 121, 0) !important";
                 items[this.step-1].innerHTML = "✓";
                 items[this.step].click();
             }
