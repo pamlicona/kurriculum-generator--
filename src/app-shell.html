@@ -9,9 +9,9 @@
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 
 <link rel="import" href="app-styles.html">
-<link rel="import" href="my-photo.html">
-<link rel="import" href="components/pdf-cv.html">
-<link rel="import" href="search-component.html">
+<link rel="import" href="components/ks-my-photo.html">
+<link rel="import" href="components/ks-pdf-cv.html">
+<link rel="import" href="components/ks-search-component.html">
 <link rel="import" href="components/ks-header.html">
 <link rel="import" href="my-personal-data.html">
 
@@ -40,7 +40,7 @@
         <div class="contls containerEsp" id="containerEsp" name ="containerEsp">
 
             <ks-header signed-in="[[signedIn]]" on-go-home="_goHome" on-show-search="_showSearch" on-sign-out="_signOut"></ks-header>            
-            <my-photo user="{{data}}" profilePic="{{profilePic}}"></my-photo>
+            <ks-my-photo user="{{data}}" profilePic="{{profilePic}}"></ks-my-photo>
 
             <p class="introduce-text">Introduce tus Datos</p>
             <div class="line"></div>
@@ -72,7 +72,7 @@
                 <my-login on-sign-in="_signIn" on-logged="_logged" signed-in="[[signedIn]]" name="login"></my-login>
             </iron-pages>
 
-            <pdf-cv class="hidden-class" user-cv="{{usercv}}" template-cv="{{templatecv}}"></pdf-cv>
+            <ks-pdf-cv class="hidden-class" user-cv="{{usercv}}" template-cv="{{templatecv}}"></ks-pdf-cv>
 
             <firebase-auth
                 id="auth"
@@ -92,7 +92,7 @@
 
         <div class="contls containerEsp">
             <ks-header signed-in="[[signedIn]]" on-go-home="_goHome" on-show-search="_showSearch" on-sign-out="_signOut"></ks-header>            
-            <search-component class="hidden-class" ></search-component>
+            <ks-search-component class="hidden-class" ></ks-search-component>
         </div>
 
       <footer>
