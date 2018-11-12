@@ -118,6 +118,7 @@
         }
       }
 			_saveData(){
+        console.log(this.knowledges);
         this.dispatchEvent(new CustomEvent('save-info',{
           bubbles: true,
           detail:{
