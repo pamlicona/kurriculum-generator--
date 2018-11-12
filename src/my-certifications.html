@@ -220,7 +220,16 @@
         const validate = this.$.formCertifications.validate();
         if (validate) {
           const form = this._formatJson();
-          this.push('certifications', form)
+          this.push('certifications', {
+              certificacion: form.certificacion,
+              desde: form.desde,
+              hasta: form.hasta,
+              entidad: form.entidad,
+              licencia: form.licencia,
+              permanente: form.permanente,
+              url: form.url
+            }
+          )
           this._resetData();
         }
       }
