@@ -69,7 +69,7 @@
                 <my-courses on-save-info="_saveInfoEvent" name="courses"></my-courses>
                 <my-summary on-download-cv="_downloadCv" user="[[user]]" name="summary"></my-summary>
                 <my-view404 name="view404"></my-view404>
-                <my-login on-sign-in="_signIn" signed-in="[[signedIn]]" name="login"></my-login>
+                <my-login on-sign-in="_signIn" on-logged="_logged" signed-in="[[signedIn]]" name="login"></my-login>
             </iron-pages>
 
             <pdf-cv class="hidden-class" user-cv="{{usercv}}" template-cv="{{templatecv}}"></pdf-cv>
@@ -277,6 +277,12 @@
                 //items[this.step-1].style.border = "1px solid rgb(255, 121, 0) !important";
                 items[this.step-1].innerHTML = "✓";
                 items[this.step].click();
+            }
+
+            _logged(){
+                let items = Polymer.dom(this.root).querySelectorAll(".numbutton"); 
+                items[1].click();
+                items[0].click();
             }
 
             _signIn() {

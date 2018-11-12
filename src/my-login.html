@@ -56,6 +56,14 @@
                 };
             }
 
+            ready() {
+                if(this.signedIn){  
+                    this._dispatchEvent('logged', null);
+                }
+                
+                super.ready();
+            }
+
             connectedCallback() {
                 super.connectedCallback();
             }
