@@ -13,8 +13,8 @@
 <link rel="import" href="components/ks-pdf-cv.html">
 <link rel="import" href="components/ks-search-component.html">
 <link rel="import" href="components/ks-header.html">
+<link rel="import" href="my-personal-data.html">
 
-<link rel="lazy-import" href="my-personal-data.html">
 <link rel="lazy-import" href="my-experience.html">
 <link rel="lazy-import" href="my-knowledges.html">
 <link rel="lazy-import" href="my-skills.html">
@@ -42,19 +42,19 @@
             <ks-header signed-in="[[signedIn]]" on-go-home="_goHome" on-show-search="_showSearch" on-sign-out="_signOut"></ks-header>            
             <ks-my-photo user="{{data}}" profilePic="{{profilePic}}"></ks-my-photo>
 
-            <p>Introduce tus Datos</p>
+            <p class="introduce-text">Introduce tus Datos</p>
             <div class="line"></div>
 
             <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list list-nums" role="navigation">
-                <a name="personal-data" on-click="_changeNumber" class="numbutton" href="[[rootPath]]#personal-data">1</a>
-                <a name="experience" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#experience">2</a>
-                <a name="knowledges" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#knowledges">3</a>
-                <a name="skills" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#skills">4</a>
-                <a name="languages" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#languages">5</a>
-                <a name="formation" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#formation">6</a>
-                <a name="certifications" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#certifications">7</a>
-                <a name="courses" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#courses">8</a>
-                <a name="summary" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#summary">9</a>
+                <a valueN="1" name="personal-data" on-click="_changeNumber" class="numbutton" href="[[rootPath]]#personal-data">1</a>
+                <a valueN="2" name="experience" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#experience">2</a>
+                <a valueN="3" name="knowledges" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#knowledges">3</a>
+                <a valueN="4" name="skills" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#skills">4</a>
+                <a valueN="5" name="languages" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#languages">5</a>
+                <a valueN="6" name="formation" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#formation">6</a>
+                <a valueN="7" name="certifications" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#certifications">7</a>
+                <a valueN="8" name="courses" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#courses">8</a>
+                <a valueN="9" name="summary" on-click="_changeNumber" class="numbutton numbutton-unselected" href="[[rootPath]]#summary">9</a>
             </iron-selector> <br><br>
 
 
@@ -69,7 +69,7 @@
                 <my-courses on-save-info="_saveInfoEvent" name="courses"></my-courses>
                 <my-summary on-download-cv="_downloadCv" user="[[user]]" name="summary"></my-summary>
                 <my-view404 name="view404"></my-view404>
-                <my-login on-sign-in="_signIn" signed-in="[[signedIn]]" name="login"></my-login>
+                <my-login on-sign-in="_signIn" on-logged="_logged" signed-in="[[signedIn]]" name="login"></my-login>
             </iron-pages>
 
             <ks-pdf-cv class="hidden-class" user-cv="{{usercv}}" template-cv="{{templatecv}}"></ks-pdf-cv>
@@ -117,7 +117,7 @@
                     rootPath: String,
                     step: {
                         type: Number,
-                        value: 0
+                        value: 1
                     },
                     user: Object,
                     data: {
@@ -200,6 +200,15 @@
                 event.target.style.background = "rgb(255, 121, 0)";
                 event.target.style.color = "white";
                 event.target.style.border = "0";
+                
+                let barProgress = Polymer.dom(this.root).querySelectorAll(".line-orange");
+                barProgress[0].style.width = event.target.getAttribute("valueN") * 11.1 + "%";   
+
+                let items = Polymer.dom(this.root).querySelectorAll(".numbutton"); 
+                items[this.step-1].style.background = "white !important";
+                items[this.step-1].style.color = "rgb(255, 121, 0)!important";
+                items[this.step-1].style.border = "1px solid rgb(255, 121, 0) !important";
+                this.step = event.target.getAttribute("valueN");   
             }
 
             _routePageChanged(page) {
@@ -258,18 +267,22 @@
                 // Firebase
                 this.set('data', data);
                 this.notifyPath(`data.${key}`);
-                console.log("Firebase data: ", this.data);
 
-                //pasar al siguiente paso y marcar el actual
-                console.log(this.step);
-                let items = Polymer.dom(this.root).querySelectorAll(".numbutton"); //document.getElementsByClassName("numbutton");
+                //Pasos                
+                let items = Polymer.dom(this.root).querySelectorAll(".numbutton"); 
                 items[this.step].style.background = "white !important";
-                items[this.step].style.color = "rgb(255, 121, 0)!important";
+                items[this.step].style.color = "rgb(255, 121, 0) !important";
                 items[this.step].style.border = "1px solid rgb(255, 121, 0) !important";
-                items[this.step].innerHTML = "✓";
-                this.step++;
+                //items[this.step-1].style.color = "rgb(255, 121, 0) !important";
+                //items[this.step-1].style.border = "1px solid rgb(255, 121, 0) !important";
+                items[this.step-1].innerHTML = "✓";
                 items[this.step].click();
-                console.log(items);
+            }
+
+            _logged(){
+                let items = Polymer.dom(this.root).querySelectorAll(".numbutton"); 
+                items[1].click();
+                items[0].click();
             }
 
             _signIn() {

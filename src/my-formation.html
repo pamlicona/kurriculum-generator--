@@ -212,11 +212,16 @@
           if(this.level == '0'){
             form.level = 'Titulado';
           }
+          if(this.level == '1'){
+            form.level = 'Pasante';
+          }else{
+            form.level = 'Trunco';
+          }
           if(form.actual == 'on'){
-            form.actual = 'Si';
+            form.actual = 'si';
             form.hasta = '';
           }else{
-            form.actual = 'No';
+            form.actual = 'no';
           }
           return form;
         }
@@ -225,6 +230,7 @@
           this.formation.forEach(element => {
             delete element.edit;
           });
+
 
           this.dispatchEvent(new CustomEvent('save-info',{
             bubbles: true,
@@ -252,7 +258,16 @@
           const validate = this.$.formFormation.validate();
           if (validate) {
             const form = this._formatJson();
-            this.push('formation', form)
+            
+            this.push('formation', {
+                actual: form.actual,
+                desde: form.desde,
+                hasta: form.hasta,
+                institucion: form.institucion,
+                level: form.level,
+                titulacion: form.titulacion
+              }
+            )
             this._resetData();
           }
         }
