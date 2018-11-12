@@ -201,11 +201,13 @@
                 event.target.style.color = "white";
                 event.target.style.border = "0";
                 
+                let barProgress = Polymer.dom(this.root).querySelectorAll(".line-orange");
+                barProgress[0].style.width = event.target.getAttribute("valueN") * 11.1 + "%";   
+
                 let items = Polymer.dom(this.root).querySelectorAll(".numbutton"); 
                 items[this.step-1].style.background = "white !important";
                 items[this.step-1].style.color = "rgb(255, 121, 0)!important";
                 items[this.step-1].style.border = "1px solid rgb(255, 121, 0) !important";
-                //console.log(event.target.getAttribute("valueN"));
                 this.step = event.target.getAttribute("valueN");   
             }
 
