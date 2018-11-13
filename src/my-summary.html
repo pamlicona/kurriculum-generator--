@@ -2,7 +2,6 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/iron-icons/maps-icons.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
@@ -22,243 +21,333 @@
           margin-top: 10%;
       }
 
-      .container{
-        border: 1px solid #ccc!important;
-        border-radius: 16px;
-        padding: 0.01em 16px;
-        margin: 25px;
-      }
-
-      .title_info{
-        color: #ff8300;
-        margin-top: 0;
-      }
-
-      .hidden{
-        display: none;
-      }
-      dd{
-        font-weight: bold;
-      }
-      a img{
-        width: 40px;
-        height: 40px;
-      }
-      img{
-        width: 100px;
-        height: 100px;
-      }
-      .container__personal{
+      .content {
+        grid-template-columns: 1fr 2fr;
         display: grid;
-        grid-template-columns: 1fr 1fr;
       }
-      .title {
-        border-bottom: 1px solid;
-        margin-bottom: 40px;
+
+      .section-basic-data {
+        display: flex;
+        justify-content: space-between;
+        text-align: right;
       }
-      form {
+
+      .formPrint {
         display: grid;
         justify-content: center;
+        grid-template-columns: 1fr 2fr 2fr 1fr;
+        margin-bottom: 50px;
       }
-      .container-modal {
+
+      .content {
+        grid-template-columns: 1fr 2fr;
+        display: grid;
+        column-gap: 10px;
+        background-color: white;
+        min-height: 1447px;
+      }
+
+      .text_bold {
+        font-weight: bold;
+      }
+
+      .left_column {
+        background-color: rgb(255, 121, 0);
+        padding: 23px 30px 0 30px;
+        align-items: center;
+        display: block;
+      }
+
+      .section {
+        margin: 0 0 35% 0;
+      }
+
+      .section p {
+        color: white;
+        font-weight: 100;
+      }
+
+      .section_photo {
         text-align: center;
+        background-color: white;
+        max-width: 100%;
+        min-height: 24%;
+        padding-top: 30px;
+      }
+
+      .title_info-lf {
+        font-size: 22px;
+        color: #424242;
+        font-weight: 100;
+      }
+
+      .gray_division {
+        max-width: 15%;
+        min-height: 5px;
+        background: #585858;
+      }
+
+      .right_column {
+        margin-top: 10%;
+        padding-left: 3%;
+      }
+
+      .section_basic-data {
+        display: flex;
+        justify-content: space-around;
+        text-align: right;
+        margin-bottom: 10%;
+      }
+
+      .section_presentation h1 {
+        font-weight: 100;
+        font-size: 37px;
+      }
+
+      .orange_division {
+        height: 4px;
+        background-color: rgb(255, 121, 0);
+        max-width: 15%;
+        margin: 30px 0 30px 0;
+      }
+
+      .color_profile {
+        color: gray;
+      }
+
+      .color_Agile {
+        color: #01DFA5 !important;
+      }
+
+      .color_Development {
+        color: #2ECCFA !important;
+      }
+
+      .color_DevOps {
+        color: #086A87 !important;
+      }
+
+      .color_UX {
+        color: #CC2EFA !important;
+      }
+
+      .division_profile {
+        height: 20px;
+        background-color: grey;
+      }
+
+      .division_Agile {
+        background-color: #01DFA5 !important;
+      }
+
+      .division_Development {
+        background-color: #2ECCFA !important;
+      }
+
+      .division_DevOps {
+        background-color: #086A87 !important;
+      }
+
+      .division_UX {
+        background-color: #CC2EFA !important;
+      }
+
+      .title_info {
+        font-size: 28px;
+        font-weight: 200;
+      }
+
+      .grid_two_columns {
+        display: grid;
+        grid-template-columns: 0.5fr 2fr 2fr 0.5fr;
+        font-size: 17px;
+      }
+
+      .grid_start_second_column {
+        grid-column: 2;
+      }
+
+      .color_gray {
+        color: #848484;
+      }
+
+      .space_element {
+        margin: 8% 0 8% 0;
+      }
+
+      .profile {
+        font-size: 25px;
+        font-weight: 100;
+        margin-top: 20px;
       }
     </style>
     <h1 class="data-header-name">Resumen</h1>
 
-    <div class="container">
-      <h2 class="title_info">Información Personal</h2>
-      <div class="container__personal">
-        <dl>
-          <dt>Imagen</dt>
-          <dd><img src="[[data.personalInfo.userImage]]" alt="Usuario"></dd>
-          <dt>Nombre</dt>
-          <dd>[[data.personalInfo.userName]]</dd>
-          <dt>Apellido Paterno</dt>
-          <dd>[[data.personalInfo.userSurname]]</dd>
-          <dt>Apellido Materno</dt>
-          <dd>[[data.personalInfo.userLastname]]</dd>
-          <dt>Sexo</dt>
-          <dd>[[_getSex(data.personalInfo.userSex)]]</dd>
-          <dt>Curp</dt>
-          <dd>[[data.personalInfo.userCurp]]</dd>
-          <dt>RFC</dt>
-          <dd>[[data.personalInfo.userRFC]]</dd>
-          <dt>Numero Seguro Social</dt>
-          <dd>[[data.personalInfo.userEnsurance]]</dd>
-          <dt>Estado Civil</dt>
-          <dd>[[_getMaritalStatus(data.personalInfo.maritalStatus)]]</dd>
-          <dt>Fecha Nacimiento</dt>
-          <dd>[[data.personalInfo.userBirthday]]</dd>
-        </dl>
-        <dl>
-          <dt>Meta Profesional</dt>
-          <dd>[[data.personalInfo.professionalGoal]]</dd>
-          <dt>Calle</dt>
-          <dd>[[data.personalInfo.userAddressStreet]]</dd>
-          <dt>Numero</dt>
-          <dd>[[data.personalInfo.userAddressOutsideNumber]]</dd>
-          <dt>Numero Interior</dt>
-          <dd>[[data.personalInfo.userAddressInsideNumber]]</dd>
-          <dt>Colonia</dt>
-          <dd>[[data.personalInfo.userAddressNeighborhood]]</dd>
-          <dt>Código Postal</dt>
-          <dd>[[data.personalInfo.userAddressPC]]</dd>
-          <dt>Ciudad</dt>
-          <dd>[[data.personalInfo.userAddressCity]]</dd>
-          <dt>Telefonos</dt>
-          <template is="dom-repeat" items="{{data.personalInfo.phones}}" as="item">
-            <dd>[[item]]</dd>
-          </template>
-          <dt>Emails</dt>
-          <template is="dom-repeat" items="{{data.personalInfo.emails}}" as="item">
-            <dd>[[item]]</dd>
-          </template>
-          <dt>Linkedin</dt>
-          <dd> <a href="[[data.personalInfo.userLinkedIn]]"><img src="../assets/img/linkedin.png" alt="Linkedin"></a></dd>
-        </dl>
-      </div>
-    </div>
+    <p>Selecciona una plantilla:</p>
 
-    <div class="container">
-      <h2 class="title_info">Formación</h2>
-      <dl>
-        <template class="hidden" is="dom-repeat" items="{{data.formation}}" as="item">
-          <dt>Institución</dt>
-          <dd>[[item.institucion]]</dd>
-          <dt>Titulación</dt>
-          <dd>[[item.titulacion]]</dd>
-          <dt>Estatus</dt>
-          <dd>[[item.level]]</dd>
-          <dt>En curso</dt>
-          <template class="hidden" is="dom-if" if="[[item.actual]]">
-            <dd>Si</dd>
-          </template>
-          <template class="hidden" is="dom-if" if="[[!item.actual]]">
-            <dd>No</dd>
-          </template>
-          <dt>Inicio</dt>
-          <dd>[[item.desde]]</dd>
-          <dt>Fin</dt>
-          <dd>[[item.hasta]]</dd>
-        </template>
-      </dl>
-    </div>
-
-      <div class="container">
-        <h2 class="title_info">Experiencia</h2>
-        <dl>
-          <template class="hidden" is="dom-repeat" items="{{data.experience}}" as="item">
-            <dt>Compañia</dt>
-            <dd>[[item.company]]</dd>
-            <dt>Posición</dt>
-            <dd>[[item.position]]</dd>
-            <dt>Localización</dt>
-            <dd>[[item.location]]</dd>
-            <dt>Descripción</dt>
-            <dd>[[item.description]]</dd>
-            <dt>Fecha Inicial</dt>
-            <dd>[[item.startDate]]</dd>
-            <dt>Fecha Final</dt>
-            <dd>[[item.finalDate]]</dd>
-            <dt>Es tu trabajo actual</dt>
-            <template class="hidden" is="dom-if" if="[[item.actual]]">
-              <dd>Si</dd>
+    <iron-form id="formPrint">
+      <form action="/" method="get" class="formPrint">
+        <paper-dropdown-menu-light class="grid_start_second_column" name="template" label="Tipo de plantilla" required>
+          <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{template}} attr-for-selected="myvalue" required>
+            <template is="dom-repeat" items="[[templates]]" as="itemTemplate">
+                <paper-item myvalue="[[itemTemplate]]">{{itemTemplate}}</paper-item>
             </template>
-            <template class="hidden" is="dom-if" if="[[!item.actual]]">
-              <dd>No</dd>
+          </paper-listbox>
+        </paper-dropdown-menu-light>
+        <paper-dropdown-menu-light name="printType" label="Formato" required>
+          <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{printType}} attr-for-selected="myvalue" required>
+            <template is="dom-repeat" items="[[printTypes]]" as="itemsType">
+                <paper-item myvalue="[[itemsType]]">{{itemsType}}</paper-item>
             </template>
+          </paper-listbox>
+        </paper-dropdown-menu-light>
+      </form>
+    </iron-form>
+
+    <div id="content" class="content">
+      <div class="left_column">
+        <div class="section_photo">
+          <img class="person-img" src="{{profilePic}}" alt="person">
+          <div class="profile">[[data.personalInfo.profileStatus]]</div>
+        </div>
+        <div class$="division_profile division_{{template}}"></div>
+        <div class="section_knowledges section">
+          <h2 class="title_info-lf">Conocimientos del sector</h2>
+          <div class="gray_division"></div>
+          <template is="dom-repeat" items="{{data.knowledges}}">
+            <p>[[item.knowledge]] - [[item.percent]]</p>
           </template>
-        </dl>
+        </div>
+        <div class="section_languages section">
+          <h2 class="title_info-lf">Idiomas</h2>
+          <div class="gray_division"></div>
+          <template is="dom-repeat" items="{{data.languages}}">
+            <p>[[item.name]] - [[item.level]]</p>
+          </template>
+        </div>
+        <div class="section_skills section">
+          <h2 class="title_info-lf">Aptitudes interpersonales</h2>
+          <div class="gray_division"></div>
+          <template is="dom-repeat" items="{{data.skills}}">
+            <p>[[item]]</p>
+          </template>
+        </div>
       </div>
-
-      <div class="container">
-        <h2 class="title_info">Conocimientos</h2>
-        <dl>
-          <dt>Conocimiento - Porcentaje</dt>
-          <template class="hidden" is="dom-repeat" items="{{data.knowledges}}" as="item">
-            <dd>[[item.knowledge]] - [[item.percent]]</dd>
+      <div class="right_column">
+        <div class="section_basic-data" hidden$="{{blind}}">
+          <div>
+            <p>[[data.personalInfo.emails.0]]</p>
+            <span class="color_gray">Email</span>
+          </div>
+          <div>
+            <p>[[data.personalInfo.phones.0]]</p>
+            <span class="color_gray">Teléfono</span>
+          </div>
+          <div>
+            <p>[[data.personalInfo.userLinkedIn]]</p>
+            <span class="color_gray">Linkedin</span>
+          </div>
+        </div>
+        <div class="section_presentation">
+          <h1 class="text_bold">Hola.</h1>
+          <h1>Soy
+            <span class$="color_profile color_{{template}}">
+              [[data.personalInfo.userName]] [[data.personalInfo.userSurname]] [[data.personalInfo.userLastname]]
+            </span>
+          </h1>
+          <p>[[data.personalInfo.professionalGoal]]</p>
+        </div>
+        <div class="orange_division"></div>
+        <div class="section_formation">
+          <h2 class="title_info">Formación</h2>
+          <template is="dom-repeat" items="{{data.formation}}">
+            <div class="space_element grid_two_columns">
+              <div class="grid_start_second_column">
+                <span class="color_gray">[[item.institucion]]</span>
+                <p>[[item.titulacion]]</p>
+              </div>
+              <div>
+                <span class="color_gray">[[item.desde]] - [[_getacutal(item.actual, item.hasta)]]</span>
+                <p>[[item.level]]</p>
+              </div>
+            </div>
+          </template> 
+        </div>
+        <div class="orange_division"></div>
+        <div class="section_courses-certifications">
+          <h2 class="title_info">Cursos y Certificaciones</h2>
+          <template is="dom-repeat" items="{{data.courses}}">
+            <div class="space_element">
+              <span class="color_gray">[[item.institucion]] [[item.date]]</span>
+              <h3>Curso [[item.name]]</h3>
+            </div>
           </template>
-        </dl>
+          <template is="dom-repeat" items="{{data.certifications}}">
+            <div class="space_element">
+              <span class="color_gray">[[item.entidad]] [[item.desde]] - [[item.hasta]]</span>
+              <h3>Certificación [[item.certificacion]]</h3>
+              <p>Licencia número [[item.licencia]] - [[_getPermanence(item.permanente)]]</p>
+              <p>[[item.url]]</p>
+            </div>
+          </template>
+        </div>
+        <div class="orange_division"></div>
+        <div class="section_experience">
+          <h2 class="title_info">Experiencia Laboral</h2>
+          <template is="dom-repeat" items="{{data.experience}}">
+            <div class="space_element">
+              <span class="color_gray">[[item.startDate]] - [[_getacutal(item.actual, item.finalDate)]]</span>
+              <h3>[[item.position]] - [[item.company]]</h3>
+              <p>[[item.description]]</p>
+            </div>
+          </template>
+        </div>
       </div>
-
-      <div class="container">
-        <h2 class="title_info">Aptitudes</h2>
-        <dl>
-          <dt>Aptitud</dt>
-          <template class="hidden" is="dom-repeat" items="{{data.skills}}" as="item">
-            <dd>[[item]]</dd>
-          </template>
-        </dl>
-      </div>
-
-      <div class="container">
-        <h2 class="title_info">Idiomas</h2>
-        <dl>
-          <dt>Idioma - Nivel</dt>
-          <template class="hidden" is="dom-repeat" items="{{data.languages}}" as="item">
-            <dd>[[item.name]] - [[item.level]]</dd>
-          </template>
-        </dl>
-      </div>
-
-
-    <div class="container">
-      <h2 class="title_info">Certificaciones</h2>
-      <dl>
-        <template class="hidden" is="dom-repeat" items="{{data.certifications}}" as="item">
-          <dt>Nombre de Certificación</dt>
-          <dd>[[item.nombre]]</dd>
-          <dt>Empresa</dt>
-          <dd>[[item.entidad]]</dd>
-          <dt>Licencia</dt>
-          <dd>[[item.licencia]]</dd>
-          <dt>Inicio</dt>
-          <dd>[[item.fechaInicio]]</dd>
-          <dt>Fin</dt>
-          <dd>[[item.fechaFin]]</dd>
-          <dt>Es permanente tu Licencia</dt>
-          <template class="hidden" is="dom-if" if="[[item.permanente]]">
-            <dd>Si</dd>
-          </template>
-          <template class="hidden" is="dom-if" if="[[!item.permanente]]">
-            <dd>No</dd>
-          </template>
-        </template>
-      </dl>
+      <!--div class="container" hidden$="[[blind]]">
+        <h2 class="title_info">Información Personal</h2>
+        <div class="container__personal">
+          <dl>
+            <dt>Imagen</dt>
+            <dd><img src="[[data.personalInfo.userImage]]" alt="Usuario"></dd>
+            <dt>Sexo</dt>
+            <dd>[[_getSex(data.personalInfo.userSex)]]</dd>
+            <dt>Curp</dt>
+            <dd>[[data.personalInfo.userCurp]]</dd>
+            <dt>RFC</dt>
+            <dd>[[data.personalInfo.userRFC]]</dd>
+            <dt>Numero Seguro Social</dt>
+            <dd>[[data.personalInfo.userEnsurance]]</dd>
+            <dt>Estado Civil</dt>
+            <dd>[[_getMaritalStatus(data.personalInfo.maritalStatus)]]</dd>
+            <dt>Fecha Nacimiento</dt>
+            <dd>[[data.personalInfo.userBirthday]]</dd>
+          </dl>
+          <dl>
+            <dt>Calle</dt>
+            <dd>[[data.personalInfo.userAddressStreet]]</dd>
+            <dt>Numero</dt>
+            <dd>[[data.personalInfo.userAddressOutsideNumber]]</dd>
+            <dt>Numero Interior</dt>
+            <dd>[[data.personalInfo.userAddressInsideNumber]]</dd>
+            <dt>Colonia</dt>
+            <dd>[[data.personalInfo.userAddressNeighborhood]]</dd>
+            <dt>Código Postal</dt>
+            <dd>[[data.personalInfo.userAddressPC]]</dd>
+            <dt>Ciudad</dt>
+            <dd>[[data.personalInfo.userAddressCity]]</dd>
+            <dt>Telefonos</dt>
+            <template is="dom-repeat" items="{{data.personalInfo.phones}}" as="item">
+              <dd>[[item]]</dd>
+            </template>
+            <dt>Emails</dt>
+            <template is="dom-repeat" items="{{data.personalInfo.emails}}" as="item">
+              <dd>[[item]]</dd>
+            </template>
+          </dl>
+        </div>
+      </div-->
     </div>
-    <paper-button class="paper-button-k save-and-continue" raised on-click="_openModal">Generar PDF</paper-button>
-
-    <paper-dialog id="modal" modal>
-      <div class="title">
-        <h2>Mi Kurriculum</h2>
-      </div>
-      <div class="container-modal">
-        <h3>Selecciona una plantilla y tipo de formato.</h3>
-        <iron-form id="formPrint">
-          <form action="/" method="get">
-            <paper-dropdown-menu-light name="template" label="Tipo de plantilla" required>
-              <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{template}} attr-for-selected="myvalue" required>
-                <template is="dom-repeat" items="[[templates]]" as="itemTemplate">
-                    <paper-item myvalue="[[itemTemplate]]">{{itemTemplate}}</paper-item>
-                </template>
-              </paper-listbox>
-            </paper-dropdown-menu-light>
-            <paper-dropdown-menu-light name="printType" label="Formato" required>
-              <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{printType}} attr-for-selected="myvalue" required>
-                <template is="dom-repeat" items="[[printTypes]]" as="itemsType">
-                    <paper-item myvalue="[[itemsType]]">{{itemsType}}</paper-item>
-                </template>
-              </paper-listbox>
-            </paper-dropdown-menu-light>
-          </form>
-        </iron-form>
-      </div>
-      <div class="buttons">
-        <paper-button class="paper-button-k save-and-continue" raised dialog-confirm>Cancelar</paper-button>
-        <paper-button class="paper-button-k save-and-continue" raised on-tap="_downloadCv">Aceptar</paper-button>
-      </div>
-    </paper-dialog>
+    <paper-button class="paper-button-k save-and-continue" raised on-click="_downloadCv">Generar PDF</paper-button>
   </template>
 
   <script>
@@ -275,7 +364,8 @@
       static get properties() {
         return {
           data: {
-            type: Object
+            type: Object,
+            observer: '_getData'
           },
           templates: {
             type: Array,
@@ -284,9 +374,44 @@
           printTypes: {
             type: Array,
             value: ['Básico', 'Completo']
-          }
+          },
+          blind: {
+            type: Boolean,
+            value: false
+          },
+          profilePic:{
+            type: String,
+            value: "../assets/img/person.png"
+          },
         }
       };
+
+      static get observers() {
+        return [
+          '_templateSelected(template)',
+          '_formatSelected(printType)',
+        ];
+      }
+
+      _getData() {
+        console.log(this.data);
+      }
+
+      _templateSelected(newTemplate) {
+        console.log(newTemplate)
+      }
+
+      _formatSelected(newFormat) {
+        this.blind = newFormat !== 'Completo' ? true : false;
+      }
+
+      _getacutal(actual, final) {
+        return actual ? "Actual" : final;
+      }
+
+      _getPermanence(permanence) {
+        return permanence ? "Permanente" : "No permanente";
+      }
 
       _getMaritalStatus(id){
         let maritalStatus = {
@@ -302,18 +427,13 @@
         return userSex[id];
       }
 
-      _openModal(){
-        this.$.modal.open();
-      }
-
       _downloadCv(event) {
         const validate = this.$.formPrint.validate();
         if (validate) {
-          const detail = {
-            data: this.data,
-            template: this.$.formPrint.serializeForm()
-          }
-          this._dispatchEvent(event, detail)
+          const doc = new jsPDF('p','pt','a4');
+          doc.addHTML(this.$.content, function() {
+            doc.save('html.pdf');
+          });
         }
       }
 

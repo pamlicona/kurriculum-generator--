@@ -11,7 +11,7 @@
         color: red;
       }
     </style>
-    <main id="pdf">
+    <!--main id="pdf">
       <div class="container">
         <h2 class="title_info">Información Personal</h2>
         <div class="container__personal">
@@ -173,8 +173,16 @@
           </template>
         </dl>
       </div>
-    </main>
+    </main-->
+    <div id="content">
+      <h1 style="color:red">Hello World</h1>
+      <p>this is a PDF</p>
+    </div>
   </template>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
 
   <script>
     /**
@@ -194,22 +202,45 @@
           },
           templateCv: {
             type: Object
+          },
+          htmlPrint: {
+            type: Object
           }
         }
       }
 
       static get observers() {
         return [
-          '_templateForDownload(userCv, templateCv)'
+          '_templateForDownload(htmlPrint, userCv, templateCv)'
         ]
       }
 
-      _templateForDownload(userCv, templateCv) {
-        console.log(userCv, templateCv)
-        if (userCv !== undefined && templateCv !== undefined) {
-          const doc = new jsPDF('l', 'px');
-          const elementToPrint = Polymer.dom(this.root).querySelector('#pdf ');
-          doc.fromHTML(elementToPrint, 0, 0, {
+      /*_templateForDownload(htmlPrint, userCv, templateCv) {
+        console.log(htmlPrint, userCv, templateCv);
+        const print = this.$.content;
+        console.log(print)
+        if (htmlPrint !== undefined && templateCv !== undefined) {
+          let doc = new jsPDF('p','pt','a4');
+          doc.addHTML(htmlPrint, function() {
+            doc.save('html.pdf');
+          });
+          html2canvas(this.shadowRoot.querySelector('#content'), {
+            onrendered: function(canvas) {
+              document.body.appendChild(canvas);
+            },
+          });
+        }
+      }*/
+
+      _templateForDownload(htmlPrint, userCv, templateCv) {
+        //console.log(userCv, templateCv)
+        if (htmlPrint !== undefined && userCv !== undefined && templateCv !== undefined) {
+          const doc = new jsPDF('p','pt','a4');
+          //doc.setFontSize(22);
+          //doc.setTextColor(255, 0, 0);
+          //doc.text(20, 20, 'This is a title');
+          //const elementToPrint = Polymer.dom(this.root).querySelector('#content');
+          doc.fromHTML(htmlPrint, 0, 0, {
             pagesplit: true
           },
           function(dispose) {
@@ -221,8 +252,4 @@
 
     window.customElements.define(KsPdfCv.is, KsPdfCv);
   </script>
-
-  <script data-require="jquery@2.0.1" data-semver="2.0.1" src="//code.jquery.com/jquery-2.0.1.min.js"></script>
-  <script src="../../assets/js/html2canvas.min.js"></script>
-  <script src="../../assets/js/jspdf.min.js"></script>
 </dom-module>
