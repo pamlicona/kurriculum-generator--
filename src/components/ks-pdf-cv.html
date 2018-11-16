@@ -5,188 +5,13 @@
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
 <dom-module id="ks-pdf-cv">
-  <template>
-    <style>
-      .red-color {
-        color: red;
-      }
-    </style>
-    <!--main id="pdf">
-      <div class="container">
-        <h2 class="title_info">Información Personal</h2>
-        <div class="container__personal">
-          <dl>
-            <dt>Imagen</dt>
-            <dd><img src="[[userCv.personalInfo.userImage]]" alt="Usuario"></dd>
-            <dt>Nombre</dt>
-            <dd>[[userCv.personalInfo.userName]]</dd>
-            <dt>Apellido Paterno</dt>
-            <dd>[[userCv.personalInfo.userSurname]]</dd>
-            <dt>Apellido Materno</dt>
-            <dd>[[userCv.personalInfo.userLastname]]</dd>
-            <dt>Sexo</dt>
-            <dd>[[_getSex(userCv.personalInfo.userSex)]]</dd>
-            <dt>Curp</dt>
-            <dd>[[userCv.personalInfo.userCurp]]</dd>
-            <dt>RFC</dt>
-            <dd>[[userCv.personalInfo.userRFC]]</dd>
-            <dt>Numero Seguro Social</dt>
-            <dd>[[userCv.personalInfo.userEnsurance]]</dd>
-            <dt>Estado Civil</dt>
-            <dd>[[_getMaritalStatus(userCv.personalInfo.maritalStatus)]]</dd>
-            <dt>Fecha Nacimiento</dt>
-            <dd>[[userCv.personalInfo.userBirthday]]</dd>
-          </dl>
-          <dl>
-            <dt>Meta Profesional</dt>
-            <dd>[[userCv.personalInfo.professionalGoal]]</dd>
-            <dt>Calle</dt>
-            <dd>[[userCv.personalInfo.userAddressStreet]]</dd>
-            <dt>Numero</dt>
-            <dd>[[userCv.personalInfo.userAddressOutsideNumber]]</dd>
-            <dt>Numero Interior</dt>
-            <dd>[[userCv.personalInfo.userAddressInsideNumber]]</dd>
-            <dt>Colonia</dt>
-            <dd>[[userCv.personalInfo.userAddressNeighborhood]]</dd>
-            <dt>Código Postal</dt>
-            <dd>[[userCv.personalInfo.userAddressPC]]</dd>
-            <dt>Ciudad</dt>
-            <dd>[[userCv.personalInfo.userAddressCity]]</dd>
-            <dt>Telefonos</dt>
-            <template is="dom-repeat" items="{{userCv.personalInfo.phones}}" as="item">
-              <dd>[[item]]</dd>
-            </template>
-            <dt>Emails</dt>
-            <template is="dom-repeat" items="{{userCv.personalInfo.emails}}" as="item">
-              <dd>[[item]]</dd>
-            </template>
-            <dt>Linkedin</dt>
-            <dd> <a href="[[userCv.personalInfo.userLinkedIn]]"><img src="../assets/img/linkedin.png" alt="Linkedin"></a></dd>
-          </dl>
-        </div>
-      </div>
-
-      <div class="container">
-        <h2 class="title_info">Formación</h2>
-        <dl>
-          <template class="hidden" is="dom-repeat" items="{{userCv.formacion}}" as="item">
-            <dt>Institución</dt>
-            <dd>[[item.institucion]]</dd>
-            <dt>Titulación</dt>
-            <dd>[[item.titulacion]]</dd>
-            <dt>Estatus</dt>
-            <dd>[[item.level]]</dd>
-            <dt>En curso</dt>
-            <template class="hidden" is="dom-if" if="[[item.actual]]">
-              <dd>Si</dd>
-            </template>
-            <template class="hidden" is="dom-if" if="[[!item.actual]]">
-              <dd>No</dd>
-            </template>
-            <dt>Inicio</dt>
-            <dd>[[item.desde]]</dd>
-            <dt>Fin</dt>
-            <dd>[[item.hasta]]</dd>
-          </template>
-        </dl>
-      </div>
-
-        <div class="container">
-          <h2 class="title_info">Experiencia</h2>
-          <dl>
-            <template class="hidden" is="dom-repeat" items="{{userCv.experience}}" as="item">
-              <dt>Compañia</dt>
-              <dd>[[item.company]]</dd>
-              <dt>Posición</dt>
-              <dd>[[item.position]]</dd>
-              <dt>Localización</dt>
-              <dd>[[item.location]]</dd>
-              <dt>Descripción</dt>
-              <dd>[[item.description]]</dd>
-              <dt>Fecha Inicial</dt>
-              <dd>[[item.startDate]]</dd>
-              <dt>Fecha Final</dt>
-              <dd>[[item.finalDate]]</dd>
-              <dt>Es tu trabajo actual</dt>
-              <template class="hidden" is="dom-if" if="[[item.actual]]">
-                <dd>Si</dd>
-              </template>
-              <template class="hidden" is="dom-if" if="[[!item.actual]]">
-                <dd>No</dd>
-              </template>
-            </template>
-          </dl>
-        </div>
-
-        <div class="container">
-          <h2 class="title_info">Conocimientos</h2>
-          <dl>
-            <dt>Conocimiento - Porcentaje</dt>
-            <template class="hidden" is="dom-repeat" items="{{userCv.knowledges}}" as="item">
-              <dd>[[item.knowledge]] - [[item.percent]]</dd>
-            </template>
-          </dl>
-        </div>
-
-        <div class="container">
-          <h2 class="title_info">Aptitudes</h2>
-          <dl>
-            <dt>Aptitud</dt>
-            <template class="hidden" is="dom-repeat" items="{{userCv.skills}}" as="item">
-              <dd>[[item]]</dd>
-            </template>
-          </dl>
-        </div>
-
-        <div class="container">
-          <h2 class="title_info">Idiomas</h2>
-          <dl>
-            <dt>Idioma - Nivel</dt>
-            <template class="hidden" is="dom-repeat" items="{{userCv.languages}}" as="item">
-              <dd>[[item.name]] - [[item.level]]</dd>
-            </template>
-          </dl>
-        </div>
-
-
-      <div class="container">
-        <h2 class="title_info">Certificaciones</h2>
-        <dl>
-          <template class="hidden" is="dom-repeat" items="{{userCv.certificaciones}}" as="item">
-            <dt>Nombre de Certificación</dt>
-            <dd>[[item.nombre]]</dd>
-            <dt>Empresa</dt>
-            <dd>[[item.entidad]]</dd>
-            <dt>Licencia</dt>
-            <dd>[[item.licencia]]</dd>
-            <dt>Inicio</dt>
-            <dd>[[item.fechaInicio]]</dd>
-            <dt>Fin</dt>
-            <dd>[[item.fechaFin]]</dd>
-            <dt>Es permanente tu Licencia</dt>
-            <template class="hidden" is="dom-if" if="[[item.permanente]]">
-              <dd>Si</dd>
-            </template>
-            <template class="hidden" is="dom-if" if="[[!item.permanente]]">
-              <dd>No</dd>
-            </template>
-          </template>
-        </dl>
-      </div>
-    </main-->
-    <div id="content">
-      <h1 style="color:red">Hello World</h1>
-      <p>this is a PDF</p>
-    </div>
-  </template>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
 
   <script>
     /**
-     * `pdf-cv`
+     * `ks-pdf-cv`
      *
      *
      * @customElement
@@ -215,36 +40,27 @@
         ]
       }
 
-      /*_templateForDownload(htmlPrint, userCv, templateCv) {
-        console.log(htmlPrint, userCv, templateCv);
-        const print = this.$.content;
-        console.log(print)
-        if (htmlPrint !== undefined && templateCv !== undefined) {
-          let doc = new jsPDF('p','pt','a4');
-          doc.addHTML(htmlPrint, function() {
-            doc.save('html.pdf');
-          });
-          html2canvas(this.shadowRoot.querySelector('#content'), {
-            onrendered: function(canvas) {
-              document.body.appendChild(canvas);
-            },
-          });
-        }
-      }*/
-
       _templateForDownload(htmlPrint, userCv, templateCv) {
-        //console.log(userCv, templateCv)
         if (htmlPrint !== undefined && userCv !== undefined && templateCv !== undefined) {
-          const doc = new jsPDF('p','pt','a4');
-          //doc.setFontSize(22);
-          //doc.setTextColor(255, 0, 0);
-          //doc.text(20, 20, 'This is a title');
-          //const elementToPrint = Polymer.dom(this.root).querySelector('#content');
-          doc.fromHTML(htmlPrint, 0, 0, {
-            pagesplit: true
-          },
-          function(dispose) {
-            doc.save('prueba.pdf');
+          html2canvas(htmlPrint, {
+            onrendered: function(canvas) {
+              const imgWidth = 207; 
+              const pageHeight = 295;
+              const imgHeight = canvas.height * imgWidth / canvas.width;
+              let heightLeft = imgHeight;
+              let position = 0;
+              heightLeft -= pageHeight;
+              const imgData = canvas.toDataURL('image/png');
+              const doc = new jsPDF('p', 'mm');
+              doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+              while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                doc.addPage();
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+              }
+              doc.save( 'file.pdf');
+            }
           });
         }
       }

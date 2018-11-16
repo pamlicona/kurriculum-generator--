@@ -1,10 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
-<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu-light.html">
 <link rel="import" href="../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
@@ -19,11 +15,6 @@
     <style include="app-styles">
       :host {
           margin-top: 10%;
-      }
-
-      .content {
-        grid-template-columns: 1fr 2fr;
-        display: grid;
       }
 
       .section-basic-data {
@@ -71,7 +62,7 @@
         text-align: center;
         background-color: white;
         max-width: 100%;
-        min-height: 24%;
+        min-height: 350px;
         padding-top: 30px;
       }
 
@@ -93,7 +84,7 @@
       }
 
       .section_basic-data {
-        display: flex;
+        display: flex !important;
         justify-content: space-around;
         text-align: right;
         margin-bottom: 10%;
@@ -180,6 +171,14 @@
         font-weight: 100;
         margin-top: 20px;
       }
+
+      .hidden_info {
+        display: none !important;
+      }
+
+      .show_info {
+        display: block;
+      }
     </style>
     <h1 class="data-header-name">Resumen</h1>
 
@@ -234,7 +233,7 @@
         </div>
       </div>
       <div class="right_column">
-        <div class="section_basic-data" hidden$="{{blind}}">
+        <div class$="{{blind}} section_basic-data">
           <div>
             <p>[[data.personalInfo.emails.0]]</p>
             <span class="color_gray">Email</span>
@@ -258,6 +257,44 @@
           <p>[[data.personalInfo.professionalGoal]]</p>
         </div>
         <div class="orange_division"></div>
+        <div class$="{{blind}} section_personal">
+          <h2 class="title_info">Información Personal</h2>
+          <div class="space_element grid_two_columns">
+            <div class="grid_start_second_column">
+              <span class="color_gray">Curp</span>
+              <p>[[data.personalInfo.userCurp]]</p>
+              <span class="color_gray">RFC</span>
+              <p>[[data.personalInfo.userRFC]]</p>
+              <span class="color_gray">Numero Seguro Social</span>
+              <p>[[data.personalInfo.userEnsurance]]</p>
+              <span class="color_gray">Estado Civil</span>
+              <p>[[_getMaritalStatus(data.personalInfo.maritalStatus)]]</p>
+              <span class="color_gray">Fecha Nacimiento</span>
+              <p>[[data.personalInfo.userBirthday]]</p>
+              <span class="color_gray">Sexo</span>
+              <p>[[_getSex(data.personalInfo.userSex)]]</p>
+            </div>
+            <div>
+              <span class="color_gray">Calle</span>
+              <p>[[data.personalInfo.userAddressStreet]]</p>
+              <span class="color_gray">Numero</span>
+              <p>[[data.personalInfo.userAddressOutsideNumber]]</p>
+              <span class="color_gray">Numero Interior</span>
+              <p>[[data.personalInfo.userAddressInsideNumber]]</p>
+              <span class="color_gray">Colonia</span>
+              <p>[[data.personalInfo.userAddressNeighborhood]]</p>
+              <span class="color_gray">Código Postal</span>
+              <p>[[data.personalInfo.userAddressPC]]</p>
+              <span class="color_gray">Ciudad</span>
+              <p>[[data.personalInfo.userAddressCity]]</p>
+              <span class="color_gray">Telefonos</span>
+              <template is="dom-repeat" items="{{data.personalInfo.phones}}">
+                <p>[[item]]</p>
+              </template>
+            </div>
+          </div>
+        </div>
+        <div class$="{{blind}} orange_division"></div>
         <div class="section_formation">
           <h2 class="title_info">Formación</h2>
           <template is="dom-repeat" items="{{data.formation}}">
@@ -303,49 +340,6 @@
           </template>
         </div>
       </div>
-      <!--div class="container" hidden$="[[blind]]">
-        <h2 class="title_info">Información Personal</h2>
-        <div class="container__personal">
-          <dl>
-            <dt>Imagen</dt>
-            <dd><img src="[[data.personalInfo.userImage]]" alt="Usuario"></dd>
-            <dt>Sexo</dt>
-            <dd>[[_getSex(data.personalInfo.userSex)]]</dd>
-            <dt>Curp</dt>
-            <dd>[[data.personalInfo.userCurp]]</dd>
-            <dt>RFC</dt>
-            <dd>[[data.personalInfo.userRFC]]</dd>
-            <dt>Numero Seguro Social</dt>
-            <dd>[[data.personalInfo.userEnsurance]]</dd>
-            <dt>Estado Civil</dt>
-            <dd>[[_getMaritalStatus(data.personalInfo.maritalStatus)]]</dd>
-            <dt>Fecha Nacimiento</dt>
-            <dd>[[data.personalInfo.userBirthday]]</dd>
-          </dl>
-          <dl>
-            <dt>Calle</dt>
-            <dd>[[data.personalInfo.userAddressStreet]]</dd>
-            <dt>Numero</dt>
-            <dd>[[data.personalInfo.userAddressOutsideNumber]]</dd>
-            <dt>Numero Interior</dt>
-            <dd>[[data.personalInfo.userAddressInsideNumber]]</dd>
-            <dt>Colonia</dt>
-            <dd>[[data.personalInfo.userAddressNeighborhood]]</dd>
-            <dt>Código Postal</dt>
-            <dd>[[data.personalInfo.userAddressPC]]</dd>
-            <dt>Ciudad</dt>
-            <dd>[[data.personalInfo.userAddressCity]]</dd>
-            <dt>Telefonos</dt>
-            <template is="dom-repeat" items="{{data.personalInfo.phones}}" as="item">
-              <dd>[[item]]</dd>
-            </template>
-            <dt>Emails</dt>
-            <template is="dom-repeat" items="{{data.personalInfo.emails}}" as="item">
-              <dd>[[item]]</dd>
-            </template>
-          </dl>
-        </div>
-      </div-->
     </div>
     <paper-button class="paper-button-k save-and-continue" raised on-click="_downloadCv">Generar PDF</paper-button>
   </template>
@@ -376,10 +370,10 @@
             value: ['Básico', 'Completo']
           },
           blind: {
-            type: Boolean,
-            value: false
+            type: String,
+            value: "show_info"
           },
-          profilePic:{
+          profilePic: {
             type: String,
             value: "../assets/img/person.png"
           },
@@ -388,21 +382,12 @@
 
       static get observers() {
         return [
-          '_templateSelected(template)',
           '_formatSelected(printType)',
         ];
       }
 
-      _getData() {
-        console.log(this.data);
-      }
-
-      _templateSelected(newTemplate) {
-        console.log(newTemplate)
-      }
-
       _formatSelected(newFormat) {
-        this.blind = newFormat !== 'Completo' ? true : false;
+        this.blind = newFormat !== 'Completo' ? 'hidden_info' : 'show_info';
       }
 
       _getacutal(actual, final) {
@@ -430,10 +415,12 @@
       _downloadCv(event) {
         const validate = this.$.formPrint.validate();
         if (validate) {
-          const doc = new jsPDF('p','pt','a4');
-          doc.addHTML(this.$.content, function() {
-            doc.save('html.pdf');
-          });
+          const detail = {
+            data: this.data,
+            htmlPrint: this.$.content,
+            template: this.$.formPrint.serializeForm()
+          };
+          this._dispatchEvent(event, detail);
         }
       }
 
