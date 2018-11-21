@@ -179,20 +179,27 @@
 
             _refreshFilter() {
                 let keyWord = Polymer.dom(this.root).querySelector(".search-field").value;
+                keyWord?keyWord=keyWord:keyWord="a";
                 let allresult = this._snapshotToArray(this.results);
                 let list_filtered = [];
                 allresult.forEach(function (user) {
+                    if(user.personalInfo.hasOwnProperty("userName")){
                     if(user.personalInfo.userName.toLocaleLowerCase().includes(keyWord.toLocaleLowerCase())){
                         list_filtered.push(user);
                         return;
                     }
+                    }
+                    if(user.personalInfo.hasOwnProperty("userLastname")){
                     if(user.personalInfo.userLastname.toLocaleLowerCase().includes(keyWord.toLocaleLowerCase())){
                         list_filtered.push(user);
                         return;
                     }
+                    }
+                    if(user.personalInfo.hasOwnProperty("userSurname")){
                     if(user.personalInfo.userSurname.toLocaleLowerCase().includes(keyWord.toLocaleLowerCase())){
                         list_filtered.push(user);
                         return;
+                    }
                     }
                     if(user.personalInfo.hasOwnProperty("profileStatus")){
                         if(user.personalInfo.profileStatus.toLocaleLowerCase().includes(keyWord.toLocaleLowerCase())){
