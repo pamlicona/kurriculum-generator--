@@ -76,7 +76,7 @@
 
             <firebase-auth
                 id="auth"
-                app-name="kurriculum"
+                app-name="Kurriculum"
                 provider="google"
                 signed-in="{{signedIn}}"
                 user="{{user}}">
@@ -84,7 +84,7 @@
 
             <firebase-document
                 id="document"
-                app-name="kurriculum"
+                app-name="Kurriculum"
                 path="/users/{{user.uid}}"
                 data="{{data}}">
             </firebase-document>
@@ -126,7 +126,7 @@
                     },
                     profilePic: {
                         type: String,
-                        value: '../assets/img/person.png'
+                        value: ''
                     }
                 };
             }
@@ -182,7 +182,7 @@
 
             _profilePicUploaded(e) {
                 this.profilePic =  e.detail.data;
-                console.log('_profilePicUploaded ', e.detail.data);
+                //console.log('_profilePicUploaded ', e.detail.data);
             }
 
             _downloadCv(event) {
