@@ -41,13 +41,7 @@
         <div style="margin-top: 110px">
             <div class="cont-comp-photo">
                 <div class="photo">
-                    <template is="dom-if" if="{{user.personalInfo.userImage}}">
-                            <img class="person-img" src="{{user.personalInfo.userImage}}" alt="person">
-                    </template>
-                    <template is="dom-if" if="{{!user.personalInfo.userImage}}">
-                            <img class="person-img" src="../assets/img/person.png" alt="person">
-                    </template>
-                        
+                    <img class="person-img" src="{{profilePic}}" alt="person">
                 </div>
                 <div class="data-photo">
                     <p><strong>{{user.personalInfo.userName}}</strong></p>
@@ -67,8 +61,7 @@
             static get properties(){
                 return {
                     profilePic:{
-                        type: String,
-                        value: ""
+                        type: String
                     },
                     user: {
                             type: Object,
@@ -76,13 +69,6 @@
                     }
                 }
             }
-
-            connectedCallback() {
-                super.connectedCallback();
-            }
-
-
-           
         }
 
         window.customElements.define(KsMyPhoto.is, KsMyPhoto);

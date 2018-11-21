@@ -358,8 +358,7 @@
       static get properties() {
         return {
           data: {
-            type: Object,
-            observer: '_getData'
+            type: Object
           },
           templates: {
             type: Array,
@@ -373,10 +372,7 @@
             type: String,
             value: "show_info"
           },
-          profilePic: {
-            type: String,
-            value: "../assets/img/person.png"
-          },
+          profilePic: String,
         }
       };
 

@@ -102,7 +102,6 @@
 
             onFileUpload(e) {
                 this.files = e.target.files;
-                console.log(e.target.files)
             }
 
             _upload() {
@@ -111,28 +110,23 @@
                     alert("Selecciona un archivo");
                     return
                 }
-
                 this.uploading = true;
                 const file = this.shadowRoot.querySelector('#fileUploader').files;
                 this.shadowRoot.querySelector('#fs').upload(file);
-
                 const downloadUrl = this.uploadedFiles[0].downloadUrl;
-                if (!downloadUrl) {
-                    setTimeout(() => {
-                        this._profileImageEvent();
-                    }, 2000);
-                } else {
+                setTimeout(() => {
                     this._profileImageEvent();
-                }
+                }, 2000);
             }
 
             _profileImageEvent() {
                 this._dispatchEvent('profile-pic-uploaded', this.uploadedFiles[0].downloadUrl);
-                this.uploading = false;
+                this.set('uploading', false);
+                this.set('uploadedFiles', []);
             }
 
             catchError(e) {
-                console.log(e.detail.message);
+                console.error(e.detail.message);
             }
 
             _dispatchEvent(event, info = null, bubbles = true) {
