@@ -91,7 +91,7 @@
 
             <firebase-document
                 id="allUsers"
-                app-name="kurriculum"
+                app-name="Kurriculum"
                 path="/users"
                 data="{{results}}">
             </firebase-document>
@@ -121,7 +121,7 @@
                                         <p><strong>[[user.personalInfo.userName]]</strong></p>
                                         <p><strong>[[user.personalInfo.userLastname]]</strong></p> <br>
                                         <p><strong>[[user.personalInfo.profileStatus]]</strong></p>
-                                        <p>[[user.personalInfo.userLinkedIn]]</p>
+                                        <a target="_blank" href="[[user.personalInfo.userLinkedIn]]">[[user.personalInfo.userLinkedIn]]</a>
                                     </div>
                                 </div>
                                 <paper-button style="margin: 0 0 0 0" class="paper-button-k watch-curr" raised on-click="_watchResume">Ver Curriculum</paper-button>
@@ -181,7 +181,6 @@
                 let keyWord = Polymer.dom(this.root).querySelector(".search-field").value;
                 let allresult = this._snapshotToArray(this.results);
                 let list_filtered = [];
-                console.log(this.results);
                 allresult.forEach(function (user) {
                     if(user.personalInfo.userName.toLocaleLowerCase().includes(keyWord.toLocaleLowerCase())){
                         list_filtered.push(user);
@@ -203,15 +202,11 @@
                     }
                 });
                 this.resultsF = list_filtered;
-                //console.log("Lista actualizada: ");
-                
-
             }
 
             _snapshotToArray(snapshot) {
                 let araryR = [];
                 Object.keys(snapshot).forEach(function(key) {
-                    //console.log(key + ': ' + snapshot[key]);
                     araryR.push(snapshot[key]);
                 });
                 return araryR;
