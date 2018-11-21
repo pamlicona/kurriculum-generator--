@@ -263,7 +263,6 @@
                                 phones: [],
                                 emails: [],
                                 profileStatus: null,
-                                userImage: null
                             }
                         },
                         profiles: {
@@ -283,11 +282,11 @@
 
                 connectedCallback() {
                     super.connectedCallback();
-                    console.log(this.personalInfo);
                 }
 
                 _updateImage(event) {
                     this.personalInfo.userImage = event.detail.data;
+                    this._dispatchEvent('save-info', this.personalInfo, 'personalInfo');
                 }
 
                 _timeAgo() {

@@ -40,7 +40,7 @@
         <div class="contls containerEsp" id="containerEsp" name ="containerEsp">
 
             <ks-header signed-in="[[signedIn]]" on-go-home="_goHome" on-show-search="_showSearch" on-sign-out="_signOut"></ks-header>            
-            <ks-my-photo user="{{data}}" profilePic="{{profilePic}}"></ks-my-photo>
+            <ks-my-photo user="{{data}}"></ks-my-photo>
 
             <p class="introduce-text">Introduce tus Datos</p>
             <div class="line"></div>
@@ -59,7 +59,7 @@
 
 
             <iron-pages id="selector" selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-                <my-personal-data on-save-info="_saveInfoEvent" on-profile-pic-uploaded="_profilePicUploaded" name="personal-data" user="[[user]]"></my-personal-data>
+                <my-personal-data on-save-info="_saveInfoEvent" name="personal-data" user="[[user]]"></my-personal-data>
                 <my-experience on-save-info="_saveInfoEvent" name="experience"></my-experience>
                 <my-knowledges on-save-info="_saveInfoEvent" name="knowledges"></my-knowledges>
                 <my-skills on-save-info="_saveInfoEvent" name="skills"></my-skills>
@@ -67,7 +67,7 @@
                 <my-formation on-save-info="_saveInfoEvent" name="formation"></my-formation>
                 <my-certifications on-save-info="_saveInfoEvent" name="certifications"></my-certifications>
                 <my-courses on-save-info="_saveInfoEvent" name="courses"></my-courses>
-                <my-summary on-download-cv="_downloadCv" profile-pic="{{profilePic}}" user="[[user]]" name="summary"></my-summary>
+                <my-summary on-download-cv="_downloadCv" user="[[user]]" name="summary"></my-summary>
                 <my-view404 name="view404"></my-view404>
                 <my-login on-sign-in="_signIn" on-logged="_logged" signed-in="[[signedIn]]" name="login"></my-login>
             </iron-pages>
@@ -123,10 +123,6 @@
                     data: {
                         type: Object,
                         observer: 'dataChanged'
-                    },
-                    profilePic: {
-                        type: String,
-                        value: ''
                     }
                 };
             }
@@ -178,11 +174,6 @@
 
                 const querySelector = this.shadowRoot.querySelector(`my-${page}`);
                 querySelector.setAttribute(property, JSON.stringify(this.data[prop]));
-            }
-
-            _profilePicUploaded(e) {
-                this.profilePic =  e.detail.data;
-                //console.log('_profilePicUploaded ', e.detail.data);
             }
 
             _downloadCv(event) {
