@@ -63,7 +63,6 @@
         background-color: white;
         max-width: 100%;
         min-height: 350px;
-        padding-top: 30px;
       }
 
       .title_info-lf {
@@ -92,7 +91,7 @@
 
       .section_presentation h1 {
         font-weight: 100;
-        font-size: 37px;
+        font-size: 30px;
       }
 
       .orange_division {
@@ -144,18 +143,24 @@
       }
 
       .title_info {
-        font-size: 28px;
+        font-size: 25px;
         font-weight: 200;
       }
 
       .grid_two_columns {
         display: grid;
-        grid-template-columns: 0.5fr 2fr 2fr 0.5fr;
+        grid-template-columns: 2fr 2fr;
         font-size: 17px;
+        grid-column-gap: 25px;
+      }
+
+      .grid_section_rows {
+        grid-template-rows: 1fr 1fr;
+        display: grid;
       }
 
       .grid_start_second_column {
-        grid-column: 2;
+        grid-column-start: 2;
       }
 
       .color_gray {
@@ -163,7 +168,7 @@
       }
 
       .space_element {
-        margin: 8% 0 8% 0;
+        margin: 6% 0 6% 0;
       }
 
       .profile {
@@ -260,7 +265,7 @@
         <div class$="{{blind}} section_personal">
           <h2 class="title_info">Información Personal</h2>
           <div class="space_element grid_two_columns">
-            <div class="grid_start_second_column">
+            <div>
               <span class="color_gray">Curp</span>
               <p>[[data.personalInfo.userCurp]]</p>
               <span class="color_gray">RFC</span>
@@ -299,11 +304,11 @@
           <h2 class="title_info">Formación</h2>
           <template is="dom-repeat" items="{{data.formation}}">
             <div class="space_element grid_two_columns">
-              <div class="grid_start_second_column">
+              <div class="grid_section_rows">
                 <span class="color_gray">[[item.institucion]]</span>
                 <p>[[item.titulacion]]</p>
               </div>
-              <div>
+              <div class="grid_section_rows">
                 <span class="color_gray">[[item.desde]] - [[_getacutal(item.actual, item.hasta)]]</span>
                 <p>[[item.level]]</p>
               </div>

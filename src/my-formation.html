@@ -89,7 +89,6 @@
           </div>
         </div>
         <div class="col">
-
             <div class="cont-input">
                 <div class="datepicker-dialog" id="desdeDate">
                     <span>Fecha Inicio</span>
@@ -102,7 +101,6 @@
                     </app-datepicker-dialog>
                 </div>
             </div>
-    
             <div class="cont-input">
               <div class="datepicker-dialog" id="hastaDate">
                   <span>Fecha Fin</span>
@@ -115,17 +113,15 @@
                   </app-datepicker-dialog>
                 </div>
             </div>
-            
             <div class="cont-input radio">
               <paper-checkbox name="actual" checked="{{actual}}">En curso</paper-checkbox>
             </div>
-
-          <div class="cont-input">
-            <paper-button class="paper-button-k" raised on-click="_addData">Añadir</paper-button>
-          </div>  
         </div>
       </form>
-      <paper-button class="paper-button-k save-and-continue" raised on-click="_saveData">guardar y continuar</paper-button>
+      <div class="save-buttons">
+        <paper-button class="paper-button-k" raised on-click="_addData">Añadir</paper-button>
+        <paper-button class="paper-button-k save-and-continue" raised on-click="_saveData">guardar y continuar</paper-button>
+      </div>
      </iron-form>
     </div>
 

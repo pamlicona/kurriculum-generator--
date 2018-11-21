@@ -27,8 +27,10 @@
                     </app-datepicker-dialog>
                 </div>
                 <paper-input id="course_institution" type="text" name="institution" label="Institución" required error-message="Campo requerido" value="{{institution}}"></paper-input>
-                <paper-button class="paper-button-k" raised on-click="_addCourse">Agregar</paper-button>
-                <paper-button class="paper-button-k save-and-continue" raised on-click="_saveData">guardar y continuar</paper-button>
+                <div class="save-buttons">
+                    <paper-button class="paper-button-k" raised on-click="_addCourse">Agregar</paper-button>
+                    <paper-button class="paper-button-k save-and-continue" raised on-click="_saveData">guardar y continuar</paper-button>
+                </div>
             </form>
         </iron-form>
         <div class="container-grid container-2-grid">

@@ -130,7 +130,8 @@
             static get observers() {
                 return [
                     '_routePageChanged(routeData.page)',
-                    'dataChanged(data.*)'
+                    'dataChanged(data.*)',
+                    '_imageChanged(data.personalInfo.*)',
                 ];
             }
 
@@ -141,6 +142,13 @@
             dataChanged(newData, oldData) {
                 // Set data in forms
                 this._checkData();
+            }
+
+            _imageChanged() {
+                if (this.data.personalInfo !== undefined) {
+                    const image = this.data.personalInfo.userImage;
+                    this.profilePic = image !== undefined ? image : this.profilePic;
+                }
             }
 
             _checkData() {

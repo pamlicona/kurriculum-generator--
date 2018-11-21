@@ -22,6 +22,7 @@
             }
             #language_name{
                 width: 50%;
+                margin-right: 20px;
             }
             #level_name{
                 width: 50%;
@@ -32,7 +33,7 @@
         <iron-form id="languageExperience">
             <form>
                 <div class="flex-div">
-                    <paper-input id="language_name" type="text" name="idioma" label="Idioma" required error-message="Campo requerido" allowed-pattern="[a-zA-Z]"
+                    <paper-input id="language_name" type="text" name="idioma" label="Idioma" required error-message="Campo requerido" 
                         value="{{language.name}}"></paper-input>
                     <paper-dropdown-menu-light id="level_name" label="Nivel">
                         <paper-listbox slot="dropdown-content" class="dropdown-content" selected={{level}} attr-for-selected="myvalue" required>
@@ -43,8 +44,10 @@
                     </paper-dropdown-menu-light>
                 </div>
                 <input is="iron-input" name="title" type="hidden" value$="[[level]]">
-                <paper-button class="save-and-continue paper-button-k" raised on-click="_addLanguage">Agregar</paper-button>
-                <paper-button class="save-and-continue paper-button-k" raised on-click="_saveData">Guardar y Continuar</paper-button>
+                <div class="save-buttons">
+                    <paper-button class="save-and-continue paper-button-k" raised on-click="_addLanguage">Agregar</paper-button>
+                    <paper-button class="save-and-continue paper-button-k" raised on-click="_saveData">Guardar y Continuar</paper-button>
+                </div>
             </form>
         </iron-form>
         <div class="container-grid container-3-grid">
