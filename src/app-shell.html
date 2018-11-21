@@ -151,12 +151,15 @@
                 }
 
                 const properties = [
-                    "personal", "experience", "knowledges", "skills", "languages", "formation", "certifications", "courses", "personalInfo"
+                    "personalInfo", "experience", "knowledges", "skills", "languages", "formation", "certifications", "courses"//, "personalInfo"
                 ];
+                let step = 0;
                 properties.forEach(myProp => {
                     if (data.hasOwnProperty(myProp)) {
                         this._setData(myProp)
+                        this._markStepDone(step);
                     }
+                    step++;
                 });
 
                 // Summary
@@ -278,8 +281,19 @@
 
             _logged(){
                 let items = Polymer.dom(this.root).querySelectorAll(".numbutton"); 
+            
+                let start = new Date().getTime();
+                let end = start;
+                while(end < start + 500) {
+                    end = new Date().getTime();
+                }
                 items[1].click();
                 items[0].click();
+            }
+
+            _markStepDone(step){
+                let items = Polymer.dom(this.root).querySelectorAll(".numbutton"); 
+                items[step].innerHTML = "✓";
             }
 
             _signIn() {

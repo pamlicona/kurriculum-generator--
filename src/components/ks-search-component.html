@@ -31,8 +31,6 @@
                     display: none;
                 }
 
-
-
                 /* CARDS DE BUSQUEDA */
                 .card{
                     background: white;
@@ -41,7 +39,6 @@
                     margin-top: 20px;
                     width: 500px;
                 }
-
 
                 .card:hover
                 {
@@ -52,6 +49,12 @@
                         -webkit-transform: translateX(-3px);
                         transform: translateX(-3px);
                         background-color: rgb(255, 121, 0, 0.5);
+                }
+
+                .person-img{
+                    height: 150px;
+                    width: 150px;
+                    border-radius: 50%;
                 }
 
 
@@ -115,7 +118,12 @@
                             <div>
                                 <div class="cont-comp-photo">
                                     <div class="photo">
-                                            <img class="person-img" src="../assets/img/person.png" alt="person">
+                                        <template is="dom-if" if="{{user.personalInfo.userImage}}">
+                                            <img class="person-img" src="{{user.personalInfo.userImage}}" alt="person">
+                                        </template>
+                                        <template is="dom-if" if="{{!user.personalInfo.userImage}}">
+                                                <img class="person-img" src="../assets/img/person.png" alt="person">
+                                        </template>
                                     </div>
                                     <div class="data-photo">
                                         <p><strong>[[user.personalInfo.userName]]</strong></p>
@@ -179,20 +187,27 @@
 
             _refreshFilter() {
                 let keyWord = Polymer.dom(this.root).querySelector(".search-field").value;
+                keyWord?keyWord=keyWord:keyWord="a";
                 let allresult = this._snapshotToArray(this.results);
                 let list_filtered = [];
                 allresult.forEach(function (user) {
+                    if(user.personalInfo.hasOwnProperty("userName")){
                     if(user.personalInfo.userName.toLocaleLowerCase().includes(keyWord.toLocaleLowerCase())){
                         list_filtered.push(user);
                         return;
                     }
+                    }
+                    if(user.personalInfo.hasOwnProperty("userLastname")){
                     if(user.personalInfo.userLastname.toLocaleLowerCase().includes(keyWord.toLocaleLowerCase())){
                         list_filtered.push(user);
                         return;
                     }
+                    }
+                    if(user.personalInfo.hasOwnProperty("userSurname")){
                     if(user.personalInfo.userSurname.toLocaleLowerCase().includes(keyWord.toLocaleLowerCase())){
                         list_filtered.push(user);
                         return;
+                    }
                     }
                     if(user.personalInfo.hasOwnProperty("profileStatus")){
                         if(user.personalInfo.profileStatus.toLocaleLowerCase().includes(keyWord.toLocaleLowerCase())){
