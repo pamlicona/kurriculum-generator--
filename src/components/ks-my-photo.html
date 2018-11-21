@@ -18,6 +18,7 @@
             }
             .person-img{
                 height: 150px;
+                width: 150px;
                 border-radius: 50%;
 
             }
@@ -40,10 +41,10 @@
         <div style="margin-top: 110px">
             <div class="cont-comp-photo">
                 <div class="photo">
-                    <template is="dom-if" if="{{profilePic}}">
-                            <img class="person-img" src="{{profilePic}}" alt="person">
+                    <template is="dom-if" if="{{user.personalInfo.userImage}}">
+                            <img class="person-img" src="{{user.personalInfo.userImage}}" alt="person">
                     </template>
-                    <template is="dom-if" if="{{!profilePic}}">
+                    <template is="dom-if" if="{{!user.personalInfo.userImage}}">
                             <img class="person-img" src="../assets/img/person.png" alt="person">
                     </template>
                         
